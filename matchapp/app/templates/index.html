@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="../static/css/index.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Match App</h1>
+    <div class="heart">
+        <h1>Find Your Match!</h1> 
+        <!--Match App -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div>
@@ -16,8 +17,16 @@
         </div>
         {% endif %}
         {% endwith %}
-        <button onclick="createUser()">Create New User</button>
-        <button onclick="loginUser()">Log In with Userid</button>
+
+        
+        <button onclick="createUser()">Join the Puzzle</button>
+        <!--Create New User-->
+        <img src="/Users/jiwon/Desktop/py_g22/matchapp/app/static/images/love-pink-puzzle-free-png.webp" alt="Heart Puzzle">
+
+        <button onclick="loginUser()">Fit back in</button>
+        <!--Log In with Userid-->
+        <img src="matchapp/app/static/images/full puzzle.jpg" alt="Full Puzzle">
+
     </div>
 
     <script>

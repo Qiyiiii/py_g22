@@ -1,9 +1,92 @@
-button {
-    background-color: yellow ;
-    font-size: medium;
-
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ff8383;
 }
 
-button:hover {
-    background-color: white;
+
+.profile-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+    padding: 20px;
+}
+
+.profile-header {
+    color: #ff8383;
+    padding: 10px 10px;
+    position: relative;
+    font-weight: bold;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    border: 3px solid #ff8383;
+    width: 80px;
+    height: 80px;
+}
+
+.profile-header h2 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.profile-details {
+    padding: 10px 20px 20px;
+    text-align: left;
+}
+
+.profile-details p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.profile-details p img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.edit-button {
+    font-size: 14px;
+    color: #999;  /* Light grey tone */
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.edit-button:hover {
+    color: #555;  /* Slightly darker grey on hover */
+}
+
+.profile-actions {
+    padding: 10px 0;
+}
+
+.profile-actions button {
+    background-color: #ff8383;
+    border: 1px solid #ff8383;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.profile-actions button:hover {
+    background-color: red;
 }
