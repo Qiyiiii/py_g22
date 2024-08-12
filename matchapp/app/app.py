@@ -62,7 +62,7 @@ def match(uid1):
         return render_template("matchedPage.html", user= matched_user_info, uid1=uid1, uid2=matched_userid, interests = interests)
     else:
         flash(f"Can't find a match with {uid1}")
-        return redirect(url_for('profile', uid=uid))
+        return redirect(url_for('profile', uid=uid1))
 
 @app.route('/liked-users/<int:uid>')
 def liked_users(uid):
