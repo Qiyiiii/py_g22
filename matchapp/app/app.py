@@ -93,16 +93,7 @@ def mutual_users(uid):
         return render_template("userList.html", users=users, uid=uid)
         # return redirect(url_for('profile', uid=uid))
 
-@app.route('/top_user/<int:uid>')
-def best_matches(uid):
-    users = get_top_5_user(uid)
-    infos = ((get_user_info(userid),score) for userid, score in users)
-    if users:
-        return render_template("userList.html", infos, infos, uid=uid)
-    else:
-        flash(f"User with {uid} has no mutually liked users")
-        return render_template("userList.html", users=users, uid=uid)
-        # return redirect(url_for('profile', uid=uid))
+
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
