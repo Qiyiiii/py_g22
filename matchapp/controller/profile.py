@@ -1,7 +1,7 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from use_case.dai import *
+from use_case.dataManager import *
 
 
 
@@ -23,6 +23,7 @@ def add_user(name, email, gender, location, age):
     """
     return create_user(name, email, gender, location, age)
 
+
 def get_user_profile(uid):
     """
     get the profile of the user with (uid)
@@ -31,7 +32,6 @@ def get_user_profile(uid):
     On success, return tuple(name, email, gender, location, age)
     else ()
     """
-    # TODO: HINT: use get_user_info(uid) from dai.py
     return get_user_info(uid)
 
 def change_profile(content_type, uid, content):
@@ -57,6 +57,28 @@ def change_profile(content_type, uid, content):
         pass
     # TODO: keep handling rest cases
 
+
+def add_interest(uid, interest):
+
+    """
+    add the interest to the interes of the user with (uid)
+
+    Return:
+    bool: True on success, False otherwise.
+    
+    """
+    # TODO: HINT: add_user_interest(uid, interest)
+    return True
+
+def get_interest(uid):
+    """
+    get a list of interes of the user with (uid)
+
+    Return:
+    List(str): interests of the user with uid
+    """
+    # TODO: HINT: use get_user_likes(uid)
+    return []
 def delete_user(uid):
     """
     delete the user with (uid)
@@ -66,35 +88,40 @@ def delete_user(uid):
     else False
     """
     # TODO: HINT: use function remove_user_with_id(cursor, uid) from use_case/dai.py
-    pass
+    success = remove_user_with_id(uid)
+    return success
 def get_liked_users(uid):
     """
-    get a list of people that User with (uid) liked
+    get a list of users that User with (uid) liked
 
     Return: 
-    List: people that User with (uid) liked
+    List: (name, emails) of users that User with (uid) liked
     """
-    # TODO: HINT: use get_user_likes(uid)
+    # TODO: HINT: use get_user_likes(uid), but be careful you should return a list of ((name, emails))
+    return []
     pass
 
-def get_liked_users(uid):
+def get_unliked_users(uid):
     """
-    get a list of people that User with (uid) unliked
+    get a list of users that User with (uid) unliked
 
     Return: 
-    List: people that User with (uid) unliked
+    List: (name, emails) of users that User with (uid) unliked
     """
-    # TODO: HINT: use get_user_unlikes(uid)
+    # TODO: HINT: use get_user_unlikes(uid), but be careful you should return a list of ((name, emails))
+    return []
     pass
 def get_mutual_liked_users(uid):
     """
-    get a list of people that User with (uid) liked and that also liked User with (uid)
+    get a list of users that User with (uid) liked and that also liked User with (uid)
 
     Return:
-    List: people that User with (uid) liked and that also liked User with (uid)
+    List: (name, emails) of users that User with (uid) liked and that also liked User with (uid)
     """
-    # TODO: HINT: use get_mutual_likes(uid):
+    # TODO: HINT: use get_mutual_likes(uid), but be careful you should return a list of ((name, emails))
+    return []
     pass
+
 
 
 #  example code

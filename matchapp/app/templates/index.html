@@ -9,25 +9,42 @@
 <body>
     <div class="heart">
         <h1>Find Your Match!</h1> 
-        <!--Match App -->
+
+        <!-- Flash Messages -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div>
-        {{ messages[-1] }}
+            {{ messages[-1] }}
         </div>
         {% endif %}
         {% endwith %}
 
-        
-        <button onclick="createUser()">Join the Puzzle</button>
-        <!--Create New User-->
-        <img src="/Users/jiwon/Desktop/py_g22/matchapp/app/static/images/love-pink-puzzle-free-png.webp" alt="Heart Puzzle">
+        <!-- Buttons with Icons -->
+        <button onclick="createUser()">
+            <span class="button-icon"><img src="{{ url_for('static', filename='images/puzzle.png') }}" alt="Icon"></span>
+            Join the Puzzle
+        </button>
 
-        <button onclick="loginUser()">Fit back in</button>
-        <!--Log In with Userid-->
-        <img src="matchapp/app/static/images/full puzzle.jpg" alt="Full Puzzle">
-
+        <button onclick="loginUser()">
+            <span class="button-icon"><img src="{{ url_for('static', filename='images/puzzle (1).png') }}" alt="Icon"></span>
+            Fit back in
+        </button>
     </div>
+
+    <script>
+        function createUser() {
+            window.location.href = "/register";
+        }
+
+        function loginUser() {
+            let userId = prompt("Please enter your User ID:");
+            if (userId) {
+                window.location.href = `/profile/${userId}`;
+            }
+        }
+    </script>
+</body>
+
 
     <script>
         function createUser() {

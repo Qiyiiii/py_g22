@@ -16,7 +16,6 @@
             background-color: #ff8383;
         }
 
-
         .profile-container {
             background-color: #fff;
             border-radius: 10px;
@@ -85,30 +84,74 @@
         }
     </style>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    function match(uid1) {
-        window.location.href = /match/${uid1};
+    function add_interest(uid){
+        let new_interest = prompt("Please enter your interest:");
+            if (new_interest) {
+                $.ajax({
+                    url: '/add_interest/' + uid + '/',
+                    type: 'POST',
+                    data: {interest: new_interest}
+                });
+            }
+
+        location.reload();
     }
-    function view_liked() {}
-    function view_unliked() {}
-    function view_mutual_liked() {}
+    function match(uid) {
+        window.location.href = `/match/${uid}`;
+    }
+    function view_liked(uid) {
+        window.location.href = `/liked-users/${uid}`;
+    }
+
+    function view_unliked(uid) {
+        window.location.href = `/unliked-users/${uid}`;
+    }
+    function view_mutual_liked(uid) {
+        window.location.href = `/mutually-liked-users/${uid}`;
+    }
+
+    function view_top_5(uid) {
+        window.location.href = `/top_user/${uid}`;
+    }
+
+    function deleteUser(uid) {
+        if (confirm("Are you sure you want to delete your account?")) {
+            $.ajax({
+                url: `/delete_user/${uid}`,
+                type: 'POST',
+                success: function() {
+                    // Optionally redirect or update the UI after success
+                    window.location.href = '/'; // Redirect to home or another page
+                },
+                error: function() {
+                    alert("Failed to delete the account.");
+                }
+            });
+        }
+    }
+
 </script>
 <body>
     <div class="heart">
         <div class="profile-container">
             <div class="profile-header">
-                <h2>{{ user[0] }} 's Profile</h2>
+                <h2>{{ user[0] }}'s Profile</h2>
             </div>
             <div class="profile-details">
-                <!-- Placeholders for user details -->
+                {% if user %}
                 <p>
-                    <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image">
-                        Name: {{ user[0] }}</span>
+                    <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</span>
                     <button class="edit-button" onclick="editField('name')">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</span>
                     <button class="edit-button" onclick="editField('email')">Edit</button>
+                </p>
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/gender.png') }}" alt="Image"> Gender: {{ user[2] }}</span>
+                    <button class="edit-button" onclick="editField('gender')">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</span>
@@ -118,15 +161,37 @@
                     <span><img src="{{ url_for('static', filename='images/age.png') }}" alt="Image"> Age: {{ user[4] }}</span>
                     <button class="edit-button" onclick="editField('age')">Edit</button>
                 </p>
+                {% else %}
+                <p>No user information available.</p>
+                {% endif %}
+                
+                {% if interests %}
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/interests.png') }}" alt="Image"> 
+                    My Interests:
+                    <button class="edit-button" onclick="add_interest({{ uid }})">Edit</button>
+                </p>
+                
+                <ul>
+                    {% for interest in interests %}
+                        <li>{{ interest }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Don't have any interests recorded yet.</p>
+                {% endif %}
             </div>
             <div class="profile-actions">
                 <button onclick="match({{ uid }})">New Match</button>
-                <button onclick="view_liked()">Liked</button>
-                <button onclick="view_unliked()">Unliked</button>
-                <button onclick="view_mutual_liked()">Matches</button>
+                <button onclick="view_liked({{ uid }})">Liked</button>
+                <button onclick="view_unliked({{ uid }})">Unliked</button>
+                <button onclick="view_mutual_liked({{ uid }})">Matches</button>
             </div>
+            
+
+            <button class="delete-button" onclick="deleteUser({{ uid }}) ">Delete Account</button>
         </div>
     </div>
+    
 </body>
 </html>
-

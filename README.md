@@ -8,7 +8,7 @@ It is a very simple program that allows user to
 - like/unlike people that were matched
 - find people they liked/unliked and people also liked them back (users that are mutually liked with the login user)
 
-# demo 
+# demo (low-level prototype)
 ### [click here to redirect](https://github.com/Qiyiiii/py_g22/tree/main/demo).
 - very simple program with data preloaded into different lists (Users, Interests, Actions) each time when the program starts
 - user will be directly loged in and can only interact with users that were preloaded
@@ -17,7 +17,7 @@ It is a very simple program that allows user to
 - user can view his profile
 - user can view people he liked and also liked him
 
-# matchapp 
+# matchapp (web application)
 ### [click here to redirect](https://github.com/Qiyiiii/py_g22/tree/main/matchapp)
 - still a very simple program but with sqllite embeded and more encapsulated design and use **Flask** to serve frontend content 
 - users now can do whatever that is decribed in the [**Intro**](#intro)
@@ -43,8 +43,8 @@ interest of a user in the format (userid, interest)
 
 ### Encapsulation & clean architecture:
 - information are stored under database.db with schema.sql and some preloaded information in data.sql
-- only dai.py (as Database Access Interface) can access database.db and do CRUD operations on it
-- match.py and profile.py under controller directory can access functions in dai.py, and they represent two main functions that our program can do
+- only dataManager.py (as use case classes for data management in SQLite) can access database.db and do CRUD operations on it
+- match.py and profile.py under controller directory can access functions in dataManager.py, and they represent two main functions that our program can do
 - Lastly, Flask can serve frontend content and use functions from match.py as well as profile.py to do the update
 <img src="https://raw.githubusercontent.com/Qiyiiii/py_g22/0a0637e2f47acc0d9fb2b0edb6552501fee9d6a5/imgs/clean.png" alt="Clean Architecture Diagram" width="600" height="400">
 

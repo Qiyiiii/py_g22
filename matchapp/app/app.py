@@ -25,9 +25,11 @@ def register():
 @app.route('/profile/<int:uid>')
 def profile(uid):
     user_info = get_user_info(uid)
+    user_interests = get_interest(uid)
+
 
     if user_info != ():
-        return render_template("profile.html", user=user_info, uid=uid)
+        return render_template("profile.html", user=user_info, uid=uid, interests = user_interests)
     else:
         return render_template("index.html")
     
@@ -54,12 +56,53 @@ def match(uid1):
     # matched_userid = find_match(uid)
     matched_userid = 2
     matched_user_info = get_user_info(matched_userid)
+    interests = get_interest(matched_userid)
 
     if matched_userid:
-        return render_template("matchedPage.html", user= matched_user_info, uid1=uid1, uid2=matched_userid)
+        return render_template("matchedPage.html", user= matched_user_info, uid1=uid1, uid2=matched_userid, interests = interests)
     else:
         flash(f"Can't find a match with {uid1}")
+        return redirect(url_for('profile', uid=uid1))
 
+@app.route('/liked-users/<int:uid>')
+def liked_users(uid):
+    users = get_liked_users(uid)
+    if users:
+        return render_template("userList.html", users=users, uid=uid)
+    else:
+        flash(f"User with {uid} didn't like any users")
+        return render_template("userList.html", users=users, uid=uid)
+        # return redirect(url_for('profile', uid=uid))
+
+
+@app.route('/unliked-users/<int:uid>')
+def unliked_users(uid):
+    users = get_unliked_users(uid)
+    if users:
+        return render_template("userList.html", users=users, uid=uid)
+    else:
+        flash(f"User with {uid} didn't unlike any users")
+        return render_template("userList.html", users=users, uid=uid)
+        # return redirect(url_for('profile', uid=uid))
+
+@app.route('/mutually-liked-users/<int:uid>')
+def mutual_users(uid):
+    users = get_mutual_liked_users(uid)
+    if users:
+        return render_template("userList.html", users=users, uid=uid)
+    else:
+        flash(f"User with {uid} has no mutually liked users")
+        return render_template("userList.html", users=users, uid=uid)
+        # return redirect(url_for('profile', uid=uid))
+
+
+@app.route('/add_interest/<int:uid>/', methods=['POST'])
+def add_user_interest(uid):
+    interest = request.form.get('interest')
+    add_interest(uid, interest)
+
+        
+    return redirect(url_for('profile', uid=uid))
 
 
 @app.route('/create_user', methods=['POST'])
@@ -79,6 +122,16 @@ def create_user():
     else:
         flash("Failed to create user")
         return redirect(url_for('index'))
+
+@app.route('/delete_user/<int:uid>', methods=['POST'])
+def delete_user_route(uid):
+    success = delete_user(uid)
+    if success:
+        flash('Account deleted successfully.')
+        return redirect(url_for('index'))  # Redirect to a page after deletion
+    else:
+        flash('Failed to delete the account.')
+        return redirect(url_for('profile', uid=uid))  # Redirect back to the profile page
 
 
 if __name__ == "__main__":
