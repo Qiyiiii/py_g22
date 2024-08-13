@@ -73,6 +73,8 @@ def liked_users(uid):
         flash(f"User with {uid} didn't like any users")
         return render_template("userList.html", users=users, uid=uid)
         # return redirect(url_for('profile', uid=uid))
+
+
 @app.route('/unliked-users/<int:uid>')
 def unliked_users(uid):
     users = get_unliked_users(uid)
@@ -94,6 +96,14 @@ def mutual_users(uid):
         # return redirect(url_for('profile', uid=uid))
 
 
+@app.route('/add_interest/<int:uid>/', methods=['POST'])
+def add_user_interest(uid):
+    interest = request.form.get('interest')
+    add_interest(uid, interest)
+
+        
+    return redirect(url_for('profile', uid=uid))
+
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
@@ -112,6 +122,7 @@ def create_user():
     else:
         flash("Failed to create user")
         return redirect(url_for('index'))
+
 
 
 if __name__ == "__main__":
