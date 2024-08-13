@@ -356,7 +356,11 @@ def get_interest(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve user interests
+            cursor.execute('SELECT interest FROM Interest WHERE uid = ?', (uid,))
+            interests_tuples = cursor.fetchall()
+            interests_list = [item[0] for item in interests_tuples]
+            return interests_list
+
             pass
 
     except sqlite3.Error as e:
@@ -368,3 +372,4 @@ def get_interest(uid):
 # Example usage
 #if __name__ == "__main__":
 #    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+
