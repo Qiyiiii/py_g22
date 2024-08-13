@@ -1,4 +1,5 @@
 import sqlite3
+import pandas as pd
 
 DB_PATH = "../database/matchapp.db"
 
@@ -31,23 +32,32 @@ def create_user(name, email, gender, location, age):
         return -1
 
 
-def get_users():
+def get_users(uid):
     """
-    get a list of userid that are stored in the database.
+    get a datafrmae of users that who could be compatible with our user (uid)
 
     Returns: 
-    List: userids of the existing users
+    Dataframe: user
     """
+    my_gender = get_user_info(uid)[2]
     try:
         with sqlite3.connect(DB_PATH) as connection:
-            cursor = connection.cursor()
-            # TODO: implement the logic to get all users' id into a list
+            create_matches_table = """
+            SELECT user.uid, user.name, user.gender, user.age, user.location, interest.interest
+            FROM user
+            LEFT JOIN Actions ON user.uid = Actions.uid2 AND Actions.uid1 = ?
+            LEFT JOIN interest ON user.uid = interest.uid
+            WHERE Actions.uid2 IS NULL 
+            AND user.gender != ?;
+            """
+            rec = pd.read_sql_query(create_matches_table, connection, params=(uid, my_gender,))
+            return rec
 
-            return []
+
     except sqlite3.Error as e:
         print(f"Error fetch users: {e}")
         return []
-    
+
 def get_user_info(uid):
 
     """
@@ -58,7 +68,6 @@ def get_user_info(uid):
     """
     try:
         with sqlite3.connect(DB_PATH) as connection:
-            cursor = connection.cursor()
             cursor = connection.cursor()
             cursor.execute('SELECT name, email, gender, location, age FROM User WHERE uid = ?', (uid,))
             return cursor.fetchone()
@@ -180,7 +189,18 @@ def add_action(uid1, uid2, action):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to add an action
+            if action == 'like':
+                like_value = True
+            elif action == 'dislike':
+                like_value = False
+            else:
+                raise ValueError("Invalid action specified. Must be 'like' or 'dislike'.")
+
+            insert_query = """INSERT INTO Actions (uid1, uid2, like)
+                                      VALUES (?, ?, ?);"""
+
+            cursor.execute(insert_query, (uid1, uid2, like_value))
+            connection.commit()
             pass
 
     except sqlite3.Error as e:
@@ -346,5 +366,5 @@ def get_interest(uid):
         return []
     
 # Example usage
-if __name__ == "__main__":
-    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+#if __name__ == "__main__":
+#    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
