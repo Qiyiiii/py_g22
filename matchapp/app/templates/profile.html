@@ -87,7 +87,7 @@
 </head>
 <script>
     function match(uid1) {
-        window.location.href = `/match/${uid1}`;
+        window.location.href = /match/${uid1};
     }
     function view_liked() {}
     function view_unliked() {}
@@ -97,36 +97,36 @@
     <div class="heart">
         <div class="profile-container">
             <div class="profile-header">
-                <!-- Placeholder for profile image -->
-                <img src="path/to/profile-image.png" alt="Profile Image">
-                <h2>{{ user[0] }}</h2>
+                <h2>{{ user[0] }} 's Profile</h2>
             </div>
             <div class="profile-details">
                 <!-- Placeholders for user details -->
                 <p>
-                    <span><img src="path/to/icon.png" alt="Name Icon"> Name: {{ user[0] }}</span>
+                    <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image">
+                        Name: {{ user[0] }}</span>
                     <button class="edit-button" onclick="editField('name')">Edit</button>
                 </p>
                 <p>
-                    <span><img src="path/to/icon.png" alt="Email Icon"> Email: {{ user[1] }}</span>
+                    <span><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</span>
                     <button class="edit-button" onclick="editField('email')">Edit</button>
                 </p>
                 <p>
-                    <span><img src="path/to/icon.png" alt="Location Icon"> Location: {{ user[3] }}</span>
+                    <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</span>
                     <button class="edit-button" onclick="editField('location')">Edit</button>
                 </p>
                 <p>
-                    <span><img src="path/to/icon.png" alt="Age Icon"> Age: {{ user[4] }}</span>
+                    <span><img src="{{ url_for('static', filename='images/age.png') }}" alt="Image"> Age: {{ user[4] }}</span>
                     <button class="edit-button" onclick="editField('age')">Edit</button>
                 </p>
             </div>
             <div class="profile-actions">
-                <button onclick="match({{ uid }})">Find match</button>
-                <button onclick="view_liked()">View your liked users</button>
-                <button onclick="view_unliked()">View your unliked users</button>
-                <button onclick="view_mutual_liked()">View mutual liked users with you</button>
+                <button onclick="match({{ uid }})">New Match</button>
+                <button onclick="view_liked()">Liked</button>
+                <button onclick="view_unliked()">Unliked</button>
+                <button onclick="view_mutual_liked()">Matches</button>
             </div>
         </div>
     </div>
 </body>
 </html>
+
