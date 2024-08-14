@@ -79,50 +79,14 @@ def get_user_info(uid):
         return ()
 
 
-def remove_user_with_id(uid):
-    """
-    Delete an existing user from the database and update other users' references.
 
-    Return:
-    bool: True on success, False otherwise.
-    """
+def remove_user_with_id(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-
-            # Fetch all users
-            cursor.execute('SELECT user_id, liked_users, disliked_users, matches FROM users')
-            users = cursor.fetchall()
-
-            # Process each user to update their lists
-            for user_data in users:
-                current_user_id, liked_users, disliked_users, matches = user_data
-
-                liked_users_list = list(map(int, liked_users.split(','))) if liked_users else []
-                disliked_users_list = list(map(int, disliked_users.split(','))) if disliked_users else []
-                matches_list = list(map(int, matches.split(','))) if matches else []
-
-                # Remove the UID from other users' lists
-                if uid in liked_users_list:
-                    liked_users_list.remove(uid)
-                if uid in disliked_users_list:
-                    disliked_users_list.remove(uid)
-                if uid in matches_list:
-                    matches_list.remove(uid)
-
-                # Update the current user with the modified lists
-                updated_liked_users = ','.join(map(str, liked_users_list))
-                updated_disliked_users = ','.join(map(str, disliked_users_list))
-                updated_matches = ','.join(map(str, matches_list))
-
-                cursor.execute('''
-                    UPDATE users
-                    SET liked_users = ?, disliked_users = ?, matches = ?
-                    WHERE user_id = ?
-                ''', (updated_liked_users, updated_disliked_users, updated_matches, current_user_id))
-
+            
             # Delete the specified user
-            cursor.execute('DELETE FROM users WHERE user_id = ?', (uid,))
+            cursor.execute('DELETE FROM user WHERE uid = ?', (uid,))
             connection.commit()
         
         return True
@@ -402,6 +366,8 @@ def get_interest(uid):
         return []
     
 # Example usage
-#if __name__ == "__main__":
-#    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+if __name__ == "__main__":
+   user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+   remove_user_with_id(user_id)
+
 

@@ -7,15 +7,15 @@
 </head>
 <script>
     function likeUser(uid1, uid2) {
-        window.location.href = /like/${uid1}/${uid2};
+        window.location.href = `/like/${uid1}/${uid2}`;
     }
 
     function unlikeUser(uid1, uid2) {
-        window.location.href = /unlike/${uid1}/${uid2};
+        window.location.href = `/unlike/${uid1}/${uid2}`;
     }
 
     function back(uid1) {
-        window.location.href = /profile/${uid1};
+        window.location.href = `/profile/${uid1}`;
     }
 </script>
 <body>
@@ -24,7 +24,6 @@
             <h2>Suggested Match!</h2>
         </div>
 
-<<<<<<< HEAD
         <div class="profile-details">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -33,31 +32,6 @@
                 </div>
                 {% endif %}
             {% endwith %}
-=======
-    {% if user %}
-    <p>Name: {{ user[0] }}</p> 
-    <p>Email: {{ user[1] }}</p> 
-    <p>Gender: {{ user[2] }}</p> 
-    <p>Location: {{ user[3] }}</p> 
-    <p>Age: {{ user[4] }}</p> 
-    {% else %}
-    <p>No user information available.</p>
-    {% endif %}
-
-    {% if interests %}
-    <p>My interest:</p>
-    {% for interest in interests %}
-        <li>{{ interest }}</li>
-        {% endfor %}
-    {% else %}
-    <p>Don't have any interest in record yet</p>
-    {% endif %}
-    
-    <div>
-        <button onclick="likeUser({{ uid1 }}, {{uid2}})">Like User 2</button>
-        <button onclick="unlikeUser({{ uid1 }}, {{uid2}})">Unlike User 2</button>
-        <button onclick="back({{uid1}}) ">Go back to profile page</button>
->>>>>>> c597c95f8337579140f49cdfff5fbd5eaf948717
 
             {% if user %}
             <p><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</p> 
@@ -68,12 +42,23 @@
             {% else %}
             <p>No user information available.</p>
             {% endif %}
+
+            {% if interests %}
+            <p>My interests:</p>
+            <ul>
+                {% for interest in interests %}
+                <li>{{ interest }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Don't have any interests recorded yet.</p>
+            {% endif %}
         </div>
 
         <div class="profile-actions">
-            <button onclick="likeUser({{ uid1 }}, {{uid2}})">Like User</button>
-            <button onclick="unlikeUser({{ uid1 }}, {{uid2}})">Unlike User</button>
-            <button onclick="back({{uid1}})">Go back to profile page</button>
+            <button onclick="likeUser({{ uid1 }}, {{ uid2 }})">Like User</button>
+            <button onclick="unlikeUser({{ uid1 }}, {{ uid2 }})">Unlike User</button>
+            <button onclick="back({{ uid1 }})">Go back to profile page</button>
         </div>
     </div>
 </body>

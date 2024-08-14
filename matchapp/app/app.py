@@ -122,17 +122,16 @@ def create_user():
     else:
         flash("Failed to create user")
         return redirect(url_for('index'))
-
+    
 @app.route('/delete_user/<int:uid>', methods=['POST'])
-def delete_user_route(uid):
-    success = delete_user(uid)
-    if success:
-        flash('Account deleted successfully.')
-        return redirect(url_for('index'))  # Redirect to a page after deletion
+def delete_user(uid):
+    if remove_user_with_id(uid):
+        flash(f"User {uid} has been deleted successfully.")
     else:
-        flash('Failed to delete the account.')
-        return redirect(url_for('profile', uid=uid))  # Redirect back to the profile page
+        flash(f"Failed to delete User {uid}.")
+    return redirect(url_for('index'))
 
+# work on edit button
 
 if __name__ == "__main__":
     app.run(debug=True)

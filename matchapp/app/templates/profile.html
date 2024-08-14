@@ -82,20 +82,42 @@
             background-color: red;
             color: white;
         }
+
+        /* Flash message styles */
+        .flashes {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .flashes li {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .flashes .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .flashes .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
     </style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     function add_interest(uid){
         let new_interest = prompt("Please enter your interest:");
-            if (new_interest) {
-                $.ajax({
-                    url: '/add_interest/' + uid + '/',
-                    type: 'POST',
-                    data: {interest: new_interest}
-                });
-            }
-
+        if (new_interest) {
+            $.ajax({
+                url: '/add_interest/' + uid + '/',
+                type: 'POST',
+                data: {interest: new_interest}
+            });
+        }
         location.reload();
     }
     function match(uid) {
@@ -104,36 +126,46 @@
     function view_liked(uid) {
         window.location.href = `/liked-users/${uid}`;
     }
-
     function view_unliked(uid) {
         window.location.href = `/unliked-users/${uid}`;
     }
     function view_mutual_liked(uid) {
         window.location.href = `/mutually-liked-users/${uid}`;
     }
-
     function view_top_5(uid) {
         window.location.href = `/top_user/${uid}`;
     }
-
     function deleteUser(uid) {
-        if (confirm("Are you sure you want to delete your account?")) {
-            $.ajax({
-                url: `/delete_user/${uid}`,
-                type: 'POST',
-                success: function() {
-                    // Optionally redirect or update the UI after success
-                    window.location.href = '/'; // Redirect to home or another page
-                },
-                error: function() {
-                    alert("Failed to delete the account.");
-                }
-            });
-        }
+    if (confirm("Are you sure you want to delete your account?")) {
+        $.ajax({
+            url: `/delete_user/${uid}`,
+            type: 'POST',
+            success: function() {
+                // Show a success message
+                document.querySelector('.profile-container').innerHTML = "<p class='deleted-message'>Your account has been successfully deleted.</p>";
+            },
+            error: function() {
+                alert("Failed to delete the account.");
+            }
+        });
     }
+}
+
+
 
 </script>
 <body>
+    <!-- Flash message display -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
     <div class="heart">
         <div class="profile-container">
             <div class="profile-header">
@@ -147,7 +179,6 @@
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</span>
-                    <button class="edit-button" onclick="editField('email')">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/gender.png') }}" alt="Image"> Gender: {{ user[2] }}</span>
@@ -188,10 +219,11 @@
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
             </div>
             
-
-            <button class="delete-button" onclick="deleteUser({{ uid }}) ">Delete Account</button>
+            <form action="{{ url_for('delete_user', uid=uid) }}" method="post">
+                <button type="submit" class="delete-button">Delete User</button>
+            </form>
+        
         </div>
     </div>
-    
 </body>
 </html>
