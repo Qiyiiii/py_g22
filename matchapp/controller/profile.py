@@ -110,7 +110,8 @@ def delete_user(uid):
     else False
     """
     # TODO: HINT: use function remove_user_with_id(cursor, uid) from use_case/dai.py
-    pass
+    success = remove_user_with_id(uid)
+    return success
 def get_liked_users(uid):
     """
     get a list of users that User with (uid) liked

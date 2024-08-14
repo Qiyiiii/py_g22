@@ -79,23 +79,19 @@ def get_user_info(uid):
         return ()
 
 
-def remove_user_with_id(uid):
-    """
-    Delete an existing user from the database.
 
-    Return:
-    bool: True on success, False otherwise.
-    """
+def remove_user_with_id(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to remove a user
-            pass
-
+            
+            # Delete the specified user
+            cursor.execute('DELETE FROM user WHERE uid = ?', (uid,))
+            connection.commit()
+        
+        return True
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Failed to remove user: {e}")
         return False
 
 
@@ -403,6 +399,8 @@ def get_interest(uid):
         return []
     
 # Example usage
-#if __name__ == "__main__":
-#    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+if __name__ == "__main__":
+   user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+   remove_user_with_id(user_id)
+
 
