@@ -333,7 +333,7 @@ def get_mutual_likes(uid):
     Return:
     List: all Users that the User with (uid) liked that also likes User with (uid).
     """
-try:
+    try:
         with sqlite3.connect(DB_PATH) as connection:
             query = """
                 SELECT u.uid, u.name

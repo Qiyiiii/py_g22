@@ -75,7 +75,7 @@ def add_interest(uid, interest):
     """
     # Attempt to add the interest and store the result
 
-    success = add_interest(user_id, interest)
+    return add_interest(user_id, interest)
  
 
 
