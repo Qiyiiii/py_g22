@@ -66,7 +66,10 @@ def match(uid1):
 
 @app.route('/liked-users/<int:uid>')
 def liked_users(uid):
-    users = get_liked_users(uid)
+    usersids = get_liked_users(uid)
+    users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
+ 
+
     if users:
         return render_template("userList.html", users=users, uid=uid)
     else:
@@ -77,7 +80,10 @@ def liked_users(uid):
 
 @app.route('/unliked-users/<int:uid>')
 def unliked_users(uid):
-    users = get_unliked_users(uid)
+
+    usersids = get_unliked_users(uid)
+    users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
+
     if users:
         return render_template("userList.html", users=users, uid=uid)
     else:
@@ -87,7 +93,9 @@ def unliked_users(uid):
 
 @app.route('/mutually-liked-users/<int:uid>')
 def mutual_users(uid):
-    users = get_mutual_liked_users(uid)
+    usersids = get_mutual_liked_users(uid)
+    users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
+  
     if users:
         return render_template("userList.html", users=users, uid=uid)
     else:
