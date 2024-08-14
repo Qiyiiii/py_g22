@@ -88,6 +88,8 @@ def remove_user_with_id(uid):
             # Delete the specified user
             cursor.execute('DELETE FROM user WHERE uid = ?', (uid,))
             connection.commit()
+            cursor.execute('SELECT interest FROM Interest WHERE uid = ?', (uid,))
+            print( cursor.fetchone())
         
         return True
     except sqlite3.Error as e:
