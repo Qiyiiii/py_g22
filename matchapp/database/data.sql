@@ -1,18 +1,18 @@
 -- Preload Users
 INSERT INTO User (name, email, gender, location, age)
-VALUES ('Qiyi', 'qiyi@rotman.com', "Male", "M5G 2R2", 18);
+VALUES ('Qiyi', 'qiyi@rotman.com', "Male", "40202", 18);
 
 INSERT INTO User (name, email, gender, location, age)
-VALUES ('Olivia', 'oliv@rotman.com',"Female", "M5G 2R3", 18);
+VALUES ('Olivia', 'oliv@rotman.com',"Female", "40202", 18);
 
 INSERT INTO User (name, email, gender, location, age)
-VALUES ('Scott', 'scott@rotman.com',"Male", "M5G 2R4", 18);
+VALUES ('Scott', 'scott@rotman.com',"Male", "40202", 18);
 
 INSERT INTO User (name, email, gender, location, age)
-VALUES ('Bella', 'bella@rotman.com', "Female", "M5G 2R4",18);
+VALUES ('Bella', 'bella@rotman.com', "Female", "40202",18);
 
 INSERT INTO User (name, email, gender, location, age)
-VALUES ('Jiwon', 'jiwon@rotman.com', "Female", "M5G 2R2",18);
+VALUES ('Jiwon', 'jiwon@rotman.com', "Female", "40202",18);
 
 
 -- Preload Actions
