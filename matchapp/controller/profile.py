@@ -59,16 +59,16 @@ def change_profile(content_type, uid, content):
 
 
 def add_interest(uid, interest):
+    # Attempt to add the interest and store the result
+success = add_interest(user_id, interest)
 
-    """
-    add the interest to the interes of the user with (uid)
+# Provide feedback based on whether the interest was successfully added
+if success:
+    print("Interest added successfully.")
+else:
+    print("Failed to add interest.")
 
-    Return:
-    bool: True on success, False otherwise.
-    
-    """
-    # TODO: HINT: add_user_interest(uid, interest)
-    return True
+ 
 
 def get_interest(uid):
     """
