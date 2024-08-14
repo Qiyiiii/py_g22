@@ -1,9 +1,118 @@
-button {
-    background-color: yellow ;
-    font-size: medium;
-
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ff8383;
 }
 
-button:hover {
-    background-color: white;
+.profile-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+    height: 600px;  
+    padding: 20px;
+}
+
+.profile-header {
+    color: #ff8383;
+    padding: 10px 10px;
+    position: relative;
+    font-weight: bold;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    border: 3px solid #ff8383;
+    width: 80px;
+    height: 80px;
+}
+
+.profile-header h2 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.profile-details {
+    padding: 10px 20px 20px;
+    text-align: left;
+}
+
+.profile-details p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.profile-details p {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;  /* Align content to the start */
+    position: relative;  /* Ensure relative positioning for the button */
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.edit-button {
+    font-size: 10px;
+    color: #c5c5c5;  /* Light grey tone */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;  /* Position the button absolutely */
+    right: 0;  /* Align to the right edge of the container */
+}
+
+
+.edit-button:hover {
+    color: #7e7c7c;  /* Slightly darker grey on hover */
+}
+
+.delete-button {
+    font-size: 14px;
+    color: #ff8340; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.delete-button:hover {
+    color: #555;  /* Slightly darker grey on hover */
+}
+
+.profile-actions {
+    padding: 10px 0;
+    text-align: left; /* Reset button alignment */
+}
+
+.profile-actions button {
+    background-color: #ff8383;
+    border: 1px solid #ff8383;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.profile-actions button:hover {
+    background-color: red;
+}
+
+.profile-details p img {
+    width: 20px;  /* Adjust the size as needed */
+    height: 20px; /* Ensure consistent height */
+    margin-right: 10px;  /* Space between the icon and text */
+    vertical-align: middle;  /* Align with text */
 }
