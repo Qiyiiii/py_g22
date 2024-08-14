@@ -293,17 +293,24 @@ def get_mutual_likes(uid):
     Return:
     List: all Users that the User with (uid) liked that also likes User with (uid).
     """
-    try:
+try:
         with sqlite3.connect(DB_PATH) as connection:
-            cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve users that also likes the User with uid
-            pass
+            query = """
+                SELECT u.uid, u.name
+                FROM Actions a 
+                JOIN User u ON u.uid = a.uid1
+                WHERE a.uid2 = ? AND a.action = 'like'
+                AND EXISTS (
+                    SELECT 1 FROM Actions
+                    WHERE uid1 = ? AND uid2 = a.uid1 AND action = 'like'
+                );
+            """
+            result = pd.read_sql_query(query, connection, params=(uid, uid))
+            return result
 
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
-        return []
+        print(f"Error fetching mutual likes: {e}")
+        return pd.DataFrame()
 
 
 # Interest CRUD
