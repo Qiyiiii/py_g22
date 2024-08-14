@@ -68,6 +68,11 @@ def add_interest(uid, interest):
     
     """
     # TODO: HINT: add_user_interest(uid, interest)
+    cursor.execute(
+        "INSERT INTO interest (user_id, interest) VALUES (?, ?)",
+        (uid, interest)
+    )
+    connection.commit()
     return True
 
 def get_interest(uid):
@@ -78,7 +83,24 @@ def get_interest(uid):
     List(str): interests of the user with uid
     """
     # TODO: HINT: use get_user_likes(uid)
-    return []
+    #return []
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+            cursor = connection.cursor()
+            # TODO: Implement the logic to retrieve user interests
+            cursor.execute(
+                "SELECT interest FROM interest WHERE user_id = ?",
+                (uid,)
+            )
+            interests = [interest[0] for interest in cursor.fetchall()]
+            return interests
+
+    except sqlite3.Error as e:
+        # print error message
+        # change it to your own
+        print(f"Not succuessful: {e}")
+        return []
+
 def delete_user(uid):
     """
     delete the user with (uid)
@@ -97,8 +119,7 @@ def get_liked_users(uid):
     List: (name, emails) of users that User with (uid) liked
     """
     # TODO: HINT: use get_user_likes(uid), but be careful you should return a list of ((name, emails))
-    return []
-    pass
+    return get_user_likes(uid)
 
 def get_unliked_users(uid):
     """
@@ -107,9 +128,10 @@ def get_unliked_users(uid):
     Return: 
     List: (name, emails) of users that User with (uid) unliked
     """
-    # TODO: HINT: use get_user_unlikes(uid), but be careful you should return a list of ((name, emails))
-    return []
-    pass
+
+    return get_user_unlikes(uid)
+
+
 def get_mutual_liked_users(uid):
     """
     get a list of users that User with (uid) liked and that also liked User with (uid)
@@ -124,7 +146,7 @@ def get_mutual_liked_users(uid):
 
 
 #  example code
-if __name__ == "__main__":
-    user_id = add_user('Pokemon', 'pk123@rotman.com', 'Male', 'Trt', 25)
+#if __name__ == "__main__":
+#    user_id = add_user('Pokemon', 'pk123@rotman.com', 'Male', 'Trt', 25)
 
-
+get_interest(1)
