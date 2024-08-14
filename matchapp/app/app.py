@@ -62,7 +62,7 @@ def match(uid1):
         return render_template("matchedPage.html", user= matched_user_info, uid1=uid1, uid2=matched_userid, interests = interests)
     else:
         flash(f"Can't find a match with {uid1}")
-        return redirect(url_for('profile', uid=uid))
+        return redirect(url_for('profile', uid=uid1))
 
 @app.route('/liked-users/<int:uid>')
 def liked_users(uid):
@@ -73,6 +73,8 @@ def liked_users(uid):
         flash(f"User with {uid} didn't like any users")
         return render_template("userList.html", users=users, uid=uid)
         # return redirect(url_for('profile', uid=uid))
+
+
 @app.route('/unliked-users/<int:uid>')
 def unliked_users(uid):
     users = get_unliked_users(uid)
@@ -93,16 +95,15 @@ def mutual_users(uid):
         return render_template("userList.html", users=users, uid=uid)
         # return redirect(url_for('profile', uid=uid))
 
-@app.route('/top_user/<int:uid>')
-def best_matches(uid):
-    users = get_top_5_user(uid)
-    infos = ((get_user_info(userid),score) for userid, score in users)
-    if users:
-        return render_template("userList.html", infos, infos, uid=uid)
-    else:
-        flash(f"User with {uid} has no mutually liked users")
-        return render_template("userList.html", users=users, uid=uid)
-        # return redirect(url_for('profile', uid=uid))
+
+@app.route('/add_interest/<int:uid>/', methods=['POST'])
+def add_user_interest(uid):
+    interest = request.form.get('interest')
+    add_interest(uid, interest)
+
+        
+    return redirect(url_for('profile', uid=uid))
+
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
@@ -121,6 +122,7 @@ def create_user():
     else:
         flash("Failed to create user")
         return redirect(url_for('index'))
+
 
 
 if __name__ == "__main__":

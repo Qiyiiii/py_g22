@@ -5,13 +5,20 @@
     <title>Group22 Python Project</title>
     <link rel="stylesheet" href="../static/css/profile.css">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-    function add_interest(){
+    function add_interest(uid){
         let new_interest = prompt("Please enter your interest:");
             if (new_interest) {
-                
+                $.ajax({
+                    url: '/add_interest/' + uid + '/',
+                    type: 'POST',
+                    data: {interest: new_interest}
+                });
             }
+
+        location.reload();
     }
     function match(uid) {
 
@@ -60,7 +67,7 @@
 
     {% if interests %}
     <p>My interest:</p>
-    {% for interest in interets %}
+    {% for interest in interests %}
         <li>{{ interest }}</li>
         {% endfor %}
     {% else %}
@@ -68,7 +75,7 @@
     {% endif %}
     
     <div>
-        <button onclick="add_interest()">Add interest</button>
+        <button onclick="add_interest({{uid}})">Add interest</button>
         <button onclick="match({{ uid }})">View Profiles</button>
         <button onclick="view_liked({{ uid }})">View your liked users</button>
         <button onclick="view_unliked({{ uid }}) ">View your unliked users</button>
