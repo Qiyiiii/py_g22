@@ -118,8 +118,10 @@ def get_mutual_liked_users(uid):
     List: (name, emails) of users that User with (uid) liked and that also liked User with (uid)
     """
     # TODO: HINT: use get_mutual_likes(uid), but be careful you should return a list of ((name, emails))
-    return []
-    pass
+    mutual_likes_ids = get_mutual_likes(uid)  # This function needs to be defined elsewhere
+    if not mutual_likes_ids:
+        return []
+
 
 
 
