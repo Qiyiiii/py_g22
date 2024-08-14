@@ -228,7 +228,7 @@ function edit_age(uid){
     <!-- Flash message display -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <ul class="flashes">
+            <ul class="flashes" style="display: none;">
                 {% for category, message in messages %}
                     <li class="{{ category }}">{{ message }}</li>
                 {% endfor %}
@@ -295,12 +295,25 @@ function edit_age(uid){
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
      
             </div>
-            
-            <form action="{{ url_for('delete_user', uid=uid) }}" method="post">
+            <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
                 <button type="submit" class="delete-button">Delete User</button>
             </form>
-        
+    
+            <script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this user? This action cannot be undone.');
+                }
+            </script>
         </div>
     </div>
+
+    <script>
+        window.onload = function() {
+            var messages = {{ get_flashed_messages(with_categories=true)|tojson }};
+            messages.forEach(function(message) {
+                alert(message[1]); // Display the message content in an alert popup
+            });
+        };
+    </script>
 </body>
 </html>
