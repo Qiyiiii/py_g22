@@ -2,10 +2,18 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from use_case.dataManager import *
-from pgeocode import Nominatim   # for distances
+from geopy.geocoders  import Nominatim# for distances
 from geopy.distance import geodesic  # for distances
 from sklearn.preprocessing import MinMaxScaler  # to normalize for scoring
 #
+import ssl
+import certifi
+
+
+
+
+
+
 
 def find_match(uid):
     """
@@ -14,16 +22,18 @@ def find_match(uid):
     find a match for the User with (uid)
 
     Return:
-    on success, return the uid of user that matched with the current user
+    on success, return the uid of user that matched with the current u ser
     else: return -1
     """
-    nomi = Nominatim('ca')
+    ctx = ssl.create_default_context(cafile=certifi.where())
+    nomi= Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
+
 
     #Get info about the user to compare to other profiles
     my_profile = get_user_info(uid)
     my_age = my_profile[4]
     my_postal_code = my_profile[3]
-    my_location = nomi.query_postal_code(my_postal_code)
+    my_location = nomi.geocode(my_postal_code)
     my_interests = get_user_interest(uid)
 
     my_lat_long = (my_location.latitude, my_location.longitude)
@@ -47,7 +57,7 @@ def find_match(uid):
     def geo_distance(row):
         try:
             postal_code = row['location']
-            location = nomi.query_postal_code(postal_code)
+            location = nomi.geocode(postal_code)
             lat_long = (location.latitude, location.longitude)
             distance = geodesic(my_lat_long, lat_long).kilometers
         except ValueError:
@@ -77,7 +87,7 @@ def find_match(uid):
     rec = rec.reset_index()
     our_pick = rec.iloc[0]['uid']
 
-    return our_pick
+    return int(our_pick)
 
 
 
@@ -128,3 +138,6 @@ def unlike_user(uid1, uid2):
 #     # TODO: return the list of top 5 users
 #     return []
 
+#  example code
+if __name__ == "__main__":
+    print(find_match(3))

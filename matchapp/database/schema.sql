@@ -1,4 +1,6 @@
 
+PRAGMA foreign_keys = ON;
+
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS Interest;
 DROP TABLE IF EXISTS Actions;
