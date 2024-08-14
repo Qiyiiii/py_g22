@@ -53,8 +53,8 @@ def unlike(uid1, uid2):
     
 @app.route('/match/<int:uid1>')
 def match(uid1):
-    # matched_userid = find_match(uid)
-    matched_userid = 2
+    # matched_userid = find_match(uid1)
+    matched_userid = 3
     matched_user_info = get_user_info(matched_userid)
     interests = get_interest(matched_userid)
 
@@ -96,7 +96,7 @@ def mutual_users(uid):
         # return redirect(url_for('profile', uid=uid))
 
 
-@app.route('/add_interest/<int:uid>/', methods=['POST'])
+@app.route('/add_interest/<int:uid>', methods=['POST'])
 def add_user_interest(uid):
     interest = request.form.get('interest')
     add_interest(uid, interest)
@@ -131,6 +131,39 @@ def delete_user(uid):
         flash(f"Failed to delete User {uid}.")
     return redirect(url_for('index'))
 
+@app.route('/editname/<int:uid>', methods=['POST'])
+def edit_name(uid):
+    
+    content= request.form.get('content')
+    print(content)
+    if change_profile(Content_type.NAME, uid, content):
+        flash(f"Profile changed")
+    return redirect(url_for('profile', uid=uid))
+
+@app.route('/editgender/<int:uid>', methods=['POST'])
+def edit_gender(uid):
+    
+    content= request.form.get('content')
+
+    if change_profile(Content_type.GENDER, uid, content):
+        flash(f"Profile changed")
+    return redirect(url_for('profile', uid=uid))
+
+@app.route('/editlocation/<int:uid>', methods=['POST'])
+def edit_location(uid):
+    
+    content= request.form.get('content')
+    if change_profile(Content_type.LOCATION, uid, content):
+        flash(f"Profile changed")
+    return redirect(url_for('profile', uid=uid))
+
+@app.route('/editage/<int:uid>', methods=['POST'])
+def edit_age(uid):
+    
+    content= request.form.get('content')
+    if change_profile(Content_type.AGE, uid, content):
+        flash(f"Profile changed")
+    return redirect(url_for('profile', uid=uid))
 # work on edit button
 
 if __name__ == "__main__":

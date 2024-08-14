@@ -113,12 +113,15 @@
         let new_interest = prompt("Please enter your interest:");
         if (new_interest) {
             $.ajax({
-                url: '/add_interest/' + uid + '/',
+                url: '/add_interest/' + uid ,
                 type: 'POST',
-                data: {interest: new_interest}
+                data: {interest: new_interest},
+                success: function(response) {
+                    location.reload();  
+                }
             });
         }
-        location.reload();
+
     }
     function match(uid) {
         window.location.href = `/match/${uid}`;
@@ -150,7 +153,74 @@
         });
     }
 }
+function edit_name(uid){
+    let content = prompt("Please enter your new name");
+        if (content) {
+            
+            $.ajax({
+                url: '/editname/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
 
+function edit_gender(uid){
+    let content = prompt("Please claim your new gender");
+        if (content) {
+            
+            $.ajax({
+                url: '/editgender/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
+
+function edit_location(uid){
+    let content = prompt("Please change to your new location");
+        if (content) {
+            
+            $.ajax({
+                url: '/editlocation/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
+
+
+function edit_age(uid){
+    let content = prompt("Please change to your new age");
+        if (content) {
+            
+            $.ajax({
+                url: '/editage/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
 
 
 </script>
@@ -175,22 +245,24 @@
                 {% if user %}
                 <p>
                     <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</span>
-                    <button class="edit-button" onclick="editField('name')">Edit</button>
+                    <button class="edit-button" onclick="edit_name({{ uid }})">Edit</button>
+                  
+                    
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</span>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/gender.png') }}" alt="Image"> Gender: {{ user[2] }}</span>
-                    <button class="edit-button" onclick="editField('gender')">Edit</button>
+                    <button class="edit-button" onclick="edit_gender({{uid}})">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</span>
-                    <button class="edit-button" onclick="editField('location')">Edit</button>
+                    <button class="edit-button" onclick="edit_location({{uid}})">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/age.png') }}" alt="Image"> Age: {{ user[4] }}</span>
-                    <button class="edit-button" onclick="editField('age')">Edit</button>
+                    <button class="edit-button" onclick="edit_age({{uid}}) ">Edit</button>
                 </p>
                 {% else %}
                 <p>No user information available.</p>
@@ -200,7 +272,7 @@
                 <p>
                     <span><img src="{{ url_for('static', filename='images/interests.png') }}" alt="Image"> 
                     My Interests:
-                    <button class="edit-button" onclick="add_interest({{ uid }})">Edit</button>
+                    <button class="edit-button" onclick="add_interest({{ uid }})">Add</button>
                 </p>
                 
                 <ul>
@@ -209,14 +281,19 @@
                     {% endfor %}
                 </ul>
                 {% else %}
+                
                 <p>Don't have any interests recorded yet.</p>
+                <button  onclick="add_interest({{ uid }})">Add the first interest</button>
+                
                 {% endif %}
+                
             </div>
             <div class="profile-actions">
                 <button onclick="match({{ uid }})">New Match</button>
                 <button onclick="view_liked({{ uid }})">Liked</button>
                 <button onclick="view_unliked({{ uid }})">Unliked</button>
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
+     
             </div>
             
             <form action="{{ url_for('delete_user', uid=uid) }}" method="post">
