@@ -107,58 +107,11 @@
         }
     </style>
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    function add_interest(uid){
-        let new_interest = prompt("Please enter your interest:");
-        if (new_interest) {
-            $.ajax({
-                url: '/add_interest/' + uid + '/',
-                type: 'POST',
-                data: {interest: new_interest}
-            });
-        }
-        location.reload();
-    }
-    function match(uid) {
-        window.location.href = `/match/${uid}`;
-    }
-    function view_liked(uid) {
-        window.location.href = `/liked-users/${uid}`;
-    }
-    function view_unliked(uid) {
-        window.location.href = `/unliked-users/${uid}`;
-    }
-    function view_mutual_liked(uid) {
-        window.location.href = `/mutually-liked-users/${uid}`;
-    }
-    function view_top_5(uid) {
-        window.location.href = `/top_user/${uid}`;
-    }
-    function deleteUser(uid) {
-    if (confirm("Are you sure you want to delete your account?")) {
-        $.ajax({
-            url: `/delete_user/${uid}`,
-            type: 'POST',
-            success: function() {
-                // Show a success message
-                document.querySelector('.profile-container').innerHTML = "<p class='deleted-message'>Your account has been successfully deleted.</p>";
-            },
-            error: function() {
-                alert("Failed to delete the account.");
-            }
-        });
-    }
-}
-
-
-
-</script>
 <body>
     <!-- Flash message display -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <ul class="flashes">
+            <ul class="flashes" style="display: none;">
                 {% for category, message in messages %}
                     <li class="{{ category }}">{{ message }}</li>
                 {% endfor %}
@@ -175,22 +128,22 @@
                 {% if user %}
                 <p>
                     <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</span>
-                    <button class="edit-button" onclick="editField('name')">Edit</button>
+                    <button class="edit-button" onclick="edit_name({{ uid }})">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</span>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/gender.png') }}" alt="Image"> Gender: {{ user[2] }}</span>
-                    <button class="edit-button" onclick="editField('gender')">Edit</button>
+                    <button class="edit-button" onclick="edit_gender({{uid}})">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</span>
-                    <button class="edit-button" onclick="editField('location')">Edit</button>
+                    <button class="edit-button" onclick="edit_location({{uid}})">Edit</button>
                 </p>
                 <p>
                     <span><img src="{{ url_for('static', filename='images/age.png') }}" alt="Image"> Age: {{ user[4] }}</span>
-                    <button class="edit-button" onclick="editField('age')">Edit</button>
+                    <button class="edit-button" onclick="edit_age({{uid}})">Edit</button>
                 </p>
                 {% else %}
                 <p>No user information available.</p>
@@ -200,7 +153,7 @@
                 <p>
                     <span><img src="{{ url_for('static', filename='images/interests.png') }}" alt="Image"> 
                     My Interests:
-                    <button class="edit-button" onclick="add_interest({{ uid }})">Edit</button>
+                    <button class="edit-button" onclick="add_interest({{ uid }})">Add</button>
                 </p>
                 
                 <ul>
@@ -210,6 +163,7 @@
                 </ul>
                 {% else %}
                 <p>Don't have any interests recorded yet.</p>
+                <button onclick="add_interest({{ uid }})">Add the first interest</button>
                 {% endif %}
             </div>
             <div class="profile-actions">
@@ -218,12 +172,27 @@
                 <button onclick="view_unliked({{ uid }})">Unliked</button>
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
             </div>
-            
-            <form action="{{ url_for('delete_user', uid=uid) }}" method="post">
+            <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
                 <button type="submit" class="delete-button">Delete User</button>
             </form>
         
+            <!-- JavaScript for confirmation dialog -->
+            <script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this user? This action cannot be undone.');
+                }
+            </script>
         </div>
     </div>
+
+    <!-- JavaScript for flash message popups -->
+    <script>
+        window.onload = function() {
+            var messages = {{ get_flashed_messages(with_categories=true)|tojson }};
+            messages.forEach(function(message) {
+                alert(message[1]); // Display the message content in an alert popup
+            });
+        };
+    </script>
 </body>
 </html>
