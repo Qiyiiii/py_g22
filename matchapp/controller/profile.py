@@ -35,6 +35,20 @@ def get_user_profile(uid):
     return get_user_info(uid)
 
 def change_profile(content_type, uid, content):
+    try:
+        if content_type == Content_type.NAME:
+            return update_user_name(uid, content)
+        elif content_type == Content_type.GENDER:
+            return update_user_gender(uid, content)
+        elif content_type == Content_type.LOCATION:
+            return update_user_location(uid, content)
+        elif content_type == Content_type.AGE:
+            return update_user_age(uid, content)
+        else:
+            return False  # If an unsupported content type is passed
+    except Exception as e:
+        print(f"Error during profile update: {e}")
+        return False
     """
     based on the type of content, change profile
 
@@ -56,6 +70,7 @@ def change_profile(content_type, uid, content):
         # TODO
         pass
     # TODO: keep handling rest cases
+
 
 
 def add_interest(uid, interest):
