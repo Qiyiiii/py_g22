@@ -68,11 +68,7 @@ def add_interest(uid, interest):
     
     """
     # TODO: HINT: add_user_interest(uid, interest)
-    cursor.execute(
-        "INSERT INTO interest (user_id, interest) VALUES (?, ?)",
-        (uid, interest)
-    )
-    connection.commit()
+
     return True
 
 def get_interest(uid):
@@ -84,22 +80,7 @@ def get_interest(uid):
     """
     # TODO: HINT: use get_user_likes(uid)
     #return []
-    try:
-        with sqlite3.connect(DB_PATH) as connection:
-            cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve user interests
-            cursor.execute(
-                "SELECT interest FROM interest WHERE user_id = ?",
-                (uid,)
-            )
-            interests = [interest[0] for interest in cursor.fetchall()]
-            return interests
-
-    except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
-        return []
+    return get_user_interest(uid)
 
 def delete_user(uid):
     """
@@ -110,8 +91,7 @@ def delete_user(uid):
     else False
     """
     # TODO: HINT: use function remove_user_with_id(cursor, uid) from use_case/dai.py
-    success = remove_user_with_id(uid)
-    return success
+    return remove_user_with_id(uid)
 def get_liked_users(uid):
     """
     get a list of users that User with (uid) liked

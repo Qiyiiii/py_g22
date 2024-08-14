@@ -371,7 +371,7 @@ def add_user_interest(uid, interest):
 #         print(f"Not succuessful: {e}")
 #         return False
 
-def get_interest(uid):
+def get_user_interest(uid):
     """
     Get interests of a User with (uid).
 

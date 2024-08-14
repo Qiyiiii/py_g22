@@ -24,7 +24,7 @@ def find_match(uid):
     my_age = my_profile[4]
     my_postal_code = my_profile[3]
     my_location = nomi.query_postal_code(my_postal_code)
-    my_interests = get_interest(uid)
+    my_interests = get_user_interest(uid)
 
     my_lat_long = (my_location.latitude, my_location.longitude)
 
