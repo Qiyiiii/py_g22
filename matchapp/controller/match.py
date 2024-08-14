@@ -2,10 +2,10 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from use_case.dataManager import *
-#import pgeocode  # for distances
-#from geopy.distance import geodesic  # for distances
-#from sklearn.preprocessing import MinMaxScaler  # to normalize for scoring
-##
+from pgeocode import Nominatim   # for distances
+from geopy.distance import geodesic  # for distances
+from sklearn.preprocessing import MinMaxScaler  # to normalize for scoring
+#
 
 def find_match(uid):
     """
@@ -17,14 +17,14 @@ def find_match(uid):
     on success, return the uid of user that matched with the current user
     else: return -1
     """
-    nomi = pgeocode.Nominatim('ca')
+    nomi = Nominatim('ca')
 
     #Get info about the user to compare to other profiles
     my_profile = get_user_info(uid)
     my_age = my_profile[4]
     my_postal_code = my_profile[3]
     my_location = nomi.query_postal_code(my_postal_code)
-    my_interests = get_interest(uid)
+    my_interests = get_user_interest(uid)
 
     my_lat_long = (my_location.latitude, my_location.longitude)
 

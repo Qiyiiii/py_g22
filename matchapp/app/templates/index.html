@@ -7,18 +7,44 @@
     <link rel="stylesheet" href="../static/css/index.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Match App</h1>
+    <div class="heart">
+        <h1>Find Your Match!</h1> 
+
+        <!-- Flash Messages -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div>
-        {{ messages[-1] }}
+            {{ messages[-1] }}
         </div>
         {% endif %}
         {% endwith %}
-        <button onclick="createUser()">Create New User</button>
-        <button onclick="loginUser()">Log In with Userid</button>
+
+        <!-- Buttons with Icons -->
+        <button onclick="createUser()">
+            <span class="button-icon"><img src="{{ url_for('static', filename='images/puzzle.png') }}" alt="Icon"></span>
+            Join the Puzzle
+        </button>
+
+        <button onclick="loginUser()">
+            <span class="button-icon"><img src="{{ url_for('static', filename='images/puzzle (1).png') }}" alt="Icon"></span>
+            Fit back in
+        </button>
     </div>
+
+    <script>
+        function createUser() {
+            window.location.href = "/register";
+        }
+
+        function loginUser() {
+            let userId = prompt("Please enter your User ID:");
+            if (userId) {
+                window.location.href = `/profile/${userId}`;
+            }
+        }
+    </script>
+</body>
+
 
     <script>
         function createUser() {

@@ -79,23 +79,19 @@ def get_user_info(uid):
         return ()
 
 
-def remove_user_with_id(uid):
-    """
-    Delete an existing user from the database.
 
-    Return:
-    bool: True on success, False otherwise.
-    """
+def remove_user_with_id(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to remove a user
-            pass
-
+            
+            # Delete the specified user
+            cursor.execute('DELETE FROM user WHERE uid = ?', (uid,))
+            connection.commit()
+        
+        return True
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Failed to remove user: {e}")
         return False
 
 
@@ -111,7 +107,11 @@ def update_user_gender(uid, new_gender):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user gender
-            pass
+            cursor.execute("UPDATE user SET gender = ? WHERE uid = ?", (new_gender, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -131,7 +131,11 @@ def update_user_age(uid, new_age):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user age
-            pass
+            cursor.execute("UPDATE user SET age = ? WHERE uid = ?", (new_age, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -150,7 +154,13 @@ def update_user_location(uid, new_location):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user location
-            pass
+            cursor.execute("UPDATE user SET location = ? WHERE uid = ?", (new_location, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
+        
+        
 
     except sqlite3.Error as e:
         # print error message
@@ -169,13 +179,19 @@ def update_user_name(uid, new_name):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user name
-            pass
+            cursor.execute("UPDATE user SET name = ? WHERE uid = ?", (new_name, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
         # change it to your own
         print(f"Not succuessful: {e}")
         return False
+        
+
 
 # Action CRUD
 def add_action(uid1, uid2, action):
@@ -201,7 +217,8 @@ def add_action(uid1, uid2, action):
 
             cursor.execute(insert_query, (uid1, uid2, like_value))
             connection.commit()
-            pass
+            return True
+      
 
     except sqlite3.Error as e:
         # print error message
@@ -259,7 +276,9 @@ def get_user_likes(uid):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to retrieve liked users
-            pass
+            cursor.execute("SELECT uid2 FROM Actions WHERE uid1= ? and like = True ", (uid,))
+            liked_users = [row[0] for row in cursor.fetchall()]
+            return liked_users
 
     except sqlite3.Error as e:
         # print error message
@@ -278,7 +297,12 @@ def get_user_unlikes(uid):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to retrieve unliked users
-            pass
+            cursor.execute("""
+                            SELECT uid2 FROM Actions WHERE uid1 = ? and like = False
+                        """, (uid,))
+
+            unliked_users = [row[0] for row in cursor.fetchall()]
+            return unliked_users
 
     except sqlite3.Error as e:
         # print error message
@@ -295,15 +319,30 @@ def get_mutual_likes(uid):
     """
     try:
         with sqlite3.connect(DB_PATH) as connection:
+            query = """
+                SELECT u.uid, u.name
+                FROM Actions a 
+                JOIN User u ON u.uid = a.uid2
+                WHERE a.uid1 = ? AND a.like = True
+                AND EXISTS (
+                    SELECT 1 FROM Actions
+                    WHERE uid1 = a.uid2 AND uid2 = ? AND like = True
+                );
+            """
             cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve users that also likes the User with uid
-            pass
+            cursor.execute(query, (uid, uid))
+            result = cursor.fetchall()  # Fetch all results as a list of tuples
+            
+            if result:
+                print("Mutual likes found!")
+            else:
+                print("No mutual likes found.")
+            
+            return result
 
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
-        return []
+        print(f"Error fetching mutual likes: {e}")
+        return pd.DataFrame()
 
 
 # Interest CRUD
@@ -318,7 +357,14 @@ def add_user_interest(uid, interest):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to add interest
-            pass
+            cursor.execute(
+                "INSERT INTO interest (uid, interest) VALUES (?, ?)",
+                (uid, interest)
+            )
+
+            connection.commit()
+
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -345,7 +391,7 @@ def add_user_interest(uid, interest):
 #         print(f"Not succuessful: {e}")
 #         return False
 
-def get_interest(uid):
+def get_user_interest(uid):
     """
     Get interests of a User with (uid).
 
@@ -356,12 +402,15 @@ def get_interest(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute('SELECT interest FROM Interest WHERE uid = ?', (uid,))
-            interests_tuples = cursor.fetchall()
-            interests_list = [item[0] for item in interests_tuples]
-            return interests_list
 
-            pass
+            # TODO: Implement the logic to retrieve user interests
+            cursor.execute(
+                "SELECT interest FROM interest WHERE uid= ?",
+                (uid,)
+            )
+            interests = [interest[0] for interest in cursor.fetchall()]
+            return interests
+
 
     except sqlite3.Error as e:
         # print error message
@@ -370,6 +419,9 @@ def get_interest(uid):
         return []
     
 # Example usage
-#if __name__ == "__main__":
+# if __name__ == "__main__":
+ 
 #    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
+#    remove_user_with_id(user_id)
+
 
