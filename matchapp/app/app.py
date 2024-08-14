@@ -53,8 +53,8 @@ def unlike(uid1, uid2):
     
 @app.route('/match/<int:uid1>')
 def match(uid1):
-    # matched_userid = find_match(uid1)
-    matched_userid = 3
+    matched_userid = find_match(uid1)
+    # matched_userid = 3
     matched_user_info = get_user_info(matched_userid)
     interests = get_interest(matched_userid)
 
