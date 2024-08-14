@@ -102,7 +102,11 @@ def update_user_gender(uid, new_gender):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user gender
-            pass
+            cursor.execute("UPDATE users SET gender = ? WHERE id = ?", (new_gender, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -122,7 +126,11 @@ def update_user_age(uid, new_age):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user age
-            pass
+            cursor.execute("UPDATE users SET age = ? WHERE id = ?", (new_age, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -141,7 +149,11 @@ def update_user_location(uid, new_location):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user location
-            pass
+            cursor.execute("UPDATE users SET location = ? WHERE id = ?", (new_location, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -160,7 +172,11 @@ def update_user_name(uid, new_name):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user name
-            pass
+            cursor.execute("UPDATE users SET name = ? WHERE id = ?", (new_name, uid))
+            connection.commit()
+            if cursor.rowcount == 0:
+                return False
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -239,7 +255,9 @@ def get_user_likes(uid):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to retrieve liked users
-            pass
+            cursor.execute("SELECT uid1 FROM Actions WHERE user_id = ? and action = True ", (uid,))
+            liked_users = [row[0] for row in cursor.fetchall()]
+            return liked_users
 
     except sqlite3.Error as e:
         # print error message
@@ -258,7 +276,12 @@ def get_user_unlikes(uid):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to retrieve unliked users
-            pass
+            cursor.execute("""
+                            SELECT uid1 FROM Actions WHERE user_id = ? and action = False
+                        """, (uid,))
+
+            unliked_users = [row[0] for row in cursor.fetchall()]
+            return unliked_users
 
     except sqlite3.Error as e:
         # print error message
@@ -298,7 +321,14 @@ def add_user_interest(uid, interest):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to add interest
-            pass
+            cursor.execute(
+                "INSERT INTO interest (user_id, interest) VALUES (?, ?)",
+                (uid, interest)
+            )
+
+            connection.commit()
+
+            return True
 
     except sqlite3.Error as e:
         # print error message
@@ -337,7 +367,12 @@ def get_interest(uid):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to retrieve user interests
-            pass
+            cursor.execute(
+                "SELECT interest FROM interest WHERE user_id = ?",
+                (uid,)
+            )
+            interests = [interest[0] for interest in cursor.fetchall()]
+            return interests
 
     except sqlite3.Error as e:
         # print error message
