@@ -9,7 +9,7 @@ from enum import Enum
 class Content_type(Enum):
     NAME = 1
     GENDER = 2
-    Location = 3
+    LOCATION = 3
     AGE = 4
 
 
@@ -75,7 +75,7 @@ def add_interest(uid, interest):
     """
     # Attempt to add the interest and store the result
 
-    return add_interest(user_id, interest)
+    return add_user_interest(uid, interest)
  
 
 
@@ -134,8 +134,8 @@ def get_mutual_liked_users(uid):
 
 
 
-#  example code
-#if __name__ == "__main__":
-#    user_id = add_user('Pokemon', 'pk123@rotman.com', 'Male', 'Trt', 25)
+# #  example code
+# if __name__ == "__main__":
+#     add_interest(2, "hello")
 
-get_interest(1)
+#     print(get_interest(2))
