@@ -1,3 +1,4 @@
+PRAGMA foreign_keys = ON;
 -- Preload Users
 INSERT INTO User (name, email, gender, location, age)
 VALUES ('Qiyi', 'qiyi@rotman.com', "Male", "40202", 18);
@@ -75,3 +76,6 @@ VALUES (
 INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Game');
 INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Sleep');
 INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Code');
+
+
+

@@ -28,9 +28,10 @@ def profile(uid):
     user_interests = get_interest(uid)
 
 
-    if user_info != ():
+    if user_info:
         return render_template("profile.html", user=user_info, uid=uid, interests = user_interests)
     else:
+        flash(f"User with {uid} not found")
         return render_template("index.html")
     
 @app.route('/like/<int:uid1>/<int:uid2>')
@@ -125,11 +126,14 @@ def create_user():
     
 @app.route('/delete_user/<int:uid>', methods=['POST'])
 def delete_user(uid):
-    if remove_user_with_id(uid):
+    success = remove_user_with_id(uid)
+    if success:
         flash(f"User {uid} has been deleted successfully.")
+        return redirect(url_for('profile', uid=uid, _query={'message': f'User {uid} has been deleted successfully.'}))
     else:
         flash(f"Failed to delete User {uid}.")
-    return redirect(url_for('index'))
+        return redirect(url_for('profile', uid=uid))
+
 
 @app.route('/editname/<int:uid>', methods=['POST'])
 def edit_name(uid):
