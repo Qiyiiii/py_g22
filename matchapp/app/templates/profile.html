@@ -23,6 +23,7 @@
             text-align: center;
             width: 300px;
             padding: 20px;
+            height:auto;
         }
         
         .profile-header {
@@ -243,7 +244,12 @@ function edit_age(uid){
             </div>
             <div class="profile-details">
                 {% if user %}
-                <p>
+                <div>
+                    <p> Unique User ID: {{ uid }}</p>
+                </div>
+                <p> 
+                    
+                    
                     <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</span>
                     <button class="edit-button" onclick="edit_name({{ uid }})">Edit</button>
                   
