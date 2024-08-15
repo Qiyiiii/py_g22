@@ -56,13 +56,17 @@ def unlike(uid1, uid2):
 def match(uid1):
     matched_userid = find_match(uid1)
     # matched_userid = 3
+    if matched_userid == -1:
+        flash(f"Can't find a match for user {uid1}")
+        return redirect(url_for('profile', uid=uid1))
+
     matched_user_info = get_user_info(matched_userid)
     interests = get_interest(matched_userid)
 
     if matched_userid:
         return render_template("matchedPage.html", user= matched_user_info, uid1=uid1, uid2=matched_userid, interests = interests)
     else:
-        flash(f"Can't find a match with {uid1}")
+        flash(f"Can't find a match for user {uid1}")
         return redirect(url_for('profile', uid=uid1))
 
 @app.route('/liked-users/<int:uid>')
@@ -95,6 +99,9 @@ def unliked_users(uid):
 @app.route('/mutually-liked-users/<int:uid>')
 def mutual_users(uid):
     usersids = get_mutual_liked_users(uid)
+    print(usersids)
+
+
     users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
   
     if users:
