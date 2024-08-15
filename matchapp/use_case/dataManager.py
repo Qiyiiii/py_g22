@@ -86,6 +86,8 @@ def remove_user_with_id(uid):
             cursor = connection.cursor()
             
             # Delete the specified user
+            
+            cursor.execute('PRAGMA foreign_keys = ON;')
             cursor.execute('DELETE FROM user WHERE uid = ?', (uid,))
             connection.commit()
             cursor.execute('SELECT interest FROM Interest WHERE uid = ?', (uid,))
