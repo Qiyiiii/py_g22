@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Group 22</title>
     <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@900&display=swap">
 </head>
 <body>
+    <h1 class="app-name">chill.</h1> <!-- App name here -->
     <div class="heart">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+
         <h1>Find Your Match!</h1> 
 
         <!-- Flash Messages -->
@@ -19,7 +23,7 @@
         {% endif %}
         {% endwith %}
 
-        <!-- Buttons with Icons -->
+        <!-- Buttons -->
         <button onclick="createUser()">
             Create Account
         </button>
@@ -37,23 +41,6 @@
         function loginUser() {
             let userId = prompt("Please enter your User ID:");
             if (userId) {
-                window.location.href = `/profile/${userId}`;
-            }
-        }
-    </script>
-</body>
-
-
-    <script>
-        function createUser() {
-            // Redirect to create user page
-            window.location.href = "/register";
-        }
-
-        function loginUser() {
-            let userId = prompt("Please enter your User ID:");
-            if (userId) {
-                // Logic for logging in with the provided user ID
                 window.location.href = `/profile/${userId}`;
             }
         }
