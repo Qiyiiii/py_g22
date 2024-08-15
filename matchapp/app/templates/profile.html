@@ -223,6 +223,11 @@ function edit_age(uid){
         
 }
 
+function back(uid) {
+    window.location.href = `/profile/${uid}`;
+
+}
+
 
 </script>
 <body>
@@ -303,6 +308,8 @@ function edit_age(uid){
             </div>
             <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
                 <button type="submit" class="delete-button">Delete User</button>
+                <button method="fetch"  class="delete-button" onclick="back({{ uid }})">Log out</button>
+
             </form>
     
             <script>

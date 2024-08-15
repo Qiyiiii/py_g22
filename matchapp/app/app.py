@@ -39,7 +39,7 @@ def like(uid1, uid2):
 
     like_user(uid1, uid2)
 
-    flash(f"You liked User {uid2}")
+    flash(f"You liked {get_user_info(uid2)[0]}")
     return redirect(url_for('profile', uid=uid1))
 
 
@@ -48,7 +48,7 @@ def unlike(uid1, uid2):
 
     unlike_user(uid1, uid2)
 
-    flash(f"You unliked User {uid2}")
+    flash(f"You disliked {get_user_info(uid2)[0]}")
     return redirect(url_for('profile', uid=uid1))
 
     
@@ -92,7 +92,7 @@ def unliked_users(uid):
     if users:
         return render_template("userList.html", users=users, uid=uid)
     else:
-        flash(f"User with {uid} didn't unlike any users")
+        flash(f"User with {uid} didn't dislike any users")
         return render_template("userList.html", users=users, uid=uid)
         # return redirect(url_for('profile', uid=uid))
 
