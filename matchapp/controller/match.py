@@ -22,7 +22,6 @@ def find_match(uid):
     ctx = ssl.create_default_context(cafile=certifi.where())
     nomi= Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
 
-
     #Get info about the user to compare to other profiles
     my_profile = get_user_info(uid)
     my_age = my_profile[4]
@@ -64,29 +63,12 @@ def find_match(uid):
             location = nomi.geocode(postal_code +', United States')
             lat_long = (location.latitude, location.longitude)
             distance = geodesic(my_lat_long, lat_long).kilometers
-        except ValueError:
+        except Exception:
             distance = 1000 #TODO: This is a temporary way of dealing with invalid postal codes in the DB
         return distance
 
     rec['geo_distance'] = rec.apply(geo_distance, axis=1)
 
-## New...slightly faster version ##
-    # def geo_distance2(postal_code):
-    #     try:
-    #         location = nomi.geocode(postal_code+', United States')
-    #         lat_long = (location.latitude, location.longitude)
-    #         distance = geodesic(my_lat_long, lat_long).kilometers
-    #     except ValueError:
-    #         distance = 1000 #TODO: This is a temporary way of dealing with invalid postal codes in the DB
-    #     return distance
-    #
-    # postal_codes = rec['location'].unique()
-    # postal_distances = [geo_distance2(postal_code) for postal_code in postal_codes]
-    # mapping = dict(zip(postal_codes, postal_distances))
-    #
-    # # Apply the mapping to the DataFrame column
-    # rec['geo_distance'] = rec['location'].map(mapping)
-## End of new code ##
     #Scale distance and similarity between 0 and 1
     scaler = MinMaxScaler()
     rec['normed_geo_distance'] = scaler.fit_transform(rec[['geo_distance']])
@@ -158,5 +140,5 @@ def unlike_user(uid1, uid2):
 #     return []
 
 #  example code
-if __name__ == "__main__":
-    print(find_match(16))
+#if __name__ == "__main__":
+#    print(find_match(45))
