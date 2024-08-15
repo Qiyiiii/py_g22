@@ -5,15 +5,9 @@ from use_case.dataManager import *
 from geopy.geocoders  import Nominatim# for distances
 from geopy.distance import geodesic  # for distances
 from sklearn.preprocessing import MinMaxScaler  # to normalize for scoring
-#
+import numpy as np
 import ssl
 import certifi
-
-
-
-
-
-
 
 def find_match(uid):
     """
@@ -35,29 +29,39 @@ def find_match(uid):
     my_postal_code = my_profile[3]
     my_location = nomi.geocode(my_postal_code)
     my_interests = get_user_interest(uid)
-
     my_lat_long = (my_location.latitude, my_location.longitude)
 
     rec = get_users(uid) #get the table of potential matches
+    if rec.empty:
+        return -1
 
     #Filter out based on age
     yrs = 5 # Set preferred age range to +/- 5 years
     min_age = my_age - yrs
     max_age = my_age + yrs
     rec = rec[(rec.age >= min_age) & (rec.age <= max_age)] #Filter out people outside that age range
+    rec['age dist'] = np.abs(my_age - rec['age'])
 
     #Find common interets
     rec['shared_interest'] = (rec.interest.isin(my_interests)).astype(int) #create new column called "shared interest" with value of 0 or 1
-    rec['similarity'] = rec.groupby('uid')['shared_interest'].transform('sum')
-    #TODO: Jaccard similarity
+    my_total_interests = len(my_interests)
+    union_of_interests = rec.groupby('uid')['interest'].transform('count') + my_total_interests
+
+    rec['similarity'] = rec.groupby('uid')['shared_interest'].transform('sum')/(union_of_interests)
+    rec.loc[union_of_interests == 0, 'similarity'] = 0
+
     rec.drop(['interest', 'shared_interest'], axis=1, inplace=True)
     rec.drop_duplicates(inplace=True)
 
+    if rec.empty:
+        return -1
+
+## Old version ##
     #Calculate geographical distance
     def geo_distance(row):
         try:
             postal_code = row['location']
-            location = nomi.geocode(postal_code)
+            location = nomi.geocode(postal_code +', United States')
             lat_long = (location.latitude, location.longitude)
             distance = geodesic(my_lat_long, lat_long).kilometers
         except ValueError:
@@ -66,18 +70,33 @@ def find_match(uid):
 
     rec['geo_distance'] = rec.apply(geo_distance, axis=1)
 
+## New...slightly faster version ##
+    # def geo_distance2(postal_code):
+    #     try:
+    #         location = nomi.geocode(postal_code+', United States')
+    #         lat_long = (location.latitude, location.longitude)
+    #         distance = geodesic(my_lat_long, lat_long).kilometers
+    #     except ValueError:
+    #         distance = 1000 #TODO: This is a temporary way of dealing with invalid postal codes in the DB
+    #     return distance
+    #
+    # postal_codes = rec['location'].unique()
+    # postal_distances = [geo_distance2(postal_code) for postal_code in postal_codes]
+    # mapping = dict(zip(postal_codes, postal_distances))
+    #
+    # # Apply the mapping to the DataFrame column
+    # rec['geo_distance'] = rec['location'].map(mapping)
+## End of new code ##
     #Scale distance and similarity between 0 and 1
-    scaler_geo_distance = MinMaxScaler()
-    rec['normed_geo_distance'] = scaler_geo_distance.fit_transform(rec[['geo_distance']])
-    scaler_similarity = MinMaxScaler()
-    rec['normed_similarity'] = scaler_similarity.fit_transform(rec[['similarity']])
-
-    #TODO: Age similarity
+    scaler = MinMaxScaler()
+    rec['normed_geo_distance'] = scaler.fit_transform(rec[['geo_distance']])
+    rec['normed_similarity'] = scaler.fit_transform(rec[['similarity']])
+    rec['normed_age_dist'] = scaler.fit_transform(rec[['similarity']])
 
     #Calculate total score for each user
     def overall_score(row):
-        alpha, beta = 0.5, 0.5
-        score = alpha * row['normed_similarity'] - beta * row['normed_geo_distance']
+        alpha, beta, gamma = 0.4, 0.4, 0.2
+        score = alpha * row['normed_similarity'] + beta * (1-row['normed_geo_distance']) + gamma * (1-row['normed_age_dist'])
         return score
 
     rec['overall_score'] = rec.apply(overall_score, axis=1)
@@ -140,4 +159,4 @@ def unlike_user(uid1, uid2):
 
 #  example code
 if __name__ == "__main__":
-    print(find_match(3))
+    print(find_match(16))
