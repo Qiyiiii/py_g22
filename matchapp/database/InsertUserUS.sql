@@ -28,7 +28,7 @@ SELECT 'Charlotte', 'c_charlotte26@hotmail.com', 'Female', '10007', 26
 WHERE NOT EXISTS (SELECT 1 FROM user WHERE email = 'c_charlotte26@hotmail.com');
 
 INSERT INTO user (name, email, gender, location, age)
-SELECT 'Liam', 'l_iam29@gmail.com', 'Male', '10008', 29
+SELECT 'Liam', 'l_iam29@gmail.com', 'Male', '10009', 29
 WHERE NOT EXISTS (SELECT 1 FROM user WHERE email = 'l_iam29@gmail.com');
 
 INSERT INTO user (name, email, gender, location, age)
@@ -40,7 +40,7 @@ SELECT 'Ethan', 'e_ethan27@gmail.com', 'Male', '10010', 27
 WHERE NOT EXISTS (SELECT 1 FROM user WHERE email = 'e_ethan27@gmail.com');
 
 INSERT INTO user (name, email, gender, location, age)
-SELECT 'Oliver', 'o_oliver24@yahoo.com', 'Male', '10011', 24
+SELECT 'Oliver', 'o_oliver24@yahoo.com', 'Male', '10012', 24
 WHERE NOT EXISTS (SELECT 1 FROM user WHERE email = 'o_oliver24@yahoo.com');
 
 INSERT INTO user (name, email, gender, location, age)
@@ -56,7 +56,7 @@ SELECT 'Lucas', 'l_lucas24@gmail.com', 'Male', '10014', 24
 WHERE NOT EXISTS (SELECT 1 FROM user WHERE email = 'l_lucas24@gmail.com');
 
 INSERT INTO user (name, email, gender, location, age)
-SELECT 'Ravi', 'ravi18@gmail.com', 'Male', '10015', 18
+SELECT 'Ravi', 'ravi18@gmail.com', 'Male', '10016', 18
 WHERE NOT EXISTS (SELECT 1 FROM user WHERE email = 'ravi18@gmail.com');
 
 INSERT INTO user (name, email, gender, location, age)
