@@ -145,7 +145,7 @@
             type: 'POST',
             success: function() {
                 // Show a success message
-                document.querySelector('.profile-container').innerHTML = "<p class='deleted-message'>Your account has been successfully deleted.</p>";
+                window.location.href = `/profile/${uid}`;
             },
             error: function() {
                 alert("Failed to delete the account.");

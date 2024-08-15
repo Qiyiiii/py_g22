@@ -28,9 +28,10 @@ def profile(uid):
     user_interests = get_interest(uid)
 
 
-    if user_info != ():
+    if user_info:
         return render_template("profile.html", user=user_info, uid=uid, interests = user_interests)
     else:
+        flash(f"User with {uid} not found")
         return render_template("index.html")
     
 @app.route('/like/<int:uid1>/<int:uid2>')
