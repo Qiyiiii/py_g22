@@ -26,8 +26,19 @@
 {% endwith %}
     {% if users %}
     <ul>
+        
         {% for user in users %}
-        <li>{{ user }}</li>
+
+        
+            {% if user %}
+            
+            <p>Name: {{ user[0] }}</p> 
+            <p> Email: {{ user[1] }}</p> 
+            <p>Gender: {{ user[2] }}</p> 
+            <p> Location: {{ user[3] }}</p> 
+            <p>Age: {{ user[4] }}</p> 
+            <p>Interests: {{ user[5] }}</p> 
+            {% endif %}
         {% endfor %}
     </ul>
     {% else %}

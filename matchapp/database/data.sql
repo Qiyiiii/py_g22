@@ -73,9 +73,9 @@ VALUES (
 );
 
 -- interest for Qiyi
-INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Game');
-INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Sleep');
-INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Code');
+INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Action & Adventure');
+INSERT INTO Interest (uid, interest) VALUES ((SELECT uid FROM User WHERE name = 'Qiyi'), 'Lifestyle & Entertainment');
+
 
 
 

@@ -324,7 +324,7 @@ def get_mutual_likes(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             query = """
-                SELECT u.uid, u.name
+                SELECT u.uid
                 FROM Actions a 
                 JOIN User u ON u.uid = a.uid2
                 WHERE a.uid1 = ? AND a.like = True
@@ -335,7 +335,8 @@ def get_mutual_likes(uid):
             """
             cursor = connection.cursor()
             cursor.execute(query, (uid, uid))
-            result = cursor.fetchall()  # Fetch all results as a list of tuples
+            result = [row[0] for row in cursor.fetchall()]
+
             
             if result:
                 print("Mutual likes found!")
