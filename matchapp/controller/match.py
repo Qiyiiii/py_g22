@@ -73,7 +73,7 @@ def find_match(uid):
     scaler = MinMaxScaler()
     rec['normed_geo_distance'] = scaler.fit_transform(rec[['geo_distance']])
     rec['normed_similarity'] = scaler.fit_transform(rec[['similarity']])
-    rec['normed_age_dist'] = scaler.fit_transform(rec[['similarity']])
+    rec['normed_age_dist'] = scaler.fit_transform(rec[['age dist']])
 
     #Calculate total score for each user
     def overall_score(row):
@@ -89,8 +89,6 @@ def find_match(uid):
     our_pick = rec.iloc[0]['uid']
 
     return int(our_pick)
-
-
 
 def like_user(uid1, uid2):
     """
@@ -140,5 +138,5 @@ def unlike_user(uid1, uid2):
 #     return []
 
 #  example code
-#if __name__ == "__main__":
-#    print(find_match(45))
+if __name__ == "__main__":
+    print(find_match(31))
