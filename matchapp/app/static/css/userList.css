@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FF8A8A;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Prevents the body from scrolling */
+}
+
+.container {
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    max-height: 90vh; /* Limits the container's height to 90% of the viewport */
+    overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.heading {
+    font-size: 24px;
+    color: #FF6B6B;
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    background-color: #FFD700;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.profiles {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-card {
+    background-color: #F9F9F9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.profile-card p {
+    margin: 5px 0;
+}
+
+.back-button {
+    background-color: #FF6B6B;
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #FF4C4C;
+}
+
+.heading.liked {
+    color: #FF6B6B;
+}
+
+.heading.unliked {
+    color: #FF4C4C;
+}
+
+.heading.mutual {
+    color: #4CAF50;
+}
+

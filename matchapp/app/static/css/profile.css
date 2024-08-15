@@ -53,26 +53,26 @@ body {
 .profile-details p {
     display: flex;
     align-items: center;
-    justify-content: flex-start;  /* Align content to the start */
-    position: relative;  /* Ensure relative positioning for the button */
+    justify-content: flex-start;  
+    position: relative;  
     margin: 10px 0;
     font-size: 14px;
 }
 
 .edit-button {
     font-size: 10px;
-    color: #c5c5c5;  /* Light grey tone */
+    color: #c5c5c5;  
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    position: absolute;  /* Position the button absolutely */
-    right: 0;  /* Align to the right edge of the container */
+    position: absolute;  
+    right: 0;  
 }
 
 
 .edit-button:hover {
-    color: #7e7c7c;  /* Slightly darker grey on hover */
+    color: #7e7c7c;  
 }
 
 .delete-button {
@@ -86,12 +86,12 @@ body {
 }
 
 .delete-button:hover {
-    color: #555;  /* Slightly darker grey on hover */
+    color: #555;  
 }
 
 .profile-actions {
     padding: 10px 0;
-    text-align: left; /* Reset button alignment */
+    text-align: left; 
 }
 
 .profile-actions button {
@@ -111,18 +111,18 @@ body {
 }
 
 .profile-details p img {
-    width: 20px;  /* Adjust the size as needed */
-    height: 20px; /* Ensure consistent height */
-    margin-right: 10px;  /* Space between the icon and text */
-    vertical-align: middle;  /* Align with text */
+    width: 20px; 
+    height: 20px; 
+    margin-right: 10px; 
+    vertical-align: middle;  
 }
 
 .flash-message {
-    display: none; /* Hide by default, shown by JavaScript */
+    display: none; 
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
-    background-color: #d4edda; /* Green background for success */
-    color: #155724; /* Dark green text */
+    background-color: #d4edda; 
+    color: #155724; 
     font-size: 16px;
 }
