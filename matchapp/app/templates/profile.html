@@ -224,7 +224,7 @@ function edit_age(uid){
 }
 
 function back(uid) {
-    window.location.href = `/profile/${uid}`;
+    window.location.href = '/';
 
 }
 
@@ -306,11 +306,12 @@ function back(uid) {
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
      
             </div>
-            <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
-                <button type="submit" class="delete-button">Delete User</button>
-                <button method="fetch"  class="delete-button" onclick="back({{ uid }})">Log out</button>
-
-            </form>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
+                    <button type="submit" class="delete-button">Delete User</button>
+                </form>
+                <button class="delete-button" onclick="back({{ uid }})">Log out</button>
+            </div>
     
             <script>
                 function confirmDelete() {
