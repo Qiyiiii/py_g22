@@ -141,7 +141,7 @@ def delete_user(uid):
     success = remove_user_with_id(uid)
     if success:
         flash(f"User {uid} has been deleted successfully.")
-        return redirect(url_for('profile', uid=uid, _query={'message': f'User {uid} has been deleted successfully.'}))
+        return render_template("index.html")
     else:
         flash(f"Failed to delete User {uid}.")
         return redirect(url_for('profile', uid=uid))
