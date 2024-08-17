@@ -39,7 +39,7 @@ def like(uid1, uid2):
 
     like_user(uid1, uid2)
 
-    flash(f"You liked User {uid2}")
+    flash(f"You liked {get_user_info(uid2)[0]}")
     return redirect(url_for('profile', uid=uid1))
 
 
@@ -48,7 +48,7 @@ def unlike(uid1, uid2):
 
     unlike_user(uid1, uid2)
 
-    flash(f"You unliked User {uid2}")
+    flash(f"You disliked {get_user_info(uid2)[0]}")
     return redirect(url_for('profile', uid=uid1))
 
     
@@ -73,43 +73,40 @@ def match(uid1):
 def liked_users(uid):
     usersids = get_liked_users(uid)
     users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
- 
+
+    title = "People I Liked"  # Define the title
 
     if users:
-        return render_template("userList.html", users=users, uid=uid)
+        return render_template("userList.html", users=users, uid=uid, title=title)  
     else:
         flash(f"User with {uid} didn't like any users")
-        return render_template("userList.html", users=users, uid=uid)
-        # return redirect(url_for('profile', uid=uid))
+        return render_template("userList.html", users=users, uid=uid, title=title)  
 
 
 @app.route('/unliked-users/<int:uid>')
 def unliked_users(uid):
-
     usersids = get_unliked_users(uid)
     users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
+    title = "People I Unliked"  # Define the title
 
     if users:
-        return render_template("userList.html", users=users, uid=uid)
+        return render_template("userList.html", users=users, uid=uid, title=title)  
     else:
         flash(f"User with {uid} didn't unlike any users")
-        return render_template("userList.html", users=users, uid=uid)
-        # return redirect(url_for('profile', uid=uid))
+        return render_template("userList.html", users=users, uid=uid, title=title)  
+
 
 @app.route('/mutually-liked-users/<int:uid>')
 def mutual_users(uid):
     usersids = get_mutual_liked_users(uid)
-    print(usersids)
-
-
     users = [list(get_user_info(user_id)) + [get_user_interest(user_id)] for user_id in usersids if get_user_info(user_id)]
-  
+    title = "People Mutually Liked"  
+
     if users:
-        return render_template("userList.html", users=users, uid=uid)
+        return render_template("userList.html", users=users, uid=uid, title=title)  
     else:
         flash(f"User with {uid} has no mutually liked users")
-        return render_template("userList.html", users=users, uid=uid)
-        # return redirect(url_for('profile', uid=uid))
+        return render_template("userList.html", users=users, uid=uid, title=title)  
 
 
 @app.route('/add_interest/<int:uid>', methods=['POST'])
@@ -144,7 +141,7 @@ def delete_user(uid):
     success = remove_user_with_id(uid)
     if success:
         flash(f"User {uid} has been deleted successfully.")
-        return redirect(url_for('profile', uid=uid, _query={'message': f'User {uid} has been deleted successfully.'}))
+        return render_template("index.html")
     else:
         flash(f"Failed to delete User {uid}.")
         return redirect(url_for('profile', uid=uid))
@@ -183,7 +180,7 @@ def edit_age(uid):
     if change_profile(Content_type.AGE, uid, content):
         flash(f"Profile changed")
     return redirect(url_for('profile', uid=uid))
-# work on edit button
+
 
 if __name__ == "__main__":
     app.run(debug=True)

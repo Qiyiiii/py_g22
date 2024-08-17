@@ -23,6 +23,7 @@
             text-align: center;
             width: 300px;
             padding: 20px;
+            height:auto;
         }
         
         .profile-header {
@@ -145,7 +146,7 @@
             type: 'POST',
             success: function() {
                 // Show a success message
-                window.location.href = `/profile/${uid}`;
+                window.location.href = `/`;
             },
             error: function() {
                 alert("Failed to delete the account.");
@@ -222,6 +223,11 @@ function edit_age(uid){
         
 }
 
+function back(uid) {
+    window.location.href = '/';
+
+}
+
 
 </script>
 <body>
@@ -243,7 +249,12 @@ function edit_age(uid){
             </div>
             <div class="profile-details">
                 {% if user %}
-                <p>
+                <div>
+                    <p> User ID: {{ uid }}</p>
+                </div>
+                <p> 
+                    
+                    
                     <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</span>
                     <button class="edit-button" onclick="edit_name({{ uid }})">Edit</button>
                   
@@ -291,13 +302,16 @@ function edit_age(uid){
             <div class="profile-actions">
                 <button onclick="match({{ uid }})">New Match</button>
                 <button onclick="view_liked({{ uid }})">Liked</button>
-                <button onclick="view_unliked({{ uid }})">Unliked</button>
+                <button onclick="view_unliked({{ uid }})">Disliked</button>
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
      
             </div>
-            <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
-                <button type="submit" class="delete-button">Delete User</button>
-            </form>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
+                    <button type="submit" class="delete-button">Delete User</button>
+                </form>
+                <button class="delete-button" onclick="back({{ uid }})">Log out</button>
+            </div>
     
             <script>
                 function confirmDelete() {
