@@ -224,22 +224,22 @@ CREATE TABLE IF NOT EXISTS Interest (
 
 
 if __name__ == "__main__":
-    # Connect to the SQLite database
-    conn = sqlite3.connect(db_path)
+    # # Connect to the SQLite database
+    # conn = sqlite3.connect(db_path)
 
-    # Create a cursor object
-    cursor = conn.cursor()
+    # # Create a cursor object
+    # cursor = conn.cursor()
 
-    try:
-        # Execute the SQL commands
-        cursor.executescript(sql_commands)
-        print("Tables created successfully.")
-    except sqlite3.Error as e:
-        print(f"An error occurred: {e}")
-    finally:
-        # Commit the changes and close the connection
-        conn.commit()
-        conn.close()
+    # try:
+    #     # Execute the SQL commands
+    #     cursor.executescript(sql_commands)
+    #     print("Tables created successfully.")
+    # except sqlite3.Error as e:
+    #     print(f"An error occurred: {e}")
+    # finally:
+    #     # Commit the changes and close the connection
+    #     conn.commit()
+    #     conn.close()
 
     port = int(os.getenv('PORT', 8000))  # Default to 8000 if PORT is not set
     app.run(debug=False, host="0.0.0.0", port=port)
