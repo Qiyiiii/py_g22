@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matched Profiles</title>
+    <link rel="stylesheet" href="../static/css/userList.css">
+</head>
+<script>
+    function back(uid) {
+        window.location.href = `/profile/${uid}`;
+    }
+</script>
+<body>
+    <div class="container">
+        <h1 class="heading">{{ title }}</h1>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-message">
+            {{ messages[-1] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% if users %}
+        <div class="profiles">
+            {% for user in users %}
+            {% if user %}
+            <div class="profile-card">
+                <p><strong>Name:</strong> {{ user[0] }}</p>
+                <p><strong>Email:</strong> {{ user[1] }}</p>
+                <p><strong>Gender:</strong> {{ user[2] }}</p>
+                <p><strong>Location:</strong> {{ user[3] }}</p>
+                <p><strong>Age:</strong> {{ user[4] }}</p>
+                <p><strong>Interests:</strong> {{ user[5] | join(', ') }}</p>
+            </div>
+
+            
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No users found.</p>
+        {% endif %}
+        <button class="back-button" onclick="back({{uid}})">Back to Profile</button>
+    </div>
+</body>
+</html>

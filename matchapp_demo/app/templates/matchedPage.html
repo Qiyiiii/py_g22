@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matched Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<script>
+    function likeUser(uid1, uid2) {
+        window.location.href = `/like/${uid1}/${uid2}`;
+    }
+
+    function unlikeUser(uid1, uid2) {
+        window.location.href = `/unlike/${uid1}/${uid2}`;
+    }
+
+    function back(uid1) {
+        window.location.href = `/profile/${uid1}`;
+    }
+</script>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>Suggested Match!</h2>
+        </div>
+
+        <div class="profile-details">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="flash-message">
+                    {{ messages[-1] }}
+                </div>
+                {% endif %}
+            {% endwith %}
+
+            {% if user %}
+            <p><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</p> 
+            <p><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</p> 
+            <p><img src="{{ url_for('static', filename='images/gender.png') }}" alt="Icon"> Gender: {{ user[2] }}</p> 
+            <p><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</p> 
+            <p><img src="{{ url_for('static', filename='images/age.png') }}" alt="Image"> Age: {{ user[4] }}</p> 
+            {% else %}
+            <p>No user information available.</p>
+            {% endif %}
+
+            {% if interests %}
+            <p>My interests:</p>
+            <ul>
+                {% for interest in interests %}
+                <li>{{ interest }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Don't have any interests recorded yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="profile-actions">
+            <button onclick="likeUser({{ uid1 }}, {{ uid2 }})">Like User</button>
+            <button onclick="unlikeUser({{ uid1 }}, {{ uid2 }})">Dislike User</button>
+            <button onclick="back({{ uid1 }})">Go back to profile page</button>
+        </div>
+    </div>
+</body>
+</html>

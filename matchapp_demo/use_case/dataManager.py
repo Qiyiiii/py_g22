@@ -3,9 +3,7 @@ import pandas as pd
 
 DB_PATH = "../database/matchapp.db"
 
-# TODO Bella -add new database columns sim_weight, loc_weight, age_weight with default values
-# TODO Olivia - fix it so that location is handled
-def create_user(name, email, gender, age, location, latitude,longitude):
+def create_user(name, email, gender, location, age):
     """
     Create a new user and insert into the database.
 
@@ -17,21 +15,15 @@ def create_user(name, email, gender, age, location, latitude,longitude):
             cursor = connection.cursor()
             # Perform Insert to the table
             cursor.execute('''
-                INSERT INTO User (name, email, gender, age)
-                VALUES (?, ?, ?, ?)
-            ''', (name, email, gender, age))
-            # Get id of the new user
-            user_id = cursor.lastrowid
-
-            cursor.execute('''
-                INSERT INTO Location (uid, location, latitude, longitude)
-                VALUES (?, ?, ?,?)
-            ''', (user_id,location, latitude, longitude))
+                INSERT INTO User (name, email, gender, location, age)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (name, email, gender, location, age))
 
             # Save change
             connection.commit()
 
-
+            # Get id of the new user
+            user_id = cursor.lastrowid
             
             print(f"User {name} added successfully with ID {user_id}.")
             return user_id
@@ -67,7 +59,7 @@ def get_users(uid):
         return []
 
 def get_user_info(uid):
-    # TODO Olivia - fix location so that it is retrieved here
+
     """
     Get the profile information of the User with (uid) from the database.
 
@@ -77,18 +69,16 @@ def get_user_info(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute('SELECT name, email, gender, age FROM User WHERE uid = ?', (uid,))
-            user_result = cursor.fetchone()
-            cursor.execute('SELECT location FROM Location WHERE uid = ?', (uid,))
-            location_result = cursor.fetchone()[0]
-            combined_result = (user_result[0], user_result[1], user_result[2], location_result,user_result[3]) #+ (location_result,)
-            return combined_result
+            cursor.execute('SELECT name, email, gender, location, age FROM User WHERE uid = ?', (uid,))
+            return cursor.fetchone()
 
     except sqlite3.Error as e:
         # print error message
         # change it to your own
         print(f"Not succuessful: {e}")
         return ()
+
+
 
 def remove_user_with_id(uid):
     try:

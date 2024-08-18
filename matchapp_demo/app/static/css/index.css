@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ff8383;
+}
+
+.app-name {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 900;
+    font-size: 3rem; /* Adjust size as needed */
+    color: #333;
+    margin-bottom: 20px; /* Space between app name and heart container */
+    text-align: center;
+}
+
+.heart {
+    --c: red;
+    width: 500px; 
+    aspect-ratio: 1;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none; 
+    background: transparent; 
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    
+    background:
+     /* 1 */ radial-gradient(circle at 60% 65%, var(--c) 64%, #0000 65%) top left/50% 50%,
+     /* 2 */ radial-gradient(circle at 40% 65%, var(--c) 64%, #0000 65%) top right/50% 50%,
+     /* 3 */ conic-gradient(from -45deg at 50% 85.5%, var(--c) 90deg, #0000 0) bottom/100% 50%;
+    background-repeat: no-repeat;
+}  
+
+.heart h1 {
+    font-family: 'Playfair Display', serif; /* Stylish font */
+    font-weight: 700; /* Bold weight */
+    font-size: 1.5rem; /* Smaller size */
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin: 0; /* Remove default margin */
+}
+
+.button-icon img {
+    width: 16px;  /* Adjust the width to your desired size */
+    height: 16px; /* Adjust the height to your desired size */
+    margin-right: 8px;  /* Space between the icon and the text */
+    vertical-align: middle;  /* Align the icon vertically with the text */
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #ff8383;
+    background-color: #ff8383;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: red;
+}
+
+button img {
+    width: 16px; /* Example size */
+    height: 16px;
+    margin-right: 8px; /* Space between the icon and text */
+}
