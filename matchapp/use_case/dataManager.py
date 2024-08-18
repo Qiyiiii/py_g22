@@ -44,25 +44,26 @@ def create_user(name, email, gender, age, location, latitude,longitude, interest
         return -1
 
 
-def get_users(uid):
+def get_users(uid,my_gender,my_min_age,my_max_age):
     """
     get a datafrmae of users that who could be compatible with our user (uid)
 
     Returns: 
     Dataframe: user
     """
-    my_gender = get_user_info(uid)[2]
     try:
         with sqlite3.connect(DB_PATH) as connection:
             create_matches_table = """
-            SELECT user.uid, user.name, user.gender, user.age, user.location, interest.interest
+            SELECT user.uid, user.name, user.gender, user.age, interest.interest, location.latitude, location.longitude
             FROM user
             LEFT JOIN Actions ON user.uid = Actions.uid2 AND Actions.uid1 = ?
-            LEFT JOIN interest ON user.uid = interest.uid
+            LEFT JOIN Interest ON user.uid = interest.uid
+            LEFT JOIN Location ON user.uid = location.uid
             WHERE Actions.uid2 IS NULL 
-            AND user.gender != ?;
+            AND user.gender != ?
+            AND user.age BETWEEN ? AND ?;
             """
-            rec = pd.read_sql_query(create_matches_table, connection, params=(uid, my_gender,))
+            rec = pd.read_sql_query(create_matches_table, connection, params=(uid, my_gender,my_min_age,my_max_age))
             return rec
 
 
@@ -83,10 +84,22 @@ def get_user_info(uid):
             cursor = connection.cursor()
             cursor.execute('SELECT name, email, gender, age FROM User WHERE uid = ?', (uid,))
             user_result = cursor.fetchone()
-            cursor.execute('SELECT location FROM Location WHERE uid = ?', (uid,))
-            location_result = cursor.fetchone()[0]
+            location_result = get_user_location(uid)[0]
             combined_result = (user_result[0], user_result[1], user_result[2], location_result,user_result[3]) #+ (location_result,)
             return combined_result
+
+    except sqlite3.Error as e:
+        # print error message
+        # change it to your own
+        print(f"Not succuessful: {e}")
+        return ()
+
+def get_user_location(uid):
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute('SELECT location, latitude, longitude FROM Location WHERE uid = ?', (uid,))
+            return cursor.fetchone()
 
     except sqlite3.Error as e:
         # print error message
@@ -161,7 +174,7 @@ def update_user_age(uid, new_age):
         print(f"Not succuessful: {e}")
         return ()
 
-def update_user_location(uid, new_location):
+def update_user_location(uid, new_location, new_latitude, new_longitude):
     """
     Change the location of the user with the specific uid.
 
@@ -172,7 +185,7 @@ def update_user_location(uid, new_location):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
             # TODO: Implement the logic to update user location
-            cursor.execute("UPDATE user SET location = ? WHERE uid = ?", (new_location, uid))
+            cursor.execute("UPDATE Location SET location = ?, latitude = ?, longitude = ? WHERE uid = ?", (new_location, new_latitude, new_longitude, uid))
             connection.commit()
             if cursor.rowcount == 0:
                 return False

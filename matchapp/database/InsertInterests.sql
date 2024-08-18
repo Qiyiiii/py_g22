@@ -1,5 +1,7 @@
--- Mia (email: mmd158@yahoo.com)
+
 DELETE FROM interest;
+-- Mia (email: mmd158@yahoo.com)
+
 INSERT INTO interest (uid, interest)
 SELECT uid, 'Reality TV' FROM user WHERE email = 'mmd158@yahoo.com'
 UNION ALL
