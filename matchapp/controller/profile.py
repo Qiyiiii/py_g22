@@ -13,6 +13,17 @@ class Content_type(Enum):
     LOCATION = 3
     AGE = 4
 
+def geocode_location(location):
+    ctx = ssl.create_default_context(cafile=certifi.where())
+    nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
+
+    try:
+        found_location = nomi.geocode(location + ', United States')
+        latitude, longitude = (found_location.latitude, found_location.longitude)
+    except Exception:
+        return -1
+
+    return latitude, longitude
 
 def add_user(name, email, gender, location, age):
     """
@@ -22,14 +33,7 @@ def add_user(name, email, gender, location, age):
     On success, return uid of the user created
     else -1
     """
-    ctx = ssl.create_default_context(cafile=certifi.where())
-    nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
-
-    try:
-        found_location = nomi.geocode(location + ', United States')
-        latitude, longitude = (found_location.latitude, found_location.longitude)
-    except Exception:
-        return -1
+    latitude,longitude = geocode_location(location)
 
     return create_user(name, email, gender, age, location, latitude, longitude)
 
@@ -65,7 +69,8 @@ def change_profile(content_type, uid, content):
     elif content_type == Content_type.GENDER:
         return update_user_gender(uid, content)
     elif content_type == Content_type.LOCATION:
-        return update_user_location(uid, content)
+        new_latitude, new_longitude = geocode_location(content)
+        return update_user_location(uid, content, new_latitude, new_longitude)
     elif content_type == Content_type.AGE:
         return update_user_age(uid, content)
     else:

@@ -2,12 +2,10 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from use_case.dataManager import *
-from geopy.geocoders  import Nominatim# for distances
 from geopy.distance import geodesic  # for distances
 from sklearn.preprocessing import MinMaxScaler  # to normalize for scoring
 import numpy as np
-import ssl
-import certifi
+
 
 def find_match(uid):
     """
@@ -19,26 +17,26 @@ def find_match(uid):
     on success, return the uid of user that matched with the current u ser
     else: return -1
     """
-    ctx = ssl.create_default_context(cafile=certifi.where())
-    nomi= Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
-
     #Get info about the user to compare to other profiles
     my_profile = get_user_info(uid)
+    my_gender = my_profile[2]
     my_age = my_profile[4]
-    my_postal_code = my_profile[3]
-    my_location = nomi.geocode(my_postal_code)
     my_interests = get_user_interest(uid)
-    my_lat_long = (my_location.latitude, my_location.longitude)
 
-    rec = get_users(uid) #get the table of potential matches
-    if rec.empty:
-        return -1
+    my_location = get_user_location(uid)
+    my_lat_long = (my_location[1], my_location[2])
 
     #Filter out based on age
     yrs = 5 # Set preferred age range to +/- 5 years
-    min_age = my_age - yrs
-    max_age = my_age + yrs
-    rec = rec[(rec.age >= min_age) & (rec.age <= max_age)] #Filter out people outside that age range
+    my_min_age = my_age - yrs
+    my_max_age = my_age + yrs
+
+    rec = get_users(uid, my_gender, my_min_age, my_max_age) #get the table of potential matches
+    if rec.empty:
+        return -1
+
+
+    #rec = rec[(rec.age >= min_age) & (rec.age <= max_age)] #Filter out people outside that age range
     rec['age dist'] = np.abs(my_age - rec['age'])
 
     #Find common interets
@@ -55,16 +53,8 @@ def find_match(uid):
     if rec.empty:
         return -1
 
-## Old version ##
-    #Calculate geographical distance
     def geo_distance(row):
-        try:
-            postal_code = row['location']
-            location = nomi.geocode(postal_code +', United States')
-            lat_long = (location.latitude, location.longitude)
-            distance = geodesic(my_lat_long, lat_long).kilometers
-        except Exception:
-            distance = 1000 #TODO: This is a temporary way of dealing with invalid postal codes in the DB
+        distance = geodesic(my_lat_long, (row['latitude'], row['longitude'])).kilometers
         return distance
 
     rec['geo_distance'] = rec.apply(geo_distance, axis=1)
@@ -139,4 +129,4 @@ def unlike_user(uid1, uid2):
 
 #  example code
 if __name__ == "__main__":
-    print(find_match(31))
+    print(find_match(1))
