@@ -27,7 +27,6 @@ def profile(uid):
     user_info = get_user_info(uid)
     user_interests = get_interest(uid)
 
-
     if user_info:
         return render_template("profile.html", user=user_info, uid=uid, interests = user_interests)
     else:
@@ -126,7 +125,7 @@ def create_user():
     location = request.form['location']
     age = request.form['age']
     
-    userid = add_user(name, email, gender, location, age)  
+    userid = add_user(name, email, gender, location, age)
     
     if userid > 0:
         flash(f"User created successfully with Userid {userid}")
