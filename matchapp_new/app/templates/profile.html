@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ff8383;
+        }
+
+        .profile-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+            padding: 20px;
+            height:auto;
+        }
+        
+        .profile-header {
+            color: #ff8383;
+            padding: 10px 10px;
+            position: relative;
+            font-weight: bold;
+        }
+
+        .profile-header img {
+            border-radius: 50%;
+            border: 3px solid #ff8383;
+            width: 80px;
+            height: 80px;
+        }
+
+        .profile-header h2 {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .profile-details {
+            padding: 10px 20px 20px;
+            text-align: left;
+        }
+
+        .profile-details p {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .profile-details p img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .profile-actions {
+            padding: 10px 0;
+        }
+
+        .profile-actions button {
+            background-color: #fff;
+            border: 1px solid #ff8383;
+            color: #ff8383;
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .profile-actions button:hover {
+            background-color: red;
+            color: white;
+        }
+
+        /* Flash message styles */
+        .flashes {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .flashes li {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .flashes .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .flashes .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function add_interest(uid){
+        let new_interest = prompt("Please enter your interest:");
+        if (new_interest) {
+            $.ajax({
+                url: '/add_interest/' + uid ,
+                type: 'POST',
+                data: {interest: new_interest},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+        }
+
+    }
+    function match(uid) {
+        window.location.href = `/match/${uid}`;
+    }
+    function view_liked(uid) {
+        window.location.href = `/liked-users/${uid}`;
+    }
+    function view_unliked(uid) {
+        window.location.href = `/unliked-users/${uid}`;
+    }
+    function view_mutual_liked(uid) {
+        window.location.href = `/mutually-liked-users/${uid}`;
+    }
+    function view_top_5(uid) {
+        window.location.href = `/top_user/${uid}`;
+    }
+    function deleteUser(uid) {
+    if (confirm("Are you sure you want to delete your account?")) {
+        $.ajax({
+            url: `/delete_user/${uid}`,
+            type: 'POST',
+            success: function() {
+                // Show a success message
+                window.location.href = `/`;
+            },
+            error: function() {
+                alert("Failed to delete the account.");
+            }
+        });
+    }
+}
+function edit_name(uid){
+    let content = prompt("Please enter your new name");
+        if (content) {
+            
+            $.ajax({
+                url: '/editname/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
+
+function edit_gender(uid){
+    let content = prompt("Please claim your new gender");
+        if (content) {
+            
+            $.ajax({
+                url: '/editgender/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
+
+function edit_location(uid){
+    let content = prompt("Please change to your new location");
+        if (content) {
+            
+            $.ajax({
+                url: '/editlocation/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
+
+
+function edit_age(uid){
+    let content = prompt("Please change to your new age");
+        if (content) {
+            
+            $.ajax({
+                url: '/editage/' + uid ,
+                type: 'POST',
+                data: {content: content},
+                success: function(response) {
+                    location.reload();  
+                }
+            });
+            
+        }
+        
+}
+
+function back(uid) {
+    window.location.href = '/';
+
+}
+
+
+</script>
+<body>
+    <!-- Flash message display -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes" style="display: none;">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="heart">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h2>{{ user[0] }}'s Profile</h2>
+            </div>
+            <div class="profile-details">
+                {% if user %}
+                <div>
+                    <p> User ID: {{ uid }}</p>
+                </div>
+                <p> 
+                    
+                    
+                    <span><img src="{{ url_for('static', filename='images/person.png') }}" alt="Image"> Name: {{ user[0] }}</span>
+                    <button class="edit-button" onclick="edit_name({{ uid }})">Edit</button>
+                  
+                    
+                </p>
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/email.png') }}" alt="Image"> Email: {{ user[1] }}</span>
+                </p>
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/gender.png') }}" alt="Image"> Gender: {{ user[2] }}</span>
+                    <button class="edit-button" onclick="edit_gender({{uid}})">Edit</button>
+                </p>
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</span>
+                    <button class="edit-button" onclick="edit_location({{uid}})">Edit</button>
+                </p>
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/age.png') }}" alt="Image"> Age: {{ user[4] }}</span>
+                    <button class="edit-button" onclick="edit_age({{uid}}) ">Edit</button>
+                </p>
+                {% else %}
+                <p>No user information available.</p>
+                {% endif %}
+                
+                {% if interests %}
+                <p>
+                    <span><img src="{{ url_for('static', filename='images/interests.png') }}" alt="Image"> 
+                    My Interests:
+                    <button class="edit-button" onclick="add_interest({{ uid }})">Add</button>
+                </p>
+                
+                <ul>
+                    {% for interest in interests %}
+                        <li>{{ interest }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                
+                <p>Don't have any interests recorded yet.</p>
+                <button  onclick="add_interest({{ uid }})">Add the first interest</button>
+                
+                {% endif %}
+                
+            </div>
+            <div class="profile-actions">
+                <button onclick="match({{ uid }})">New Match</button>
+                <button onclick="view_liked({{ uid }})">Liked</button>
+                <button onclick="view_unliked({{ uid }})">Disliked</button>
+                <button onclick="view_mutual_liked({{ uid }})">Matches</button>
+     
+            </div>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <form id="delete-form" action="{{ url_for('delete_user', uid=uid) }}" method="post" onsubmit="return confirmDelete()">
+                    <button type="submit" class="delete-button">Delete User</button>
+                </form>
+                <button class="delete-button" onclick="back({{ uid }})">Log out</button>
+            </div>
+    
+            <script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this user? This action cannot be undone.');
+                }
+            </script>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var messages = {{ get_flashed_messages(with_categories=true)|tojson }};
+            messages.forEach(function(message) {
+                alert(message[1]); // Display the message content in an alert popup
+            });
+        };
+    </script>
+</body>
+</html>
