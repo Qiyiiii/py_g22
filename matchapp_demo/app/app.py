@@ -242,4 +242,4 @@ if __name__ == "__main__":
     #     conn.close()
 
     port = int(os.getenv('PORT', 8000))  # Default to 8000 if PORT is not set
-    app.run(debug=False, host="0.0.0.0", port=port)
+    app.run(debug=True, host="0.0.0.0", port=port)
