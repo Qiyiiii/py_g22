@@ -2,8 +2,9 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from use_case.dataManager import *
-
-
+from geopy.geocoders import Nominatim
+import ssl
+import certifi
 
 from enum import Enum
 class Content_type(Enum):
@@ -21,7 +22,16 @@ def add_user(name, email, gender, location, age):
     On success, return uid of the user created
     else -1
     """
-    return create_user(name, email, gender, location, age)
+    ctx = ssl.create_default_context(cafile=certifi.where())
+    nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
+
+    try:
+        found_location = nomi.geocode(location + ', United States')
+        latitude, longitude = (found_location.latitude, found_location.longitude)
+    except Exception:
+        return -1
+
+    return create_user(name, email, gender, age, location, latitude, longitude)
 
 
 def get_user_profile(uid):
