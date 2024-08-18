@@ -14,7 +14,7 @@ class Content_type(Enum):
     AGE = 4
 
 
-def add_user(name, email, gender, location, age):
+def add_user(name, email, gender, location, age, interests=[]):
     """
     add User with name, email, gender, location, age into databse
 
@@ -31,7 +31,9 @@ def add_user(name, email, gender, location, age):
     except Exception:
         return -1
 
-    return create_user(name, email, gender, age, location, latitude, longitude)
+    uid = create_user(name, email, gender, age, location, latitude, longitude, interests)
+
+    return uid if uid > 0 else -1
 
 
 def get_user_profile(uid):
