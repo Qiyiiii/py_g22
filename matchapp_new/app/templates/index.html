@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group 22</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@900&display=swap">
+</head>
+<body>
+    <h1 class="app-name">chill.</h1> <!-- App name here -->
+    <div class="heart">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+
+        <h1>Find Your Match!</h1> 
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div>
+            {{ messages[-1] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Buttons -->
+        <button onclick="createUser()">
+            Create Account
+        </button>
+
+        <button onclick="loginUser()">
+            Login
+        </button>
+    </div>
+
+    <script>
+        function createUser() {
+            window.location.href = "/register";
+        }
+
+        function loginUser() {
+            let userId = prompt("Please enter your User ID:");
+            if (userId) {
+                window.location.href = `/profile/${userId}`;
+            }
+        }
+    </script>
+</body>
+</html>
