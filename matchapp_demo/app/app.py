@@ -183,63 +183,12 @@ def edit_age(uid):
 
 
 
-import sqlite3
-
-# Path to your SQLite database
-db_path = '../database/matchapp.db'
-
-# SQL commands to create the tables
-sql_commands = """
-DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS Interest;
-DROP TABLE IF EXISTS Actions;
-
-CREATE TABLE IF NOT EXISTS User (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(50) NOT NULL,
-    email VARCHAR(50) UNIQUE NOT NULL,
-    gender VARCHAR(5) CHECK (gender IN ('Male', 'Female')),
-    location VARCHAR(100),
-    age INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS Actions (
-    uid1 INTEGER,
-    uid2 INTEGER,
-    like BOOLEAN NOT NULL,
-    PRIMARY KEY (uid1, uid2),
-    FOREIGN KEY (uid1) REFERENCES User(uid) ON DELETE CASCADE,
-    FOREIGN KEY (uid2) REFERENCES User(uid) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS Interest (
-    uid INTEGER,
-    interest VARCHAR(100) NOT NULL,
-    PRIMARY KEY (uid, interest),
-    FOREIGN KEY (uid) REFERENCES User(uid) ON DELETE CASCADE
-);
-"""
-
 
 
 
 if __name__ == "__main__":
-    # # Connect to the SQLite database
-    # conn = sqlite3.connect(db_path)
-
-    # # Create a cursor object
-    # cursor = conn.cursor()
-
-    # try:
-    #     # Execute the SQL commands
-    #     cursor.executescript(sql_commands)
-    #     print("Tables created successfully.")
-    # except sqlite3.Error as e:
-    #     print(f"An error occurred: {e}")
-    # finally:
-    #     # Commit the changes and close the connection
-    #     conn.commit()
-    #     conn.close()
+  
+    
 
     port = int(os.getenv('PORT', 8000))  # Default to 8000 if PORT is not set
     app.run(debug=True, host="0.0.0.0", port=port)

@@ -5,7 +5,7 @@ DB_PATH = "../database/matchapp.db"
 
 # TODO Bella -add new database columns sim_weight, loc_weight, age_weight with default values
 # TODO Olivia - fix it so that location is handled
-def create_user(name, email, gender, age, location, latitude,longitude):
+def create_user(name, email, gender, age, location, latitude,longitude, interests):
     """
     Create a new user and insert into the database.
 
@@ -22,19 +22,26 @@ def create_user(name, email, gender, age, location, latitude,longitude):
             ''', (name, email, gender, age))
             # Get id of the new user
             user_id = cursor.lastrowid
+            # Commit the changes to the database
+            connection.commit()
 
             cursor.execute('''
                 INSERT INTO Location (uid, location, latitude, longitude)
                 VALUES (?, ?, ?,?)
             ''', (user_id,location, latitude, longitude))
+            connection.commit()
+            for interest in interests:
+                print(f"Processing interest: {interest}, Type: {type(interest)}")
+                if not add_user_interest(user_id, interest):
+                    print(f"Failed to add interest '{interest}' for user {user_id}")
+                    return -1  # Rollback or handle error as needed
 
-            # Save change
+            # Commit the changes to the database
             connection.commit()
 
-
-            
             print(f"User {name} added successfully with ID {user_id}.")
-            return user_id
+            return user_id          
+
     except sqlite3.Error as e:
         print(f"Error creating user: {e}")
         return -1
@@ -442,30 +449,21 @@ def get_mutual_likes(uid):
 
 # Interest CRUD
 def add_user_interest(uid, interest):
-    """
-    Add interest to a User with (uid).
-
-    Return:
-    bool: True on success, False otherwise.
-    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to add interest
             cursor.execute(
                 "INSERT INTO interest (uid, interest) VALUES (?, ?)",
                 (uid, interest)
             )
-
             connection.commit()
-
+            print(f"Added interest '{interest}' for user {uid}")
             return True
 
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Not successful: {e}")
         return False
+
 
 # def remove_interest(uid, interest):
 #     """

@@ -28,7 +28,7 @@ def geocode_location(location):
 
     return latitude, longitude
 
-def add_user(name, email, gender, location, age):
+def add_user(name, email, gender, location, age, interests=[]):
     """
     add User with name, email, gender, location, age into databse
 
@@ -38,7 +38,9 @@ def add_user(name, email, gender, location, age):
     """
     latitude,longitude = geocode_location(location)
 
-    return create_user(name, email, gender, age, location, latitude, longitude)
+    uid = create_user(name, email, gender, age, location, latitude, longitude, interests)
+
+    return uid if uid > 0 else -1
 
 
 def get_user_profile(uid):
