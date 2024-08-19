@@ -22,11 +22,14 @@ def create_user(name, email, gender, age, location, latitude,longitude, interest
             ''', (name, email, gender, age))
             # Get id of the new user
             user_id = cursor.lastrowid
+            # Commit the changes to the database
+            connection.commit()
 
             cursor.execute('''
                 INSERT INTO Location (uid, location, latitude, longitude)
                 VALUES (?, ?, ?,?)
             ''', (user_id,location, latitude, longitude))
+            connection.commit()
             for interest in interests:
                 print(f"Processing interest: {interest}, Type: {type(interest)}")
                 if not add_user_interest(user_id, interest):
