@@ -2,18 +2,33 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from use_case.dataManager import *
-
-
+from geopy.geocoders import Nominatim
+import ssl
+import certifi
 
 from enum import Enum
 class Content_type(Enum):
     NAME = 1
     GENDER = 2
-    Location = 3
+    LOCATION = 3
     AGE = 4
+    SIM_WEIGHT = 5
+    LOC_WEIGHT = 6
+    AGE_WEIGHT = 7
 
+def geocode_location(location):
+    ctx = ssl.create_default_context(cafile=certifi.where())
+    nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
 
-def add_user(name, email, gender, location, age):
+    try:
+        found_location = nomi.geocode(location + ', United States')
+        latitude, longitude = (found_location.latitude, found_location.longitude)
+    except Exception:
+        return -1
+
+    return latitude, longitude
+
+def add_user(name, email, gender, location, age, interests=[]):
     """
     add User with name, email, gender, location, age into databse
 
@@ -21,7 +36,11 @@ def add_user(name, email, gender, location, age):
     On success, return uid of the user created
     else -1
     """
-    return create_user(name, email, gender, location, age)
+    latitude,longitude = geocode_location(location)
+
+    uid = create_user(name, email, gender, age, location, latitude, longitude, interests)
+
+    return uid if uid > 0 else -1
 
 
 def get_user_profile(uid):
@@ -35,6 +54,7 @@ def get_user_profile(uid):
     return get_user_info(uid)
 
 def change_profile(content_type, uid, content):
+
     """
     based on the type of content, change profile
 
@@ -49,17 +69,46 @@ def change_profile(content_type, uid, content):
     HINT: use the functions, e.g. update_user_gender(curosr, uid, new_gender)
     from use_case/dai.py
     """
-    if content_type == Content_type.AGE:
-        # TODO:
-        pass
+    if content_type == Content_type.NAME:
+        return update_user_name(uid, content)
     elif content_type == Content_type.GENDER:
-        # TODO
-        pass
-    # TODO: keep handling rest cases
+        return update_user_gender(uid, content)
+    elif content_type == Content_type.LOCATION:
+        new_latitude, new_longitude = geocode_location(content)
+        return update_user_location(uid, content, new_latitude, new_longitude)
+    elif content_type == Content_type.AGE:
+        return update_user_age(uid, content)
+    else:
+        return False  # If an unsupported content type is passed
+        
+  
+def change_weights(content_type, uid, content):
+
+    """
+    based on the type of content, change profile
+
+    Return:
+    On success, return True
+    else False
+
+    Example:
+    change_profile(Content_type.AGE, uid, "UOFT")
+    will change the name of the user
+
+    HINT: use the functions, e.g. update_user_gender(curosr, uid, new_gender)
+    from use_case/dai.py
+    """
+    if content_type == Content_type.sim_weight:
+        return update_sim_weight(uid, content)
+    elif content_type == Content_type.loc_weight:
+        return update_loc_weight(uid, content)
+    elif content_type == Content_type.age_weight:
+        return update_age_weight(uid, content)
+    else:
+        return False  # If an unsupported content type is passed
 
 
 def add_interest(uid, interest):
-
     """
     add the interest to the interes of the user with (uid)
 
@@ -67,13 +116,11 @@ def add_interest(uid, interest):
     bool: True on success, False otherwise.
     
     """
-    # TODO: HINT: add_user_interest(uid, interest)
-    cursor.execute(
-        "INSERT INTO interest (user_id, interest) VALUES (?, ?)",
-        (uid, interest)
-    )
-    connection.commit()
-    return True
+    # Attempt to add the interest and store the result
+
+    return add_user_interest(uid, interest)
+ 
+
 
 def get_interest(uid):
     """
@@ -84,22 +131,7 @@ def get_interest(uid):
     """
     # TODO: HINT: use get_user_likes(uid)
     #return []
-    try:
-        with sqlite3.connect(DB_PATH) as connection:
-            cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve user interests
-            cursor.execute(
-                "SELECT interest FROM interest WHERE user_id = ?",
-                (uid,)
-            )
-            interests = [interest[0] for interest in cursor.fetchall()]
-            return interests
-
-    except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
-        return []
+    return get_user_interest(uid)
 
 def delete_user(uid):
     """
@@ -110,7 +142,7 @@ def delete_user(uid):
     else False
     """
     # TODO: HINT: use function remove_user_with_id(cursor, uid) from use_case/dai.py
-    pass
+    return remove_user_with_id(uid)
 def get_liked_users(uid):
     """
     get a list of users that User with (uid) liked
@@ -140,13 +172,13 @@ def get_mutual_liked_users(uid):
     List: (name, emails) of users that User with (uid) liked and that also liked User with (uid)
     """
     # TODO: HINT: use get_mutual_likes(uid), but be careful you should return a list of ((name, emails))
-    return []
-    pass
+    return get_mutual_likes(uid)
 
 
 
-#  example code
-#if __name__ == "__main__":
-#    user_id = add_user('Pokemon', 'pk123@rotman.com', 'Male', 'Trt', 25)
 
-get_interest(1)
+# #  example code
+# if __name__ == "__main__":
+#     add_interest(2, "hello")
+
+#     print(get_interest(2))
