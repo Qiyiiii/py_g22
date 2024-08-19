@@ -12,6 +12,9 @@ class Content_type(Enum):
     GENDER = 2
     LOCATION = 3
     AGE = 4
+    SIM_WEIGHT = 5
+    LOC_WEIGHT = 6
+    AGE_WEIGHT = 7
 
 def geocode_location(location):
     ctx = ssl.create_default_context(cafile=certifi.where())
@@ -25,7 +28,7 @@ def geocode_location(location):
 
     return latitude, longitude
 
-def add_user(name, email, gender, location, age):
+def add_user(name, email, gender, location, age, interests=[]):
     """
     add User with name, email, gender, location, age into databse
 
@@ -35,7 +38,9 @@ def add_user(name, email, gender, location, age):
     """
     latitude,longitude = geocode_location(location)
 
-    return create_user(name, email, gender, age, location, latitude, longitude)
+    uid = create_user(name, email, gender, age, location, latitude, longitude, interests)
+
+    return uid if uid > 0 else -1
 
 
 def get_user_profile(uid):
@@ -77,7 +82,30 @@ def change_profile(content_type, uid, content):
         return False  # If an unsupported content type is passed
         
   
+def change_weights(content_type, uid, content):
 
+    """
+    based on the type of content, change profile
+
+    Return:
+    On success, return True
+    else False
+
+    Example:
+    change_profile(Content_type.AGE, uid, "UOFT")
+    will change the name of the user
+
+    HINT: use the functions, e.g. update_user_gender(curosr, uid, new_gender)
+    from use_case/dai.py
+    """
+    if content_type == Content_type.sim_weight:
+        return update_sim_weight(uid, content)
+    elif content_type == Content_type.loc_weight:
+        return update_loc_weight(uid, content)
+    elif content_type == Content_type.age_weight:
+        return update_age_weight(uid, content)
+    else:
+        return False  # If an unsupported content type is passed
 
 
 def add_interest(uid, interest):

@@ -112,10 +112,7 @@ def mutual_users(uid):
 def add_user_interest(uid):
     interest = request.form.get('interest')
     add_interest(uid, interest)
-
-        
     return redirect(url_for('profile', uid=uid))
-
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
@@ -124,27 +121,23 @@ def create_user():
     gender = request.form['gender']
     location = request.form['location']
     age = request.form['age']
-    
-    userid = add_user(name, email, gender, location, age)
+    interests = request.form.get('interests')  # This should be a comma-separated string
+
+    print(f"Name: {name}, Email: {email}, Gender: {gender}, Location: {location}, Age: {age}")
+    print(f"Raw Interests: {interests}")  # Debugging line
+
+    # Convert the comma-separated interests string into a list
+    interests_list = interests.split(",") if interests else []
+
+    # Pass all user details, including interests, to the add_user function
+    userid = add_user(name, email, gender, location, age, interests_list)
     
     if userid > 0:
         flash(f"User created successfully with Userid {userid}")
         return redirect(url_for('profile', uid=userid))
-        
     else:
         flash("Failed to create user")
         return redirect(url_for('index'))
-    
-@app.route('/delete_user/<int:uid>', methods=['POST'])
-def delete_user(uid):
-    success = remove_user_with_id(uid)
-    if success:
-        flash(f"User {uid} has been deleted successfully.")
-        return render_template("index.html")
-    else:
-        flash(f"Failed to delete User {uid}.")
-        return redirect(url_for('profile', uid=uid))
-
 
 @app.route('/editname/<int:uid>', methods=['POST'])
 def edit_name(uid):
@@ -180,6 +173,14 @@ def edit_age(uid):
         flash(f"Profile changed")
     return redirect(url_for('profile', uid=uid))
 
-
+@app.route('/delete_user/<int:uid>', methods=['POST'])
+def delete_user(uid):
+    success = remove_user_with_id(uid)
+    if success:
+        flash(f"User {uid} has been deleted successfully.")
+        return render_template("index.html")
+    else:
+        flash(f"Failed to delete User {uid}.")
+        return redirect(url_for('profile', uid=uid))
 if __name__ == "__main__":
     app.run(debug=True)
