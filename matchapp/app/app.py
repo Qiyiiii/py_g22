@@ -173,6 +173,14 @@ def edit_age(uid):
         flash(f"Profile changed")
     return redirect(url_for('profile', uid=uid))
 
-
+@app.route('/delete_user/<int:uid>', methods=['POST'])
+def delete_user(uid):
+    success = remove_user_with_id(uid)
+    if success:
+        flash(f"User {uid} has been deleted successfully.")
+        return render_template("index.html")
+    else:
+        flash(f"Failed to delete User {uid}.")
+        return redirect(url_for('profile', uid=uid))
 if __name__ == "__main__":
     app.run(debug=True)
