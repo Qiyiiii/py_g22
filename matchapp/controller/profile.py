@@ -98,15 +98,14 @@ def change_weights(content_type, uid, content):
     HINT: use the functions, e.g. update_user_gender(curosr, uid, new_gender)
     from use_case/dai.py
     """
-    if content_type == Content_type.sim_weight:
+    if content_type == Content_type.SIM_WEIGHT:
         return update_sim_weight(uid, content)
-    elif content_type == Content_type.loc_weight:
+    elif content_type == Content_type.LOC_WEIGHT:
         return update_loc_weight(uid, content)
-    elif content_type == Content_type.age_weight:
+    elif content_type == Content_type.AGE_WEIGHT:
         return update_age_weight(uid, content)
     else:
         return False  # If an unsupported content type is passed
-
 
 def add_interest(uid, interest):
     """
