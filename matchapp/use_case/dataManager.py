@@ -115,7 +115,6 @@ def get_users(uid, my_gender, my_min_age, my_max_age):
         return []
 
 def get_user_info(uid):
-    # TODO Olivia - fix location so that it is retrieved here
     """
     Get the profile information of the User with (uid) from the database.
 
