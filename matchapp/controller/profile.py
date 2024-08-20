@@ -36,12 +36,14 @@ def add_user(name, email, gender, location, age, interests=[]):
     On success, return uid of the user created
     else -1
     """
-    latitude,longitude = geocode_location(location)
+    location_result = geocode_location(location)
+    if location_result != -1:
+        latitude,longitude = location_result
+        uid = create_user(name, email, gender, age, location, latitude, longitude, interests)
+        return uid if uid > 0 else -1
 
-    uid = create_user(name, email, gender, age, location, latitude, longitude, interests)
-
-    return uid if uid > 0 else -1
-
+    else:
+        return -1
 
 def get_user_profile(uid):
     """
@@ -74,8 +76,12 @@ def change_profile(content_type, uid, content):
     elif content_type == Content_type.GENDER:
         return update_user_gender(uid, content)
     elif content_type == Content_type.LOCATION:
-        new_latitude, new_longitude = geocode_location(content)
-        return update_user_location(uid, content, new_latitude, new_longitude)
+        location_result = geocode_location(content)
+        if location_result != -1:
+            new_latitude, new_longitude = location_result
+            return update_user_location(uid, content, new_latitude, new_longitude)
+        else:
+            return -1
     elif content_type == Content_type.AGE:
         return update_user_age(uid, content)
     else:
