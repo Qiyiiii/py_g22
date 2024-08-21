@@ -1,4 +1,8 @@
 # Intro
+
+use this: ./matchapp/database/script.sh
+or python3 matchapp/app/app.py if you got the database ready
+
 Welcome to the **tinder-like matchapp** designed and developed by **Group 22** 
 It is a very simple program that allows user to 
 - register their information in database as an user
