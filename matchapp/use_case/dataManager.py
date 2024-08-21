@@ -4,8 +4,6 @@ import numpy as np
 
 DB_PATH = "../database/matchapp.db"
 
-# TODO Bella -add new database columns sim_weight, loc_weight, age_weight with default values
-# TODO Olivia - fix it so that location is handled
 def create_user(name, email, gender, age, location, latitude,longitude, interests):
     """
     Create a new user and insert into the database.
@@ -18,18 +16,18 @@ def create_user(name, email, gender, age, location, latitude,longitude, interest
             cursor = connection.cursor()
             # Perform Insert to the table
             cursor.execute('''
-                INSERT INTO User (name, email, gender, age, sim_weight, loc_weight, age_weight)
-                VALUES (?, ?, ?, ?, 10, 10, 5)
-            ''', (name, email, gender, age))
+                INSERT INTO User (name, email, gender, location, age, sim_weight, loc_weight, age_weight)
+                VALUES (?, ?, ?, ?, ?, 10, 10, 5)
+            ''', (name, email, gender, location, age))
             # Get id of the new user
             user_id = cursor.lastrowid
             # Commit the changes to the database
             connection.commit()
 
             cursor.execute('''
-                INSERT INTO Location (uid, location, latitude, longitude)
-                VALUES (?, ?, ?,?)
-            ''', (user_id,location, latitude, longitude))
+                INSERT INTO Coordinates (uid, latitude, longitude)
+                VALUES (?, ?, ?)
+            ''', (user_id, latitude, longitude))
             connection.commit()
             for interest in interests:
                 print(f"Processing interest: {interest}, Type: {type(interest)}")
@@ -47,17 +45,16 @@ def create_user(name, email, gender, age, location, latitude,longitude, interest
         print(f"Error creating user: {e}")
         return -1
 
-def get_user_location(uid):
+def get_user_coordinates(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute('SELECT location, latitude, longitude FROM Location WHERE uid = ?', (uid,))
+            cursor.execute('SELECT latitude, longitude FROM Coordinates WHERE uid = ?', (uid,))
             return cursor.fetchone()
 
     except sqlite3.Error as e:
         # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Could not retrieve coordinates: {e}")
         return ()
 
 def get_users(uid, my_gender, my_min_age, my_max_age):
@@ -70,12 +67,12 @@ def get_users(uid, my_gender, my_min_age, my_max_age):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             create_matches_table = """
-            SELECT user.uid, user.age, A.like, interest.interest, location.latitude, location.longitude
+            SELECT user.uid, user.age, A.like, interest.interest, coordinates.latitude, coordinates.longitude
             FROM user
             LEFT JOIN Actions ON user.uid = Actions.uid2 AND Actions.uid1 = ?
             LEFT JOIN Actions as A ON user.uid = A.uid1 AND A.uid2 = ?
             LEFT JOIN Interest ON user.uid = interest.uid
-            LEFT JOIN Location ON user.uid = location.uid
+            LEFT JOIN Coordinates ON user.uid = coordinates.uid
             WHERE Actions.uid2 IS NULL 
             AND user.gender != ?
             AND user.age BETWEEN ? AND ?;
@@ -87,32 +84,6 @@ def get_users(uid, my_gender, my_min_age, my_max_age):
         print(f"Error fetch users: {e}")
         return []
 
-# def get_users(uid,my_gender,my_min_age,my_max_age):
-#     """
-#     get a datafrmae of users that who could be compatible with our user (uid)
-#
-#     Returns:
-#     Dataframe: user
-#     """
-#     try:
-#         with sqlite3.connect(DB_PATH) as connection:
-#             create_matches_table = """
-#             SELECT user.uid, user.name, user.gender, user.age, interest.interest, location.latitude, location.longitude
-#             FROM user
-#             LEFT JOIN Actions ON user.uid = Actions.uid2 AND Actions.uid1 = ?
-#             LEFT JOIN Interest ON user.uid = interest.uid
-#             LEFT JOIN Location ON user.uid = location.uid
-#             WHERE Actions.uid2 IS NULL
-#             AND user.gender != ?
-#             AND user.age BETWEEN ? AND ?;
-#             """
-#             rec = pd.read_sql_query(create_matches_table, connection, params=(uid, my_gender,my_min_age,my_max_age))
-#             return rec
-
-
-    except sqlite3.Error as e:
-        print(f"Error fetch users: {e}")
-        return []
 
 def get_user_info(uid):
     """
@@ -124,14 +95,8 @@ def get_user_info(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            cursor.execute('SELECT name, email, gender, age FROM User WHERE uid = ?', (uid,))
-            user_result = cursor.fetchone()
-            location_result = get_user_location(uid)
-            if location_result:
-                combined_result = (user_result[0], user_result[1], user_result[2], location_result[0],user_result[3]) #+ (location_result,)
-                return combined_result
-            else:
-                return None
+            cursor.execute('SELECT name, email, gender, location, age FROM User WHERE uid = ?', (uid,))
+            return cursor.fetchone()
 
     except sqlite3.Error as e:
         # print error message
@@ -185,7 +150,6 @@ def update_user_gender(uid, new_gender):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user gender
             cursor.execute("UPDATE user SET gender = ? WHERE uid = ?", (new_gender, uid))
             connection.commit()
             if cursor.rowcount == 0:
@@ -209,7 +173,6 @@ def update_user_age(uid, new_age):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user age
             cursor.execute("UPDATE user SET age = ? WHERE uid = ?", (new_age, uid))
             connection.commit()
             if cursor.rowcount == 0:
@@ -232,8 +195,8 @@ def update_user_location(uid, new_location, new_latitude, new_longitude):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user location
-            cursor.execute("UPDATE Location SET location = ?, latitude = ?, longitude = ? WHERE uid = ?", (new_location, new_latitude, new_longitude, uid))
+            cursor.execute("UPDATE User SET location = ? WHERE uid = ?",(new_location, uid))
+            cursor.execute("UPDATE Coordinates SET latitude = ?, longitude = ? WHERE uid = ?", (new_latitude, new_longitude, uid))
             connection.commit()
             if cursor.rowcount == 0:
                 return False
@@ -257,7 +220,6 @@ def update_user_name(uid, new_name):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user name
             cursor.execute("UPDATE user SET name = ? WHERE uid = ?", (new_name, uid))
             connection.commit()
             if cursor.rowcount == 0:
@@ -271,6 +233,12 @@ def update_user_name(uid, new_name):
         return False
         
 def update_sim_weight(uid, new_sim_weight):
+    """
+    Change the importance of TV taste similarity to a User with (uid)
+
+    Return:
+    bool: True on success, False otherwise.
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
@@ -282,6 +250,12 @@ def update_sim_weight(uid, new_sim_weight):
         return False
 
 def update_loc_weight(uid, new_loc_weight):
+    """
+    Change the importance geographic distance to a User with (uid)
+
+    Return:
+    bool: True on success, False otherwise.
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
@@ -293,6 +267,12 @@ def update_loc_weight(uid, new_loc_weight):
         return False
 
 def update_age_weight(uid, new_age_weight):
+    """
+    Change the importance of age difference to a User with (uid)
+
+    Return:
+    bool: True on success, False otherwise.
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
@@ -336,45 +316,6 @@ def add_action(uid1, uid2, action):
         print(f"Not succuessful: {e}")
         return False
 
-# def change_action(uid1, uid2, action):
-#     """
-#     Change a specific user interaction from user with (uid1) to user with (uid2).
-
-#     Return:
-#     bool: True on success, False otherwise.
-#     """
-    
-#     try:
-#         with sqlite3.connect(DB_PATH) as connection:
-#             cursor = connection.cursor()
-#             # TODO: Implement the logic to change an action
-#             pass
-
-#     except sqlite3.Error as e:
-#         # print error message
-#         # change it to your own
-#         print(f"Not succuessful: {e}")
-#         return False
-
-# def get_user_action(uid):
-#     """
-#     Find all actions from that user to other people.
-
-#     Return:
-#     List: actions that from User with (uid)
-#     """
-#     try:
-#         with sqlite3.connect(DB_PATH) as connection:
-#             cursor = connection.cursor()
-#             # TODO: Implement the logic to retrieve user actions
-#             pass
-
-#     except sqlite3.Error as e:
-#         # print error message
-#         # change it to your own
-#         print(f"Not succuessful: {e}")
-#         return []
-
 def get_user_likes(uid):
     """
     Find all ids of Users that the User with (uid) liked.
@@ -385,7 +326,6 @@ def get_user_likes(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve liked users
             cursor.execute("SELECT uid2 FROM Actions WHERE uid1= ? and like = True ", (uid,))
             liked_users = [row[0] for row in cursor.fetchall()]
             return liked_users
@@ -406,7 +346,6 @@ def get_user_unlikes(uid):
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to retrieve unliked users
             cursor.execute("""
                             SELECT uid2 FROM Actions WHERE uid1 = ? and like = False
                         """, (uid,))
@@ -458,6 +397,12 @@ def get_mutual_likes(uid):
 
 # Interest CRUD
 def add_user_interest(uid, interest):
+    """
+    Add a TV genre to the interests of a User with (uid)
+
+    Return:
+    bool: True on success, False otherwise.
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
@@ -505,7 +450,6 @@ def get_user_interest(uid):
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
 
-            # TODO: Implement the logic to retrieve user interests
             cursor.execute(
                 "SELECT interest FROM interest WHERE uid= ?",
                 (uid,)
@@ -522,6 +466,3 @@ def get_user_interest(uid):
     
 # Example usage
 # if __name__ == "__main__":
- 
-#    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
-#    remove_user_with_id(user_id)
