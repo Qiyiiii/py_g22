@@ -12,9 +12,11 @@ class Content_type(Enum):
     GENDER = 2
     LOCATION = 3
     AGE = 4
-    SIM_WEIGHT = 5
-    LOC_WEIGHT = 6
-    AGE_WEIGHT = 7
+
+class Preferences_type(Enum):
+    SIM_WEIGHT = 1
+    LOC_WEIGHT = 2
+    AGE_WEIGHT = 3
 
 def geocode_location(location):
     ctx = ssl.create_default_context(cafile=certifi.where())
@@ -87,31 +89,14 @@ def change_profile(content_type, uid, content):
     else:
         return False  # If an unsupported content type is passed
         
-  
-def change_weights(content_type, uid, content):
-
-    """
-    based on the type of content, change profile
-
-    Return:
-    On success, return True
-    else False
-
-    Example:
-    change_profile(Content_type.AGE, uid, "UOFT")
-    will change the name of the user
-
-    HINT: use the functions, e.g. update_user_gender(curosr, uid, new_gender)
-    from use_case/dai.py
-    """
-    if content_type == Content_type.SIM_WEIGHT:
-        return update_sim_weight(uid, content)
-    elif content_type == Content_type.LOC_WEIGHT:
-        return update_loc_weight(uid, content)
-    elif content_type == Content_type.AGE_WEIGHT:
-        return update_age_weight(uid, content)
-    else:
-        return False  # If an unsupported content type is passed
+def change_weights(Preferences_type, uid, new_weight):
+    if Preferences_type == Preferences_type.SIM_WEIGHT:
+        return update_sim_weight(uid, new_weight)
+    elif Preferences_type == Preferences_type.LOC_WEIGHT:
+        return update_loc_weight(uid, new_weight)
+    elif Preferences_type == Preferences_type.AGE_WEIGHT:
+        return update_age_weight(uid, new_weight)
+    return False
 
 def add_interest(uid, interest):
     """
@@ -179,7 +164,8 @@ def get_mutual_liked_users(uid):
     # TODO: HINT: use get_mutual_likes(uid), but be careful you should return a list of ((name, emails))
     return get_mutual_likes(uid)
 
-
+def user_weights(uid):
+    return get_user_weights(uid)
 
 
 # #  example code

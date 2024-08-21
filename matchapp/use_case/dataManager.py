@@ -139,7 +139,21 @@ def get_user_info(uid):
         print(f"Not succuessful: {e}")
         return ()
 
-
+def get_user_weights(uid):
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute('''
+                SELECT sim_weight, loc_weight, age_weight FROM User WHERE uid = ?
+            ''', (uid,))
+            result = cursor.fetchone()
+            if result:
+                return result  # This will return a tuple (sim_weight, loc_weight, age_weight)
+            else:
+                return ()  # Return an empty tuple if the user was not found
+    except sqlite3.Error as e:
+        print(f"Error fetching user weights: {e}")
+        return ()
 
 def remove_user_with_id(uid):
     try:
@@ -257,72 +271,36 @@ def update_user_name(uid, new_name):
         return False
         
 def update_sim_weight(uid, new_sim_weight):
-    """
-    Change the name of the user with the specific uid.
-
-    Return:
-    bool: True on success, False otherwise.
-    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user name
             cursor.execute("UPDATE user SET sim_weight = ? WHERE uid = ?", (new_sim_weight, uid))
             connection.commit()
-            if cursor.rowcount == 0:
-                return False
-            return True
-
+            return cursor.rowcount > 0
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Database error: {e}")
         return False
 
 def update_loc_weight(uid, new_loc_weight):
-    """
-    Change the name of the user with the specific uid.
-
-    Return:
-    bool: True on success, False otherwise.
-    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user name
             cursor.execute("UPDATE user SET loc_weight = ? WHERE uid = ?", (new_loc_weight, uid))
             connection.commit()
-            if cursor.rowcount == 0:
-                return False
-            return True
-
+            return cursor.rowcount > 0
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Database error: {e}")
         return False
 
 def update_age_weight(uid, new_age_weight):
-    """
-    Change the name of the user with the specific uid.
-
-    Return:
-    bool: True on success, False otherwise.
-    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
-            # TODO: Implement the logic to update user name
             cursor.execute("UPDATE user SET age_weight = ? WHERE uid = ?", (new_age_weight, uid))
             connection.commit()
-            if cursor.rowcount == 0:
-                return False
-            return True
-
+            return cursor.rowcount > 0
     except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
+        print(f"Database error: {e}")
         return False
 
 # Action CRUD
@@ -547,5 +525,3 @@ def get_user_interest(uid):
  
 #    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
 #    remove_user_with_id(user_id)
-
-
