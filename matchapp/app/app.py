@@ -32,7 +32,47 @@ def profile(uid):
     else:
         flash(f"User with {uid} not found")
         return render_template("index.html")
+
+@app.route('/setting/<int:uid>')
+def display_weights(uid):
+    weights = get_user_weights(uid)
+    if weights:
+        sim_weight, loc_weight, age_weight = weights
+        return render_template('setting.html', uid=uid, sim_weight=sim_weight, loc_weight=loc_weight, age_weight=age_weight)
+    else:
+        flash("Could not retrieve preference.", "error")
+        return redirect(url_for('profile', uid=uid))
+
     
+
+
+# def adjust_weights(uid):
+#     sim_weight = request.form.get('sim_weight')
+#     loc_weight = request.form.get('loc_weight')
+#     age_weight = request.form.get('age_weight')
+    
+#     # Ensure weights are provided and valid
+#     if sim_weight and loc_weight and age_weight:
+#         flash("All weights must be provided.", "error")
+#         return redirect(url_for('profile', uid=uid))
+
+#     # Convert weights to integers
+#     try:
+#         sim_weight = int(sim_weight)
+#         loc_weight = int(loc_weight)
+#         age_weight = int(age_weight)
+#     except ValueError:
+#         flash("Weights must be valid integers.", "error")
+#         return redirect(url_for('profile', uid=uid))
+
+#     # Update weights in the database
+#     if update_sim_weight(uid, sim_weight) and update_loc_weight(uid, loc_weight) and update_age_weight(uid, age_weight):
+#         flash("Weights updated successfully.", "success")
+#     else:
+#         flash("Failed to update weights.", "error")
+
+#     return redirect(url_for('profile', uid=uid))
+
 @app.route('/like/<int:uid1>/<int:uid2>')
 def like(uid1, uid2):
 
@@ -171,6 +211,33 @@ def edit_age(uid):
     content= request.form.get('content')
     if change_profile(Content_type.AGE, uid, content):
         flash(f"Profile changed")
+    return redirect(url_for('profile', uid=uid))
+
+@app.route('/editinterestweight/<int:uid>', methods=['POST'])
+def edit_interest_weight(uid):
+    content = request.form.get('content')
+    if change_weights(Content_type.INTEREST_WEIGHT, uid, content):
+        flash("Interest preference updated successfully.", "success")
+    else:
+        flash("Failed to update interest preference.", "error")
+    return redirect(url_for('profile', uid=uid))
+
+@app.route('/editageweight/<int:uid>', methods=['POST'])
+def edit_age_weight(uid):
+    content = request.form.get('content')
+    if change_weights(Content_type.AGE_WEIGHT, uid, content):
+        flash("Age preference updated successfully.", "success")
+    else:
+        flash("Failed to update age preference.", "error")
+    return redirect(url_for('profile', uid=uid))
+
+@app.route('/editlocationweight/<int:uid>', methods=['POST'])
+def edit_location_weight(uid):
+    content = request.form.get('content')
+    if change_weights(Content_type.LOC_WEIGHT, uid, content):
+        flash("Location preference updated successfully.", "success")
+    else:
+        flash("Failed to update location preference.", "error")
     return redirect(url_for('profile', uid=uid))
 
 @app.route('/delete_user/<int:uid>', methods=['POST'])

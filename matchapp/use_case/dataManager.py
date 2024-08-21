@@ -139,7 +139,21 @@ def get_user_info(uid):
         print(f"Not succuessful: {e}")
         return ()
 
-
+def get_user_weights(uid):
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute('''
+                SELECT sim_weight, loc_weight, age_weight FROM User WHERE uid = ?
+            ''', (uid,))
+            result = cursor.fetchone()
+            if result:
+                return result  # This will return a tuple (sim_weight, loc_weight, age_weight)
+            else:
+                return ()  # Return an empty tuple if the user was not found
+    except sqlite3.Error as e:
+        print(f"Error fetching user weights: {e}")
+        return ()
 
 def remove_user_with_id(uid):
     try:
@@ -547,5 +561,3 @@ def get_user_interest(uid):
  
 #    user_id = create_user('Pokemon', 'pk@rotman.com', 'Male', 'Trt', 25)
 #    remove_user_with_id(user_id)
-
-

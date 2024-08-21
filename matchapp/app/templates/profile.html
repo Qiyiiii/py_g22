@@ -84,7 +84,6 @@
             color: white;
         }
 
-        /* Flash message styles */
         .flashes {
             list-style: none;
             padding: 0;
@@ -127,6 +126,11 @@
     function match(uid) {
         window.location.href = `/match/${uid}`;
     }
+    function setting(uid) {
+    window.location.href = `/setting/${uid}`;  
+}
+
+
     function view_liked(uid) {
         window.location.href = `/liked-users/${uid}`;
     }
@@ -145,7 +149,6 @@
             url: `/delete_user/${uid}`,
             type: 'POST',
             success: function() {
-                // Show a success message
                 window.location.href = `/`;
             },
             error: function() {
@@ -231,7 +234,6 @@ function back(uid) {
 
 </script>
 <body>
-    <!-- Flash message display -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="flashes" style="display: none;">
@@ -301,6 +303,7 @@ function back(uid) {
             </div>
             <div class="profile-actions">
                 <button onclick="match({{ uid }})">New Match</button>
+                <button onclick="setting({{ uid }})">Setting</button>
                 <button onclick="view_liked({{ uid }})">Liked</button>
                 <button onclick="view_unliked({{ uid }})">Disliked</button>
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>
@@ -325,7 +328,7 @@ function back(uid) {
         window.onload = function() {
             var messages = {{ get_flashed_messages(with_categories=true)|tojson }};
             messages.forEach(function(message) {
-                alert(message[1]); // Display the message content in an alert popup
+                alert(message[1]); 
             });
         };
     </script>

@@ -104,6 +104,8 @@ def change_weights(content_type, uid, content):
     HINT: use the functions, e.g. update_user_gender(curosr, uid, new_gender)
     from use_case/dai.py
     """
+
+
     if content_type == Content_type.SIM_WEIGHT:
         return update_sim_weight(uid, content)
     elif content_type == Content_type.LOC_WEIGHT:
@@ -179,7 +181,8 @@ def get_mutual_liked_users(uid):
     # TODO: HINT: use get_mutual_likes(uid), but be careful you should return a list of ((name, emails))
     return get_mutual_likes(uid)
 
-
+def user_weights(uid):
+    return get_user_weights(uid)
 
 
 # #  example code
