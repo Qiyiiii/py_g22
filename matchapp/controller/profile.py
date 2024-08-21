@@ -18,6 +18,7 @@ class Preferences_type(Enum):
     LOC_WEIGHT = 2
     AGE_WEIGHT = 3
 
+
 def geocode_location(location):
     ctx = ssl.create_default_context(cafile=certifi.where())
     nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
@@ -119,8 +120,6 @@ def get_interest(uid):
     Return:
     List(str): interests of the user with uid
     """
-    # TODO: HINT: use get_user_likes(uid)
-    #return []
     return get_user_interest(uid)
 
 def delete_user(uid):
@@ -131,7 +130,6 @@ def delete_user(uid):
     On success, return True
     else False
     """
-    # TODO: HINT: use function remove_user_with_id(cursor, uid) from use_case/dai.py
     return remove_user_with_id(uid)
 def get_liked_users(uid):
     """
@@ -140,7 +138,6 @@ def get_liked_users(uid):
     Return: 
     List: (name, emails) of users that User with (uid) liked
     """
-    # TODO: HINT: use get_user_likes(uid), but be careful you should return a list of ((name, emails))
     return get_user_likes(uid)
 
 def get_unliked_users(uid):
@@ -161,7 +158,6 @@ def get_mutual_liked_users(uid):
     Return:
     List: (name, emails) of users that User with (uid) liked and that also liked User with (uid)
     """
-    # TODO: HINT: use get_mutual_likes(uid), but be careful you should return a list of ((name, emails))
     return get_mutual_likes(uid)
 
 def user_weights(uid):

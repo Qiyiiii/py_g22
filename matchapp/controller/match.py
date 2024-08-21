@@ -29,13 +29,9 @@ def calculate_weights(uid):
     :param uid: user id of user
     :return: normalized weights alpha, beta, gamma (sum to 1)
     """
-    weights = np.array[get_weights(uid)]
+    weights = np.array(get_user_weights(uid))
     weights = weights/np.sum(weights)
     return weights
-
-## TODO temp ##
-weights = np.array([0.4,0.4,0.2])
-###
 
 def find_match(uid):
     """
@@ -52,8 +48,8 @@ def find_match(uid):
     my_gender = my_profile[2]
     my_age = my_profile[4]
 
-    yrs = 5  # Set minimum and maximum age range to look for
-    my_min_age = my_age - yrs # For now, set preferred age range to +/- 5 years
+    yrs = 10  # Set minimum and maximum age range to look for. In future versions, this will be set by the user.
+    my_min_age = my_age - yrs
     my_max_age = my_age + yrs
 
     rec = get_users(uid, my_gender, my_min_age, my_max_age) #get a table of matches along with their interests (from dataManager)
@@ -79,27 +75,26 @@ def find_match(uid):
     rec.drop_duplicates(inplace=True) #now that the interests column is gone we'll have duplicate rows
 
     # Geographic distance #
-    my_location = get_user_location(uid) # Get the location of user
-    my_lat = my_location[1] #unpack latitude and longitude
-    my_long = my_location[2]
+    my_location = get_user_coordinates(uid) # Get the location of user
+    my_lat = my_location[0] #unpack latitude and longitude
+    my_long = my_location[1]
 
     rec['geo_distance'] = haversine_distance(my_lat,my_long,rec['latitude'],rec['longitude']) #vectorized geographic distance calculation
 
-    #Scale distance and similarity between 0 and 1
-
+    #Scale each factor between 0 and 1
     scaler = MinMaxScaler()
     rec['normed_geo_distance'] = scaler.fit_transform(rec[['geo_distance']])
     rec['normed_similarity'] = scaler.fit_transform(rec[['similarity']])
     rec['normed_age_dist'] = scaler.fit_transform(rec[['age dist']])
 
     #Calculate total score for each user#
-    alpha,beta,gamma = weights[0], weights[1], weights[2]
+    alpha,beta,gamma = calculate_weights(uid) #usin helper function above
     rec['overall_score'] = alpha * rec['normed_similarity'] + beta * (1-rec['normed_geo_distance']) + gamma * (1-rec['normed_age_dist'])
 
     #Like/Dislike Penalty#
     rec['like'] = rec['like'].map({1.0: 1, np.nan: 0, 0.0:-1}) #change like, dislike, and Null to 1, -1, 0
     penalty = rec['like']*0.2
-    rec['overall_score'] += penalty  #if the user has already liked them, add 0.2 to their score. If they have disliked, subtract 0.2
+    rec['overall_score'] += penalty  #if the user has already liked them, add 0.2 to their score. If they have disliked, subtract 0.2.
 
     #Put them in order of high score to low score
     rec.sort_values('overall_score', ascending=False, inplace=True)
