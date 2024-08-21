@@ -18,14 +18,6 @@ manhattan_postal_codes = np.array([
     "10168", "10169", "10170", "10171", "10172", "10173", "10174", "10175", "10176", "10177",
     "10178", "10199", "10271", "10278", "10279", "10280", "10281", "10282"
 ])
-chicago_postal_codes = np.array([ "60601", "60602", "60603", "60604", "60605", "60606", "60607", "60608", "60609",
-    "60610", "60611", "60612", "60613", "60614", "60615", "60616", "60617", "60618",
-    "60619", "60620", "60621", "60622", "60623", "60624", "60625", "60626", "60628",
-    "60629", "60630", "60631", "60632", "60633", "60634", "60636", "60637", "60638",
-    "60639", "60640", "60641", "60642", "60643", "60644", "60645", "60646", "60647",
-    "60649", "60651", "60652", "60653", "60654", "60655", "60656", "60657", "60659",
-    "60660", "60661", "60664", "60666","60706", "60707", "60803", "60804", "60805", "60827"
-])
 
 female_names = np.array([
     "Aisha", "Ava", "Beatrice", "Carmen", "Chiara", "Daphne", "Elena", "Emma",
@@ -52,15 +44,10 @@ male_names = np.array([
 
 email_domain = np.array(['@gmail.com','@yahoo.com','@hotmail.com'])
 
-def random_profiles(idx, city='manhattan'):
-    if city == 'manhattan':
-        postals = manhattan_postal_codes
-    if city == 'chicago':
-        postals = chicago_postal_codes
-
+def random_profiles(idx):
     name = np.random.choice(female_names) #get a random name from the array
     email = name + str(idx) + np.random.choice(email_domain) #create distinct email
-    location = np.random.choice(postals) #random postal code
+    location = np.random.choice(manhattan_postal_codes) #random postal code
     age = np.random.randint(18, 35) #age between 18 and 35
 
     num_to_select = np.random.randint(1, 6) #the number of interests they have
@@ -70,20 +57,17 @@ def random_profiles(idx, city='manhattan'):
     name = np.random.choice(male_names) #do the same for a male user
     email = name + str(idx) + np.random.choice(email_domain)
     num_to_select = np.random.randint(1, 6)
-    location = np.random.choice(postals)
+    location = np.random.choice(manhattan_postal_codes)
     age = np.random.randint(18, 35)
     interests = np.random.choice(interests_list, size=num_to_select, replace=False)
     add_user(name, email, 'Male', location, age, interests=interests) #insert a male user; even uids
 
-total_users = 20 #needs to be divisible by 4
-num=total_users/4
-nyc_index = np.arange(1,num+1,1,dtype=int) #establish an index to iterate over
-chicago_index = np.arange(num+1,num*2+1,1,dtype=int)
+total_users = 20 #needs to be divisible by 2
+num=total_users/2
+index = np.arange(1,num+1,1,dtype=int) #establish an index to iterate over
 
-for i in nyc_index:
-    random_profiles(i,city = 'manhattan') #create random nyc profiles
-for i in chicago_index:
-    random_profiles(i, city='chicago') #create random chicago profiles
+for i in index:
+    random_profiles(i) #create random nyc profiles
 
 actions = np.array(['like','dislike'])
 uids = np.arange(1,total_users+1,1)
