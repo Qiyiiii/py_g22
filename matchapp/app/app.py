@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.getenv('SECRET_KEY', 'a_default_secret_key')
 
+
 db = SQLAlchemy(app)
 @app.route('/')
 def index():
@@ -281,5 +282,11 @@ def delete_user(uid):
     else:
         flash(f"Failed to delete User {uid}.")
         return redirect(url_for('profile', uid=uid))
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+  
+    
+
+    port = int(os.getenv('PORT', 8000))  # Default to 8000 if PORT is not set
+    app.run(debug=True, host="0.0.0.0", port=port)
