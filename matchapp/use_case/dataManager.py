@@ -1,5 +1,6 @@
 import sqlite3
 import pandas as pd
+import numpy as np
 
 DB_PATH = "../database/matchapp.db"
 
@@ -46,28 +47,67 @@ def create_user(name, email, gender, age, location, latitude,longitude, interest
         print(f"Error creating user: {e}")
         return -1
 
+def get_user_location(uid):
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+            cursor = connection.cursor()
+            cursor.execute('SELECT location, latitude, longitude FROM Location WHERE uid = ?', (uid,))
+            return cursor.fetchone()
 
-def get_users(uid,my_gender,my_min_age,my_max_age):
+    except sqlite3.Error as e:
+        # print error message
+        # change it to your own
+        print(f"Not succuessful: {e}")
+        return ()
+
+def get_users(uid, my_gender, my_min_age, my_max_age):
     """
     get a datafrmae of users that who could be compatible with our user (uid)
 
-    Returns: 
+    Returns:
     Dataframe: user
     """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             create_matches_table = """
-            SELECT user.uid, user.name, user.gender, user.age, interest.interest, location.latitude, location.longitude
+            SELECT user.uid, user.age, A.like, interest.interest, location.latitude, location.longitude
             FROM user
             LEFT JOIN Actions ON user.uid = Actions.uid2 AND Actions.uid1 = ?
+            LEFT JOIN Actions as A ON user.uid = A.uid1 AND A.uid2 = ?
             LEFT JOIN Interest ON user.uid = interest.uid
             LEFT JOIN Location ON user.uid = location.uid
             WHERE Actions.uid2 IS NULL 
             AND user.gender != ?
             AND user.age BETWEEN ? AND ?;
             """
-            rec = pd.read_sql_query(create_matches_table, connection, params=(uid, my_gender,my_min_age,my_max_age))
+
+            rec = pd.read_sql_query(create_matches_table, connection, params=(uid, uid,my_gender, my_min_age, my_max_age), dtype={'latitude': np.float64, 'longitude': np.float64,'like':np.float64})
             return rec
+    except sqlite3.Error as e:
+        print(f"Error fetch users: {e}")
+        return []
+
+# def get_users(uid,my_gender,my_min_age,my_max_age):
+#     """
+#     get a datafrmae of users that who could be compatible with our user (uid)
+#
+#     Returns:
+#     Dataframe: user
+#     """
+#     try:
+#         with sqlite3.connect(DB_PATH) as connection:
+#             create_matches_table = """
+#             SELECT user.uid, user.name, user.gender, user.age, interest.interest, location.latitude, location.longitude
+#             FROM user
+#             LEFT JOIN Actions ON user.uid = Actions.uid2 AND Actions.uid1 = ?
+#             LEFT JOIN Interest ON user.uid = interest.uid
+#             LEFT JOIN Location ON user.uid = location.uid
+#             WHERE Actions.uid2 IS NULL
+#             AND user.gender != ?
+#             AND user.age BETWEEN ? AND ?;
+#             """
+#             rec = pd.read_sql_query(create_matches_table, connection, params=(uid, my_gender,my_min_age,my_max_age))
+#             return rec
 
 
     except sqlite3.Error as e:
@@ -75,7 +115,6 @@ def get_users(uid,my_gender,my_min_age,my_max_age):
         return []
 
 def get_user_info(uid):
-    # TODO Olivia - fix location so that it is retrieved here
     """
     Get the profile information of the User with (uid) from the database.
 
@@ -87,9 +126,12 @@ def get_user_info(uid):
             cursor = connection.cursor()
             cursor.execute('SELECT name, email, gender, age FROM User WHERE uid = ?', (uid,))
             user_result = cursor.fetchone()
-            location_result = get_user_location(uid)[0]
-            combined_result = (user_result[0], user_result[1], user_result[2], location_result,user_result[3]) #+ (location_result,)
-            return combined_result
+            location_result = get_user_location(uid)
+            if location_result:
+                combined_result = (user_result[0], user_result[1], user_result[2], location_result[0],user_result[3]) #+ (location_result,)
+                return combined_result
+            else:
+                return None
 
     except sqlite3.Error as e:
         # print error message
@@ -111,20 +153,6 @@ def get_user_weights(uid):
                 return ()  # Return an empty tuple if the user was not found
     except sqlite3.Error as e:
         print(f"Error fetching user weights: {e}")
-        return ()
-
-
-def get_user_location(uid):
-    try:
-        with sqlite3.connect(DB_PATH) as connection:
-            cursor = connection.cursor()
-            cursor.execute('SELECT location, latitude, longitude FROM Location WHERE uid = ?', (uid,))
-            return cursor.fetchone()
-
-    except sqlite3.Error as e:
-        # print error message
-        # change it to your own
-        print(f"Not succuessful: {e}")
         return ()
 
 def remove_user_with_id(uid):
