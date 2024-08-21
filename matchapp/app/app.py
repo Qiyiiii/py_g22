@@ -213,32 +213,64 @@ def edit_age(uid):
         flash(f"Profile changed")
     return redirect(url_for('profile', uid=uid))
 
-@app.route('/editinterestweight/<int:uid>', methods=['POST'])
-def edit_interest_weight(uid):
+@app.route('/edit_similarity_weight/<int:uid>', methods=['POST'])
+def edit_similarity_weight(uid):
     content = request.form.get('content')
-    if change_weights(Content_type.INTEREST_WEIGHT, uid, content):
+    if not content:
+        flash("No content received.", "error")
+        return redirect(url_for('display_weights', uid=uid))
+    
+    try:
+        new_weight = int(content)
+    except ValueError:
+        flash("Invalid content: must be an integer.", "error")
+        return redirect(url_for('display_weights', uid=uid))
+
+    if update_sim_weight(uid, new_weight):
         flash("Interest preference updated successfully.", "success")
     else:
         flash("Failed to update interest preference.", "error")
-    return redirect(url_for('profile', uid=uid))
+    return redirect(url_for('display_weights', uid=uid))
 
-@app.route('/editageweight/<int:uid>', methods=['POST'])
-def edit_age_weight(uid):
-    content = request.form.get('content')
-    if change_weights(Content_type.AGE_WEIGHT, uid, content):
-        flash("Age preference updated successfully.", "success")
-    else:
-        flash("Failed to update age preference.", "error")
-    return redirect(url_for('profile', uid=uid))
-
-@app.route('/editlocationweight/<int:uid>', methods=['POST'])
+@app.route('/edit_location_weight/<int:uid>', methods=['POST'])
 def edit_location_weight(uid):
     content = request.form.get('content')
-    if change_weights(Content_type.LOC_WEIGHT, uid, content):
+    if not content:
+        flash("No content received.", "error")
+        return redirect(url_for('display_weights', uid=uid))
+    
+    try:
+        new_weight = int(content)
+    except ValueError:
+        flash("Invalid content: must be an integer.", "error")
+        return redirect(url_for('display_weights', uid=uid))
+
+    if update_loc_weight(uid, new_weight):
         flash("Location preference updated successfully.", "success")
     else:
         flash("Failed to update location preference.", "error")
-    return redirect(url_for('profile', uid=uid))
+    return redirect(url_for('display_weights', uid=uid))
+
+@app.route('/edit_age_weight/<int:uid>', methods=['POST'])
+def edit_age_weight(uid):
+    content = request.form.get('content')
+    if not content:
+        flash("No content received.", "error")
+        return redirect(url_for('display_weights', uid=uid))
+    
+    try:
+        new_weight = int(content)
+    except ValueError:
+        flash("Invalid content: must be an integer.", "error")
+        return redirect(url_for('display_weights', uid=uid))
+
+    if update_age_weight(uid, new_weight):
+        flash("Age preference updated successfully.", "success")
+    else:
+        flash("Failed to update age preference.", "error")
+    return redirect(url_for('display_weights', uid=uid))
+
+
 
 @app.route('/delete_user/<int:uid>', methods=['POST'])
 def delete_user(uid):

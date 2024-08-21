@@ -6,49 +6,67 @@
     <title>Preferences Setting</title>
     <link rel="stylesheet" href="../static/css/profile.css">
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-function edit_interest_weight(uid) {
-    let content = prompt("Please enter the new interest preference (1-10):");
-    if (content) {
-        $.ajax({
-            url: '/editinterestweight/' + uid,
-            type: 'POST',
-            data: {content: content},
-            success: function(response) {
-                location.reload();  
-            }
-        });
-    }
+function edit_sim_weight(uid) {
+    let content;
+    do {
+        content = prompt("Please enter the new interest preference (1-10):");
+        if (content === null) return; // Handle cancel
+    } while (isNaN(content) || content < 1 || content > 10);
+
+    $.ajax({
+        url: '/edit_similarity_weight/' + uid,
+        type: 'POST',
+        data: { content: content },
+        success: function(response) {
+            location.reload();
+        },
+        error: function() {
+            alert("Failed to update interest preference. Please try again.");
+        }
+    });
 }
 
 function edit_age_weight(uid) {
-    let content = prompt("Please enter the new age preference (1-10):");
-    if (content) {
-        $.ajax({
-            url: '/editageweight/' + uid,
-            type: 'POST',
-            data: {content: content},
-            success: function(response) {
-                location.reload();  
-            }
-        });
-    }
+    let content;
+    do {
+        content = prompt("Please enter the new age preference (1-10):");
+        if (content === null) return; // Handle cancel
+    } while (isNaN(content) || content < 1 || content > 10);
+
+    $.ajax({
+        url: '/edit_age_weight/' + uid,
+        type: 'POST',
+        data: { content: content },
+        success: function(response) {
+            location.reload();
+        },
+        error: function() {
+            alert("Failed to update age preference. Please try again.");
+        }
+    });
 }
 
 function edit_location_weight(uid) {
-    let content = prompt("Please enter the new location preference (1-10):");
-    if (content) {
-        $.ajax({
-            url: '/editlocationweight/' + uid,
-            type: 'POST',
-            data: {content: content},
-            success: function(response) {
-                location.reload();  
-            }
-        });
-    }
-}
+    let content;
+    do {
+        content = prompt("Please enter the new location preference (1-10):");
+        if (content === null) return; // Handle cancel
+    } while (isNaN(content) || content < 1 || content > 10);
 
+    $.ajax({
+        url: '/edit_location_weight/' + uid,
+        type: 'POST',
+        data: { content: content },
+        success: function(response) {
+            location.reload();
+        },
+        error: function() {
+            alert("Failed to update location preference. Please try again.");
+        }
+    });
+}
 
 </script>
 
@@ -59,26 +77,24 @@ function edit_location_weight(uid) {
         </div>
         <div class="profile-details">
             <p>
-                Interest : <span id="interest_weight">{{ sim_weight }}</span>
-                <button class="edit-button" onclick="edit_interest_weight({{ uid }})">Edit</button>
+                Interest: <span id="similarity_weight">{{ sim_weight }}</span>
+                <button class="edit-button" onclick="edit_sim_weight({{ uid }})">Edit</button>
             </p>
-
+        
             <p>
-                Age : <span id="age_weight">{{ age_weight }}</span>
+                Age: <span id="age_weight">{{ age_weight }}</span>
                 <button class="edit-button" onclick="edit_age_weight({{ uid }})">Edit</button>
             </p>
-
+        
             <p>
-                Location : <span id="location_weight">{{ loc_weight }}</span>
+                Location: <span id="location_weight">{{ loc_weight }}</span>
                 <button class="edit-button" onclick="edit_location_weight({{ uid }})">Edit</button>
             </p>
-
-
         </div>
+        
         <div class="profile-actions">
             <button onclick="window.location.href = '/profile/{{ uid }}'">Back to Profile</button>
         </div>
-    </div>
     </div>
 </body>
 </html>
