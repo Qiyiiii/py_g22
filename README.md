@@ -28,6 +28,7 @@ It is a very simple program that allows user to
 Update:
 - user can add favorite movie genres in the register page as well
 - prevetion of under-aged population
+- 
 
 # Architecture:
 ## Four **entity class** are stored in the database
@@ -69,7 +70,7 @@ coordinate of the user location, stored automatically when user register or chan
 [here to view required package for this project to be deployed in the local](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/requirements.txt)
 # How to start this project:
 1. **Remotely**:
-   - this project is remotely depolyed on https://qiyizhang71.com/ and https://chill-btgvfufugfdkgpbj.canadacentral-01.azurewebsites.net
+   - this project is remotely depolyed on qiyizhang71.com/ and chill-btgvfufugfdkgpbj.canadacentral-01.azurewebsites.net
    - [click here to see our project that is hosted in the Azure cloud](https://qiyizhang71.com/)
 2. **Locally**
    - Firstly, download required packages that can be found [here](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/requirements.txt)
