@@ -8,7 +8,7 @@ function loginUser() {
         window.location.href = `/profile/${userId}`;}
 
     else {
-        alert("All User Ids are in integer.");
+        alert("Please enter a valid user id");
     }
  
 }
