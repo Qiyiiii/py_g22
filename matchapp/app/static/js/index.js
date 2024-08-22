@@ -4,7 +4,11 @@ function createUser() {
 
 function loginUser() {
     let userId = prompt("Please enter your User ID:");
-    if (userId) {
-        window.location.href = `/profile/${userId}`;
+    if (userId && Number.isInteger(Number(userId))) {
+        window.location.href = `/profile/${userId}`;}
+
+    else {
+        alert("All User Ids are in integer.");
     }
+ 
 }
