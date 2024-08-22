@@ -4,89 +4,6 @@
     <meta charset="UTF-8">
     <title>Join the Puzzle!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
-    <style>
-        .flash-message {
-            display: none;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            background-color: #d4edda; 
-            color: #155724;
-        }
-
-        .interests-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .interest-button {
-            padding: 5px 10px;
-            margin: 5px;
-            background-color: white;
-            color: #ff8383;
-            border: 2px solid #ff8383;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .interest-button.selected {
-            background-color: #ff8383;
-            color: white;
-            border-color: #ff8383;
-        }
-
-        .selected-interests {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ff8383;
-            border-radius: 5px;
-            text-align: left;
-            min-height: 50px;
-        }
-
-        .interest-tag {
-            display: inline-block;
-            background-color: #ff8383;
-            color: white;
-            padding: 5px 10px;
-            margin: 5px;
-            border-radius: 15px;
-            font-size: 12px;
-        }
-    </style>
-    <script>
-        function toggleInterest(button) {
-            button.classList.toggle("selected");
-            var interest = button.getAttribute("data-interest");
-            var interestsInput = document.getElementById("interests");
-            var interestsArray = interestsInput.value ? interestsInput.value.split(",") : [];
-            
-            if (button.classList.contains("selected")) {
-                interestsArray.push(interest);
-            } else {
-                interestsArray = interestsArray.filter(i => i !== interest);
-            }
-    
-            interestsInput.value = interestsArray.join(",");
-            console.log("Selected Interests:", interestsInput.value);  // Debugging line
-        }
-    
-        function updateSelectedInterests(interestsArray) {
-            var display = document.getElementById("selected-interests");
-            display.innerHTML = interestsArray.map(interest => `<span class="interest-tag">${interest}</span>`).join(" ");
-        }
-    
-        // Add the submit event listener here
-        document.querySelector("form").addEventListener("submit", function() {
-            var interestsInput = document.getElementById("interests");
-            console.log("Submitting Interests:", interestsInput.value);  // Debugging line
-        });
-    </script>
-    
 </head>
 <body>
     <div class="profile-container">
@@ -112,7 +29,7 @@
                     </select>
                 </p>
                 <p>
-                    <label for="location">Postal Code:</label>
+                    <label for="location">Zip Code:</label>
                     <input type="text" id="location" name="location" required class="input-field">
                 </p>
                 <p>
@@ -143,5 +60,6 @@
             </div>
         </form>
     </div>
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 </body>
 </html>

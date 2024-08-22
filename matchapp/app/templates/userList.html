@@ -6,11 +6,6 @@
     <title>Matched Profiles</title>
     <link rel="stylesheet" href="../static/css/userList.css">
 </head>
-<script>
-    function back(uid) {
-        window.location.href = `/profile/${uid}`;
-    }
-</script>
 <body>
     <div class="container">
         <h1 class="heading">{{ title }}</h1>
@@ -34,14 +29,12 @@
                 <p><strong>Age:</strong> {{ user[4] }}</p>
                 <p><strong>Interests:</strong> {{ user[5] | join(', ') }}</p>
             </div>
-
-            
             {% endif %}
             {% endfor %}
         </div>
-        {% else %}
         {% endif %}
         <button class="back-button" onclick="back({{uid}})">Back to Profile</button>
     </div>
+    <script src="../static/js/profile.js"></script>
 </body>
 </html>

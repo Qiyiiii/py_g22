@@ -14,7 +14,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 300px;
-    height: 600px;  
+    height: auto;
     padding: 20px;
 }
 
@@ -45,39 +45,30 @@ body {
 .profile-details p {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 10px 0;
-    font-size: 14px;
-}
-
-.profile-details p {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;  
-    position: relative;  
+    justify-content: flex-start;
+    position: relative;
     margin: 10px 0;
     font-size: 14px;
 }
 
 .edit-button {
     font-size: 10px;
-    color: #c5c5c5;  
+    color: #c5c5c5;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    position: absolute;  
-    right: 0;  
+    position: absolute;
+    right: 0;
 }
 
-
 .edit-button:hover {
-    color: #7e7c7c;  
+    color: #7e7c7c;
 }
 
 .delete-button {
     font-size: 14px;
-    color: #ff8340; 
+    color: #ff8340;
     background: none;
     border: none;
     cursor: pointer;
@@ -86,12 +77,12 @@ body {
 }
 
 .delete-button:hover {
-    color: #555;  
+    color: #555;
 }
 
 .profile-actions {
     padding: 10px 0;
-    text-align: left; 
+    text-align: left;
 }
 
 .profile-actions button {
@@ -111,18 +102,40 @@ body {
 }
 
 .profile-details p img {
-    width: 20px; 
-    height: 20px; 
-    margin-right: 10px; 
-    vertical-align: middle;  
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
 .flash-message {
-    display: none; 
+    display: none;
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
-    background-color: #d4edda; 
-    color: #155724; 
+    background-color: #d4edda;
+    color: #155724;
     font-size: 16px;
+}
+
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.flashes li {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.flashes .error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.flashes .success {
+    background-color: #d4edda;
+    color: #155724;
 }

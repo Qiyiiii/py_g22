@@ -5,234 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="../static/css/profile.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #ff8383;
-        }
-
-        .profile-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 300px;
-            padding: 20px;
-            height:auto;
-        }
-        
-        .profile-header {
-            color: #ff8383;
-            padding: 10px 10px;
-            position: relative;
-            font-weight: bold;
-        }
-
-        .profile-header img {
-            border-radius: 50%;
-            border: 3px solid #ff8383;
-            width: 80px;
-            height: 80px;
-        }
-
-        .profile-header h2 {
-            margin-top: 10px;
-            font-size: 20px;
-        }
-
-        .profile-details {
-            padding: 10px 20px 20px;
-            text-align: left;
-        }
-
-        .profile-details p {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .profile-details p img {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-
-        .profile-actions {
-            padding: 10px 0;
-        }
-
-        .profile-actions button {
-            background-color: #fff;
-            border: 1px solid #ff8383;
-            color: #ff8383;
-            padding: 10px;
-            width: 100%;
-            margin-top: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .profile-actions button:hover {
-            background-color: red;
-            color: white;
-        }
-
-        .flashes {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .flashes li {
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-
-        .flashes .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .flashes .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/js/profile.js"></script> 
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    function add_interest(uid){
-        let new_interest = prompt("Please enter your interest:");
-        if (new_interest) {
-            $.ajax({
-                url: '/add_interest/' + uid ,
-                type: 'POST',
-                data: {interest: new_interest},
-                success: function(response) {
-                    location.reload();  
-                }
-            });
-        }
-
-    }
-    function match(uid) {
-        window.location.href = `/match/${uid}`;
-    }
-    function setting(uid) {
-    window.location.href = `/setting/${uid}`;  
-}
-
-
-    function view_liked(uid) {
-        window.location.href = `/liked-users/${uid}`;
-    }
-    function view_unliked(uid) {
-        window.location.href = `/unliked-users/${uid}`;
-    }
-    function view_mutual_liked(uid) {
-        window.location.href = `/mutually-liked-users/${uid}`;
-    }
-    function view_top_5(uid) {
-        window.location.href = `/top_user/${uid}`;
-    }
-    function deleteUser(uid) {
-    if (confirm("Are you sure you want to delete your account?")) {
-        $.ajax({
-            url: `/delete_user/${uid}`,
-            type: 'POST',
-            success: function() {
-                window.location.href = `/`;
-            },
-            error: function() {
-                alert("Failed to delete the account.");
-            }
-        });
-    }
-}
-function edit_name(uid){
-    let content = prompt("Please enter your new name");
-        if (content) {
-            
-            $.ajax({
-                url: '/editname/' + uid ,
-                type: 'POST',
-                data: {content: content},
-                success: function(response) {
-                    location.reload();  
-                }
-            });
-            
-        }
-        
-}
-
-function edit_gender(uid){
-    let content = prompt("Please claim your new gender");
-        if (content) {
-            
-            $.ajax({
-                url: '/editgender/' + uid ,
-                type: 'POST',
-                data: {content: content},
-                success: function(response) {
-                    location.reload();  
-                }
-            });
-            
-        }
-        
-}
-
-function edit_location(uid){
-    let content = prompt("Please change to your new location");
-        if (content) {
-            
-            $.ajax({
-                url: '/editlocation/' + uid ,
-                type: 'POST',
-                data: {content: content},
-                success: function(response) {
-                    location.reload();  
-                }
-            });
-            
-        }
-        
-}
-
-
-function edit_age(uid){
-    let content = prompt("Please change to your new age");
-        if (content) {
-            
-            $.ajax({
-                url: '/editage/' + uid ,
-                type: 'POST',
-                data: {content: content},
-                success: function(response) {
-                    location.reload();  
-                }
-            });
-            
-        }
-        
-}
-
-function back(uid) {
-    window.location.href = '/';
-
-}
-
-
-</script>
 <body>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -270,7 +45,7 @@ function back(uid) {
                     <button class="edit-button" onclick="edit_gender({{uid}})">Edit</button>
                 </p>
                 <p>
-                    <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Location: {{ user[3] }}</span>
+                    <span><img src="{{ url_for('static', filename='images/location.png') }}" alt="Image"> Zip Code (U.S. only): {{ user[3] }}</span>
                     <button class="edit-button" onclick="edit_location({{uid}})">Edit</button>
                 </p>
                 <p>
@@ -303,7 +78,7 @@ function back(uid) {
             </div>
             <div class="profile-actions">
                 <button onclick="match({{ uid }})">New Match</button>
-                <button onclick="setting({{ uid }})">Setting</button>
+                <button onclick="setting({{ uid }})">Preferences</button>
                 <button onclick="view_liked({{ uid }})">Liked</button>
                 <button onclick="view_unliked({{ uid }})">Disliked</button>
                 <button onclick="view_mutual_liked({{ uid }})">Matches</button>

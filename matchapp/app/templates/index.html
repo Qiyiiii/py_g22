@@ -8,13 +8,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@900&display=swap">
 </head>
 <body>
-    <h1 class="app-name">chill.</h1> <!-- App name here -->
+    <h1 class="app-name">chill.</h1> 
     <div class="heart">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
 
         <h1>Find Your Match!</h1> 
 
-        <!-- Flash Messages -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div>
@@ -23,7 +22,6 @@
         {% endif %}
         {% endwith %}
 
-        <!-- Buttons -->
         <button onclick="createUser()">
             Create Account
         </button>
@@ -33,17 +31,6 @@
         </button>
     </div>
 
-    <script>
-        function createUser() {
-            window.location.href = "/register";
-        }
-
-        function loginUser() {
-            let userId = prompt("Please enter your User ID:");
-            if (userId) {
-                window.location.href = `/profile/${userId}`;
-            }
-        }
-    </script>
+    <script src="../static/js/index.js"></script>
 </body>
 </html>
