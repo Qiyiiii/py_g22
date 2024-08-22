@@ -7,7 +7,7 @@
     - [Interest Entity](#interest)
     - [Actions Entity](#actions)
     - [Coordinates Entity](#coordinates)
-    - [Encapsulation & clean architecture](#encapsulation & clean architecture)
+    - [Encapsulation & Clean Architecture](#encapsulation--clean-architecture)
 5. [Frontend Content](#frontend-content)
 6. [Requirements](#requirements)
 7. [How to Start This Project](#how-to-start-this-project)
