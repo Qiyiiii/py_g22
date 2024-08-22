@@ -69,8 +69,8 @@ coordinate of the user location, stored automatically when user register or chan
 [here to view required package for this project to be deployed in the local](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/requirements.txt)
 # How to start this project:
 1. **Remotely**:
+   - this project is remotely depolyed on https://qiyizhang71.com/ and https://chill-btgvfufugfdkgpbj.canadacentral-01.azurewebsites.net
    - [click here to see our project that is hosted in the Azure cloud](https://qiyizhang71.com/)
-   - this project is remotely depolyed on qiyizhang71.com and https://chill-btgvfufugfdkgpbj.canadacentral-01.azurewebsites.net
 2. **Locally**
    - Firstly, download required packages that can be found [here](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/requirements.txt)
    - in the terminal, in the root page, enter: "./matchapp/database/script.sh", it will automatically load the example data and run the project
