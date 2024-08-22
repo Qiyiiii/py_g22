@@ -4,20 +4,8 @@
     <meta charset="UTF-8">
     <title>Matched Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <script src="{{ url_for('static', filename='js/matchedPage.js') }}"></script>
 </head>
-<script>
-    function likeUser(uid1, uid2) {
-        window.location.href = `/like/${uid1}/${uid2}`;
-    }
-
-    function unlikeUser(uid1, uid2) {
-        window.location.href = `/unlike/${uid1}/${uid2}`;
-    }
-
-    function back(uid1) {
-        window.location.href = `/profile/${uid1}`;
-    }
-</script>
 <body>
     <div class="profile-container">
         <div class="profile-header">
