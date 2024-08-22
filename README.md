@@ -73,6 +73,21 @@ coordinate of the user location, stored automatically when user register or chan
 
 # Matching Algorithm
 
+When a user wants to find a new match, our app searches for people in our database whom the user has not yet liked or disliked. In the current version, the app looks for people of the opposite gender within an age range of +/- 10 years. The resulting table is stored as  a pandas dataframe. 
+
+The algorithm evaluates three primary factors: similarity in TV tastes, geographic distance, and age difference. The app then generates an overall score between 0 and 1. In chill 2.0, this score may be adjusted with a penalty/bonus.
+
+1.	TV interests similarity: The Jaccard similarity between our user’s interests and the interests of potential matches.
+3.	Geographic distance: Calculated using the Haversine distance formula, which determines the distance between two points on the Earth's surface based on latitude and longitude. We have used numpy to vectorize this calculation. 
+4.	Age difference: The absolute value of the age difference between our user and potential matches.
+
+Each potential match receives a score for each factor. These scores are normalized using sklearn's MinMaxScaler() before being combined. The factors are weighted so that the maximum combined score is 1.00. By default, similarity, distance, and age are weighted at 0.4, 0.4, and 0.2, respectively. In chill 2.0, users can adjust these weights according to their preferences. 
+
+In chill 2.0, an additional bonus/penalty is applied to the overall score. If a potential match has already liked the user, their score is increased by 0.2. If they have already disliked the user, their score is decreased by 0.2. This increases the chances of our user getting a match.
+
+The user ID of the individual with the highest overall score is returned as the recommended match.
+
+
 
 ## [Frontend content](https://github.com/Qiyiiii/py_g22/tree/main/matchapp/app)
 ### html files are stored in [here](https://github.com/Qiyiiii/py_g22/tree/main/matchapp/app/templates) under template directory
