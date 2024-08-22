@@ -8,8 +8,8 @@
     - [Actions Entity](#actions)
     - [Coordinates Entity](#coordinates)
     - [Encapsulation & Clean Architecture](#encapsulation--clean-architecture)
-5. [Frontend Content](#frontend-content)
-6. [Matching Algorithm](#matching-algorithm)
+5. [Matching Algorithm](#matching-algorithm)
+6. [Frontend Content](#frontend-content)
 7. [Requirements](#requirements)
 8. [How to Start This Project](#how-to-start-this-project)
 # Introduction
