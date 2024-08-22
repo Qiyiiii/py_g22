@@ -9,8 +9,9 @@
     - [Coordinates Entity](#coordinates)
     - [Encapsulation & Clean Architecture](#encapsulation--clean-architecture)
 5. [Frontend Content](#frontend-content)
-6. [Requirements](#requirements)
-7. [How to Start This Project](#how-to-start-this-project)
+6. [Match Algorithm](#match-algorithm)
+7. [Requirements](#requirements)
+8. [How to Start This Project](#how-to-start-this-project)
 # Introduction
 Welcome to the **tinder-like matchapp** designed and developed by **Group 22** 
 It is a very simple program that allows user to 
@@ -69,6 +70,8 @@ coordinate of the user location, stored automatically when user register or chan
 - match.py and profile.py under controller directory can access functions in dataManager.py, and they represent two main functions that our program can do
 - Lastly, Flask can serve frontend content and use functions from match.py as well as profile.py to do the update
 <img src="https://raw.githubusercontent.com/Qiyiiii/py_g22/0a0637e2f47acc0d9fb2b0edb6552501fee9d6a5/imgs/clean.png" alt="Clean Architecture Diagram" width="600" height="400">
+## Match Algorithm
+
 
 ## [Frontend content](https://github.com/Qiyiiii/py_g22/tree/main/matchapp/app)
 ### html files are stored in [here](https://github.com/Qiyiiii/py_g22/tree/main/matchapp/app/templates) under template directory
