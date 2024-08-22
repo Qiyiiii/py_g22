@@ -11,8 +11,8 @@
 function edit_sim_weight(uid) {
     let content;
     do {
-        content = prompt("Please enter the new interest preference (1-10):");
-        if (content === null) return; // Handle cancel
+        content = prompt("Rate how important age is in a partner. Choose a value from 1 (not important) to 10 (very important).");
+        if (content === null) return; 
     } while (isNaN(content) || content < 1 || content > 10);
 
     $.ajax({
@@ -31,8 +31,8 @@ function edit_sim_weight(uid) {
 function edit_age_weight(uid) {
     let content;
     do {
-        content = prompt("Please enter the new age preference (1-10):");
-        if (content === null) return; // Handle cancel
+        content = prompt("How important is age in choosing a partner? Please rate from 1 (not important) to 10 (very important).");
+        if (content === null) return; 
     } while (isNaN(content) || content < 1 || content > 10);
 
     $.ajax({
@@ -51,8 +51,8 @@ function edit_age_weight(uid) {
 function edit_location_weight(uid) {
     let content;
     do {
-        content = prompt("Please enter the new location preference (1-10):");
-        if (content === null) return; // Handle cancel
+        content = prompt("Rate how important distance is when finding a partner. Choose a value from 1 (not important ) to 10 (very important).");
+        if (content === null) return; 
     } while (isNaN(content) || content < 1 || content > 10);
 
     $.ajax({
@@ -77,17 +77,17 @@ function edit_location_weight(uid) {
         </div>
         <div class="profile-details">
             <p>
-                Interest: <span id="similarity_weight">{{ sim_weight }}</span>
+                Likes the same TV Genres: <span id="similarity_weight">{{ sim_weight }}</span>
                 <button class="edit-button" onclick="edit_sim_weight({{ uid }})">Edit</button>
             </p>
         
             <p>
-                Age: <span id="age_weight">{{ age_weight }}</span>
+                Is a similar age: <span id="age_weight">{{ age_weight }}</span>
                 <button class="edit-button" onclick="edit_age_weight({{ uid }})">Edit</button>
             </p>
         
             <p>
-                Location: <span id="location_weight">{{ loc_weight }}</span>
+                Lives near me: <span id="location_weight">{{ loc_weight }}</span>
                 <button class="edit-button" onclick="edit_location_weight({{ uid }})">Edit</button>
             </p>
         </div>

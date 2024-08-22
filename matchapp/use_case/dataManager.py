@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
-DB_PATH = "../database/matchapp.db"
+DB_PATH = "matchapp/database/matchapp.db"
 
 def create_user(name, email, gender, age, location, latitude,longitude, interests):
     """

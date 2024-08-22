@@ -14,8 +14,10 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 300px;
-    height: 600px;  
+    min-height: 300px;  
+    max-height: 80vh;  
     padding: 20px;
+    overflow-y: auto;  
 }
 
 .profile-header {
@@ -57,7 +59,6 @@ body {
     flex: 1;
 }
 
-
 .profile-actions {
     padding: 10px 0;
     text-align: left; 
@@ -73,4 +74,57 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+}
+
+.flash-message {
+    display: none;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #d4edda; 
+    color: #155724;
+}
+
+.interests-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.interest-button {
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: white;
+    color: #ff8383;
+    border: 2px solid #ff8383;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.interest-button.selected {
+    background-color: #ff8383;
+    color: white;
+    border-color: #ff8383;
+}
+
+.selected-interests {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ff8383;
+    border-radius: 5px;
+    text-align: left;
+    min-height: 50px;
+}
+
+.interest-tag {
+    display: inline-block;
+    background-color: #ff8383;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 15px;
+    font-size: 12px;
 }

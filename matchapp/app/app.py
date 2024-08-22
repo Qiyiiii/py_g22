@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.getenv('SECRET_KEY', 'a_default_secret_key')
 
+
 db = SQLAlchemy(app)
 @app.route('/')
 def index():
@@ -161,15 +162,10 @@ def create_user():
     gender = request.form['gender']
     location = request.form['location']
     age = request.form['age']
-    interests = request.form.get('interests')  # This should be a comma-separated string
+    interests = request.form.get('interests')  
 
-    print(f"Name: {name}, Email: {email}, Gender: {gender}, Location: {location}, Age: {age}")
-    print(f"Raw Interests: {interests}")  # Debugging line
-
-    # Convert the comma-separated interests string into a list
     interests_list = interests.split(",") if interests else []
 
-    # Pass all user details, including interests, to the add_user function
     userid = add_user(name, email, gender, location, age, interests_list)
     
     if userid > 0:
@@ -281,5 +277,11 @@ def delete_user(uid):
     else:
         flash(f"Failed to delete User {uid}.")
         return redirect(url_for('profile', uid=uid))
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+  
+    
+
+    port = int(os.getenv('PORT', 8000))  # Default to 8000 if PORT is not set
+    app.run(debug=True, host="0.0.0.0", port=port)
