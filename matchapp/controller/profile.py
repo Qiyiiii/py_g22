@@ -20,6 +20,13 @@ class Preferences_type(Enum):
 
 
 def geocode_location(location):
+    """
+    Find the latitude and longitude of a U.S. Zip Code
+
+    Return
+    On success, return latitude, longitude coordinates
+    else -1
+    """
     ctx = ssl.create_default_context(cafile=certifi.where())
     nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
 
@@ -89,8 +96,28 @@ def change_profile(content_type, uid, content):
         return update_user_age(uid, content)
     else:
         return False  # If an unsupported content type is passed
-        
+
+
+def user_weights(uid):
+    """
+    Get the preferences of User with (uid).
+    The weights indicate relative importance (integers 1-10) assigned to TV similarity,
+    geographic distance, and age similarity.
+
+    Return:
+    Tuple: (sim_weight, loc_weight, age_weight) for User (uid)
+    """
+    return get_user_weights(uid)
+
 def change_weights(Preferences_type, uid, new_weight):
+    """
+    Based on the type of content, change the preferences of User with (uid).
+    The weights indicate relative importance (integers 1-10) assigned to TV similarity,
+    geographic distance, and age similarity.
+
+    Return:
+    bool: True on success, False otherwise.
+    """
     if Preferences_type == Preferences_type.SIM_WEIGHT:
         return update_sim_weight(uid, new_weight)
     elif Preferences_type == Preferences_type.LOC_WEIGHT:
@@ -160,8 +187,7 @@ def get_mutual_liked_users(uid):
     """
     return get_mutual_likes(uid)
 
-def user_weights(uid):
-    return get_user_weights(uid)
+
 
 
 # #  example code

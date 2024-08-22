@@ -46,6 +46,11 @@ def create_user(name, email, gender, age, location, latitude,longitude, interest
         return -1
 
 def get_user_coordinates(uid):
+    """
+    Get the latitude and longitude of User with (uid)
+
+    Returns: latitude, longitude coordinates
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
@@ -61,8 +66,7 @@ def get_users(uid, my_gender, my_min_age, my_max_age):
     """
     get a datafrmae of users that who could be compatible with our user (uid)
 
-    Returns:
-    Dataframe: user
+    Returns: pandas dataframe with columns (uid, age, interest, latitude, longitude)
     """
     try:
         with sqlite3.connect(DB_PATH) as connection:
@@ -84,7 +88,6 @@ def get_users(uid, my_gender, my_min_age, my_max_age):
         print(f"Error fetch users: {e}")
         return []
 
-
 def get_user_info(uid):
     """
     Get the profile information of the User with (uid) from the database.
@@ -105,6 +108,12 @@ def get_user_info(uid):
         return ()
 
 def get_user_weights(uid):
+    """
+    Get the preferences information of User with (uid) from the User database.
+
+    Return:
+    Tuple: (sim_weight, loc_weight, age_weight) for User (uid)
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
@@ -121,6 +130,12 @@ def get_user_weights(uid):
         return ()
 
 def remove_user_with_id(uid):
+    """
+    Removes User with (uid) from the database.
+
+    Return:
+    bool: True on success, False otherwise.
+    """
     try:
         with sqlite3.connect(DB_PATH) as connection:
             cursor = connection.cursor()
