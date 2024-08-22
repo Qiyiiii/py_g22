@@ -1,8 +1,16 @@
+# **Quick Access Table**
+1. [Introduction](#intro)
+2. [Matchapp Demo](#matchapp_demo)
+3. [Matchapp](#matchapp)
+4. [Architecture](#architecture)
+    - [User Entity](#user)
+    - [Interest Entity](#interest)
+    - [Actions Entity](#actions)
+    - [Coordinates Entity](#coordinates)
+5. [Frontend Content](#frontend-content)
+6. [Requirements](#requirements)
+7. [How to Start This Project](#how-to-start-this-project)
 # Intro
-
-use this: ./matchapp/database/script.sh
-or python3 matchapp/app/app.py if you got the database ready
-
 Welcome to the **tinder-like matchapp** designed and developed by **Group 22** 
 It is a very simple program that allows user to 
 - register their information in database as an user
