@@ -2,16 +2,18 @@
 1. [Introduction](#introduction)
 2. [Matchapp Demo](#matchapp_demo)
 3. [Matchapp](#matchapp)
-4. [Architecture](#architecture)
+4. [Walkthrough](#walkthrough)
+5. [Architecture](#architecture)
     - [User Entity](#user)
     - [Interest Entity](#interest)
     - [Actions Entity](#actions)
     - [Coordinates Entity](#coordinates)
     - [Encapsulation & Clean Architecture](#encapsulation--clean-architecture)
-5. [Matching Algorithm](#matching-algorithm)
-6. [Frontend Content](#frontend-content)
-7. [Requirements](#requirements)
-8. [How to Start This Project](#how-to-start-this-project)
+6. [Matching Algorithm](#matching-algorithm)
+7. [Frontend Content](#frontend-content)
+8. [Requirements](#requirements)
+9. [How to Start This Project](#how-to-start-this-project)
+10. [Milestones](milestones)
 # Introduction
 Welcome to the **tinder-like matchapp** designed and developed by **Group 22** 
 It is a very simple program that allows user to 
@@ -39,6 +41,8 @@ Update:
 - user can add favorite movie genres in the register page as well
 - prevetion of under-aged population
 - 
+# Walkthrough
+
 
 # Architecture:
 ## Four **entity class** are stored in the database
@@ -104,6 +108,8 @@ The user ID of the individual with the highest overall score is returned as the 
    - Firstly, download required packages that can be found [here](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/requirements.txt)
    - in the terminal, in the root page, enter: "./matchapp/database/script.sh", it will automatically load the example data and run the project
    - or run the commands line by line from the script.sh file that can be found [here](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/database/script.sh)
+  
+# Milestones
 
 
 
