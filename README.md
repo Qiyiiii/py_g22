@@ -42,6 +42,32 @@ Update:
 - prevetion of under-aged population
 - 
 # Walkthrough
+### Getting Started
+To start the app (either remotely or locally), see the instructions in the section [How to Start This Project](#how-to-start-this-project).
+
+### Creating a Profile
+To create a new profile, click on "Create Account." You will be prompted to enter your first name, email, gender, a valid U.S. zip code, and your age (18+ only). 
+
+We have pre-loaded our database with singles, aged 18-30, living in New York City. For the best results, choose a Manhattan zip code (e.g. 10001) and an age between 18 and 35. 
+
+Choose TV genres that you're interested in. You can select as many as you would like from our list. When you're happy with your profile, click "Join." Our app will automatically log you in and show you a user id. Make a note of your user id so you can log back in later. 
+
+Help: If you receive the error "Failed to create user," make sure that you have entered a unique email, an age of 18+, and a valid U.S. Zip code. 
+
+### Logging Out
+To log out of your account, click on "Log out" in the bottom right hand corner of the profile page. 
+
+### Logging In
+To log into your account, click "Login" on the home page. You will be prompted to enter your unique user id. 
+
+### Finding a Match and Liking/Disliking Users
+
+Click on "New Match" To view the profile of someone we think would be a good match for you. If you're interested in someone, click "Like User" If they're not for you, click "Dislike User." Or, you can click "Go back to profile page" if you're not ready to make a decision.
+
+### Editing your profile
+You can edit your information on the profile page. Click on the "Edit" buttons next to your current name, gender, location, or age. 
+
+Help: If you do not see your changes to your age or location, make sure that you have entered an age of 18+ and a valid U.S. Zip code. 
 
 
 # Architecture:
