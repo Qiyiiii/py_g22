@@ -1,4 +1,4 @@
-# **Quick Access Table**
+# **Index**
 1. [Introduction](#introduction)
 2. [Matchapp Demo](#matchapp_demo)
 3. [Matchapp](#matchapp)
@@ -114,7 +114,7 @@ The user ID of the individual with the highest overall score is returned as the 
 The process of the production of this project has been tracked and followed by plans
 - Skeleton of the code structure were designed and implemented (Aug 9th - Aug 11th)
 - Completion of the project backend (Aug 12th - Aug 13th)
-- Completion of the project frontend + fixed bugs in project backend (Aug 14th)
+- Completion of the project frontend + better looking interface + fixed bugs in project backend (Aug 14th)
 - Debug the project as a whole, improve user experience(Aug 15th)
 - Brainstorm new features as well as potential improvement of the project (Aug 17th)
 - New features been implemented: 1. User can choose favorite movie genre in the register page 2. User can set thier match preferences 3. Quicker matching speed 4.User can only add true US postal code as their location 4. Error handlings, e.g. user must enter valid user id in the log in page (Aug 18th - Aug 21th)
