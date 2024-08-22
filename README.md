@@ -48,6 +48,7 @@ Update:
 ## Four **entity class** are stored in the database
 ### User:
 basic information: 
+- uid: system assigned id of the user 
 - name: name of the user
 - email: email of the user.   **Notice**: unique for all users, which is, one email address can only registered once to create user
 - gender: gender of the user.   **Notice**: only limited to male and female
