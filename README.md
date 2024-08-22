@@ -9,7 +9,7 @@
     - [Coordinates Entity](#coordinates)
     - [Encapsulation & Clean Architecture](#encapsulation--clean-architecture)
 5. [Frontend Content](#frontend-content)
-6. [Match Algorithm](#match-algorithm)
+6. [Matching Algorithm](#matching-algorithm)
 7. [Requirements](#requirements)
 8. [How to Start This Project](#how-to-start-this-project)
 # Introduction
@@ -71,7 +71,7 @@ coordinate of the user location, stored automatically when user register or chan
 - Lastly, Flask can serve frontend content and use functions from match.py as well as profile.py to do the update
 <img src="https://raw.githubusercontent.com/Qiyiiii/py_g22/0a0637e2f47acc0d9fb2b0edb6552501fee9d6a5/imgs/clean.png" alt="Clean Architecture Diagram" width="600" height="400">
 
-## Match Algorithm
+# Matching Algorithm
 
 
 ## [Frontend content](https://github.com/Qiyiiii/py_g22/tree/main/matchapp/app)
