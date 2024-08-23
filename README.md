@@ -15,7 +15,7 @@
 9. [How to Start This Project](#how-to-start-this-project)
 10. [Milestones](#milestones)
 # Introduction
-Welcome to **chill**, a **tinder-like matching app** designed and developed by **Group 22**. chill is a dating app designed for TV lovers, matching users based on their TV genre preferences. 
+Welcome to **chill**, a **tinder-like matching app** developed by **Group 22**. chill is a dating app designed for TV lovers, matching users based on their TV genre preferences. 
 
 Our app is a very simple program that allows a user to 
 - Create a Profile: Register and add their details to our database
@@ -24,13 +24,13 @@ Our app is a very simple program that allows a user to
 - Manage TV Genres: Add their favorite TV genres on both the registration page and profile page
 - Get Personalized Matches: Receive recommended profiles based on our matching algorithm
 - Adjust Preferences: Customize the importance of factors like similarity, distance, and age on the preferences page
-- Like/Dislike Recommendations: Like/dislike suggested profiles and view their like/dislike history
-- View Matches: See a list of users they've liked who have also liked them back.
+- Make and view actions: Like/dislike suggested profiles and view their own like/dislike history
+- View Matches: See a list of users they've liked who have also liked them back
 
 
 # matchapp_demo 
 ### [click here to redirect](https://github.com/Qiyiiii/py_g22/tree/main/matchapp_demo)
-- The version of the project that was presented on Aug 16,202
+- The version of the project that was presented on Aug 16, 2024
 - Can be deployed locally
 - Satisfies all basic project specifications
 - Matching algorithm weights are set to default values
@@ -42,7 +42,8 @@ Our app is a very simple program that allows a user to
 ### [click here to redirect](https://github.com/Qiyiiii/py_g22/tree/main/matchapp)
 Update (chill 2.0):
 - Can be deployed locally and remotely
-- User can only enter a valid U.S. Zip code and an age of 18 or older 
+- User can only enter a valid U.S. Zip code and an age of 18 or older
+- Improved input validation and error handling
 - User can add their preferred TV genres on the register page
 - TV genres are displayed as buttons rather than as free-text
 - Added a "Preferences" page, where a user can adjust the weights in the matching algorithm.
@@ -79,7 +80,7 @@ To update your information, go to the profile page and click the "Edit" buttons 
 Help: If you do not see updates to your age or location, ensure that your age is 18 or older and you’ve entered a valid U.S. zip code.
 
 ### Customizing preferences
-At chill, we tailor recommendations based on TV tastes, distance, and age difference. To adjust how important these factors are to you, visit the "Preferences" page and click "Edit" to rate them on a scale from 1 (not important) to 10 (very important). We will adjust your algorithm based on the proportion of these ratings.
+At chill, we tailor recommendations based on similairty of TV interests, geographic distance, and age similarity. To adjust how important these factors are to you, visit the "Preferences" page and click "Edit" to rate them on a scale from 1 (not important) to 10 (very important). We will adjust your algorithm based on the proportion of these ratings.
 
 ### Deleting your profile
 We’re sorry to see you go! To delete your profile, click "Delete User" in the bottom left corner of the profile page and confirm by clicking "Ok."
@@ -94,7 +95,7 @@ basic information:
 - name: name of the user
 - email: email of the user.   **Notice**: each email address can be used to register only once (must be unique)
 - gender: gender of the user.   **Notice**: limited to male and female
-- location: zip code (USA only) of the user
+- location: zip code (U.S. only) of the user
 - age: age of the user. **Notice**: must be greater than or equal to 18
 - sim_weight: the relative importance of TV taste similarity in the matching algorithm
 - loc_weight: the relative importance of distance in the matching algorithm
@@ -131,6 +132,12 @@ The algorithm evaluates three primary factors: similarity in TV tastes, geograph
 Each potential match receives a score for each factor. These scores are normalized using sklearn's MinMaxScaler() before being combined. The factors are weighted so that the maximum combined score is 1.00. By default, similarity, distance, and age are weighted at 0.4, 0.4, and 0.2, respectively. In chill 2.0, users can adjust these weights according to their preferences. Users rate the importance of each factor between 1 and 10, so these values are normalized before being used in the matching algorithm
 
 In chill 2.0, an additional bonus/penalty is applied to the overall score. If a potential match has already liked the user, their score is increased by 0.2. If they have already disliked the user, their score is decreased by 0.2. This increases the chances of our user getting a match. The maximum possible score is 1.2.
+
+Equation: $\alpha(\textrm{TV similarity}) + \beta(1 - \textrm{distance}) + \gamma(1 - \textrm{age difference}) + \textrm{penalty}$
+
+Defaults: $\alpha = 0.4,\beta = 0.4, \gamma = 0.2$
+
+Penalty: $-0.2, 0, \textrm{or } 0.2$
 
 The user ID of the individual with the highest overall score is returned as the recommended match.
 
