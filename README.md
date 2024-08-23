@@ -30,6 +30,7 @@ Our app is a very simple program that allows a user to
 
 # matchapp_demo 
 ### [click here to redirect](https://github.com/Qiyiiii/py_g22/tree/main/matchapp_demo)
+### [click here to redirect](https://github.com/Qiyiiii/py_g22/blob/main/matchapp_demo/README.md)
 - The version of the project that was presented on Aug 16, 2024
 - Can be deployed locally
 - Satisfies all basic project specifications
