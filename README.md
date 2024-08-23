@@ -71,6 +71,8 @@ Help: If you do not see your changes to your age or location, make sure that you
 
 
 # Architecture:
+<img src="https://github.com/Qiyiiii/py_g22/blob/main/imgs/Group22.png" alt="Class Responsibility Collaborator Card" width="600" height="400">
+
 ## Four **entity class** are stored in the database
 ### User:
 basic information: 
