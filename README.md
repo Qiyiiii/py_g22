@@ -148,7 +148,7 @@ The user ID of the individual with the highest overall score is returned as the 
 ### css and other static files are stored in [here](https://github.com/Qiyiiii/py_g22/tree/main/matchapp/app/templates)
 
 # Requirements
-[here to view required package for this project to be deployed in the local](https://github.com/Qiyiiii/py_g22/blob/main/matchapp/requirements.txt)
+[here to view required package for this project to be deployed in the local](https://github.com/Qiyiiii/py_g22/blob/main/requirements.txt)
 # How to start this project:
 1. **Remotely**:
    - this project is remotely depolyed on qiyizhang71.com/ and chill-btgvfufugfdkgpbj.canadacentral-01.azurewebsites.net
