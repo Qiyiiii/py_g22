@@ -86,7 +86,7 @@ At chill, we tailor recommendations based on similairty of TV interests, geograp
 We’re sorry to see you go! To delete your profile, click "Delete User" in the bottom left corner of the profile page and confirm by clicking "Ok."
 
 # Architecture:
-<img src="https://github.com/Qiyiiii/py_g22/blob/main/imgs/Group22.png" alt="Class Responsibility Collaborator Card" width="700" height="350">
+<img src="https://github.com/Qiyiiii/py_g22/blob/main/imgs/Group22.png" alt="Class Responsibility Collaborator Card" width="700" height="400">
 
 ## Four **entity class** are stored in the database
 ### User:
