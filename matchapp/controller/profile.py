@@ -27,12 +27,12 @@ def geocode_location(location):
     On success, return latitude, longitude coordinates
     else -1
     """
-    ctx = ssl.create_default_context(cafile=certifi.where())
+    ctx = ssl.create_default_context(cafile=certifi.where()) #set up for geopy API...
     nomi = Nominatim(user_agent="my_geocoding_app", ssl_context=ctx)
 
     try:
-        found_location = nomi.geocode(location + ', United States')
-        latitude, longitude = (found_location.latitude, found_location.longitude)
+        found_location = nomi.geocode(location + ', United States') #finds the location of a U.S. Zip code
+        latitude, longitude = (found_location.latitude, found_location.longitude) #collects latitude and longitude
     except Exception:
         return -1
 
