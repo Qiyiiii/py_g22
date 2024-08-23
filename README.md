@@ -118,7 +118,7 @@ Coordinates of the user's location, stored automatically when a user registers o
 - Only dataManager.py (as use case classes for data management in SQLite) can access database.db and do CRUD operations on it
 - match.py and profile.py (under controller directory) can access functions in dataManager.py, and they represent two main functions that our program can do
 - Flask can serve frontend content and use functions from match.py as well as profile.py to complete updates
-<img src="https://raw.githubusercontent.com/Qiyiiii/py_g22/0a0637e2f47acc0d9fb2b0edb6552501fee9d6a5/imgs/clean.png" alt="Clean Architecture Diagram" width="600" height="400">
+<img src="https://github.com/Qiyiiii/py_g22/blob/main/imgs/CleanArchitecture.png" alt="Clean Architecture Diagram" width="600" height="400">
 
 # Matching Algorithm
 
